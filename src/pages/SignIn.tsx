@@ -1,9 +1,14 @@
-import { Form, Input, Button, Checkbox } from 'antd';
-
+import { Form, Input, Button } from 'antd';
+import axios from 'axios';
 const SignIn = () => {
 
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
+    const onFinish = async (values: any) => {
+        try {
+            const res = await axios.post(process.env.REACT_APP_API_URL+'auth/signin',values);
+            console.log(res);
+        } catch {
+
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -22,7 +27,7 @@ const SignIn = () => {
         >
             <Form.Item
                 label="ID/EMAIL"
-                name="id"
+                name="email"
                 rules={[{ required: true, message: '이메일을 입력해 주세요' }]}
             >
                 <Input />
