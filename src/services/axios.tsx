@@ -1,9 +1,14 @@
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import { GetRefreshToken, SetRefreshToken } from '../hooks/authorization'
 
-const client = axios.create(
+const client: AxiosInstance = axios.create(
     {
         baseURL: process.env.REACT_APP_API_URL,
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJya2Rtc2RkZHNAbmF2ZXIuY29tIiwicGhvbmVOdW1iZXIiOiIwMTA0Mjc1MTIxNSIsImlhdCI6MTY0NDgzNzU3NCwiZXhwIjoxNjQ1NDQyMzc0fQ.WOqwiCiAFcSynO4xxjIc8oc-xuIhdSHVXMaZRwBvjMY"
+        }
     }
 )
 
