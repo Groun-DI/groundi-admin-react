@@ -3,11 +3,11 @@ import client from "services/axios";
 import styled from "styled-components";
 
 
-const CenterNew = () => {
+const StudioNew = () => {
     const { register, handleSubmit } = useForm();
 
     const onSubmit = async (data: any) => {
-        const res = await client.post(process.env.REACT_APP_API_URL + 'center/create', data);
+        const res = await client.post(process.env.REACT_APP_API_URL + 'studio/create', data);
         console.log(res);
     }
 
@@ -39,4 +39,4 @@ const Wrap = styled.div`
     flex-direction: column;
     width: 400px;
 `
-export default CenterNew;
+export default StudioNew;

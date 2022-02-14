@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { GetRefreshToken, SetRefreshToken } from '../hooks/authorization'
 
-export const client = axios.create(
+const client = axios.create(
     {
         baseURL: process.env.REACT_APP_API_URL,
     }
@@ -12,17 +12,17 @@ export const setClientHeaders = (accessToken: string) => {
         function (config) {
             if (config.headers !== undefined) {
                 if (!accessToken) {
-                    config.headers["accessToken"] = '';
+                    config.headers.Authorization = '';
                     return config
                 }
-                config.headers["accessToken"] = accessToken;
+                config.headers.Authorization = `Bearer ${accessToken}`;
                 return config
             }
         }
     )
-  };
+};
 
-  
+
 client.interceptors.response.use(
     function (response) {
         return response
@@ -39,7 +39,7 @@ client.interceptors.response.use(
                     if (data.data) {
                         const { accessToken, refreshToken } = data.data;
                         SetRefreshToken(refreshToken);
-                        originalRequest.headers["accessToken"] = accessToken;
+                        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                         return originalRequest;
                     }
                     return Promise.reject(error)
@@ -52,3 +52,5 @@ client.interceptors.response.use(
         return Promise.reject(error)
     }
 )
+
+export default client;

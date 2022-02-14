@@ -1,4 +1,4 @@
-import { client, setClientHeaders } from 'services/axios';
+import client, { setClientHeaders } from 'services/axios';
 import { Cookies } from 'react-cookie';
 
 type LoginType = {

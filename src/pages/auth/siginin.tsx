@@ -3,20 +3,10 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
-import { client } from 'services/axios';
-import { useEffect } from 'react';
 
 const SignIn = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const CallUserEntity = async () => {
-            const res = await client.get(process.env.REACT_APP_API_URL + 'user');
-            if (res) navigate('/');
-        }
-        CallUserEntity();
-    })
 
     const onSubmit = async (data: any) => {
         try {
