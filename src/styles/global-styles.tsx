@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
   html,
   body {
     margin: 0;
-    overflow: hidden;
+    width:100%;
     height: 100%;
   }
   ul{
@@ -15,6 +15,12 @@ const GlobalStyle = createGlobalStyle`
   }
   * {
     box-sizing: border-box;
+  }
+  input:focus { outline: none; }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
   }
 `;
 

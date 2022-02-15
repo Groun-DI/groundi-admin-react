@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 const Header = () => {
     const { pathname } = useLocation();
     const navigator = useNavigate();
-    if (pathname === '/center') {
+    if (pathname === '/center'|| pathname === '/studio/new') {
         return null;
     }
     return (
