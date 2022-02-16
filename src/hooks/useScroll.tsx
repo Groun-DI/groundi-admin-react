@@ -5,6 +5,7 @@ export function useScroll() {
 
   const listener = () => {
     setScrollY(window.pageYOffset);
+    console.log(window.pageYOffset)
   };
 
   useEffect(() => {
