@@ -2,12 +2,22 @@ import SearchInput from "components/input/search";
 import EmojiInput from "components/input/emoij";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-
+import { useEffect, useState } from "react";
+import client from "services/axios";
+import { Amenity } from 'entities/amenity.entity';
 const StudioNew = () => {
     const { register, handleSubmit } = useForm();
+    const [amenities, setAmenities] = useState<Amenity[]>([]);
+
     const OnSubmit = (data: any) => {
     }
 
+    useEffect(() => {
+        client.get<Amenity[]>('amenity').then(res => {
+            setAmenities(res.data);
+        });
+
+    }, [])
     return (
         <>
             <Header>
@@ -21,12 +31,12 @@ const StudioNew = () => {
                         <Content>
                             <InputWrap>
                                 <label>기본</label>
-                                <input type="number" defaultValue={0} />
+                                <input type="number" defaultValue={0} {...register('basicOccupancy', { required: true, min: 1, max: 100 })} />
                                 <label>명</label>
                             </InputWrap>
                             <InputWrap>
                                 <label>최대</label>
-                                <input type="number" defaultValue={0} />
+                                <input type="number" defaultValue={0} {...register('maximumOccupancy', { required: true, min: 0, max: 100 })} />
                                 <label>명</label>
                             </InputWrap>
                         </Content>
@@ -45,22 +55,14 @@ const StudioNew = () => {
                         <Title>스튜디오 편의시설 정보를 추가해 주세요.</Title>
                         <Content>
                             <ItemWrap>
-                                <ItemBox>
-                                    <img src="/showerBooth.svg" alt="showerBooth" width="70px" />
-                                    <h5>샤워부스</h5>
-                                </ItemBox>
-                                <ItemBox>
-                                    <img src="/wifi.svg" alt="wifi" width="70px" />
-                                    <h5>WIFI/인터넷</h5>
-                                </ItemBox>
-                                <ItemBox>
-                                    <img src="/washRoom.svg" alt="washRoom" width="70px" />
-                                    <h5>실내 화장실</h5>
-                                </ItemBox>
-                                <ItemBox>
-                                    <img src="/airConditioner.svg" alt="airConditioner" width="70px" />
-                                    <h5>에어컨</h5>
-                                </ItemBox>
+                                {
+                                    amenities.map((item, k) => (
+                                        <ItemBox key={k}>
+                                            <img src={item.image} alt="showerBooth"/>
+                                            <h5>{item.name}</h5>
+                                        </ItemBox>
+                                    ))
+                                }
                             </ItemWrap>
                         </Content>
                     </Section>
@@ -105,7 +107,7 @@ const StudioNew = () => {
                     <Section>
                         <Title>스튜디오의 주차정보를 추가해 주세요.</Title>
                         <Content>
-                        <List>
+                            <List>
                                 <li>
                                     <p>주차가 가능한가요?</p>
                                     <CheckBox>
@@ -191,7 +193,7 @@ const Title = styled.h1`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 40%;
+    height: 20%;
     font-size: ${(props) => props.theme.fontSize.Title1};
 `
 const Section = styled.section`
@@ -216,7 +218,7 @@ const Content = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 60%;
+    height: 80%;
 `
 
 const InputWrap = styled.div`
@@ -245,11 +247,13 @@ const Button = styled.button`
     cursor: pointer;
 `
 const ItemWrap = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     margin: 30px;
+    img{
+        width: 60px;
+        height: 60px;
+    }
 `
 const Item = styled.p`
     background-color: black;
