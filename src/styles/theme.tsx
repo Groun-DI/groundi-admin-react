@@ -5,7 +5,7 @@ const theme: DefaultTheme = {
 
     color: {
         main: "#F84F39;",
-        sub: "#fff"
+        sub: "#a5a0a0"
     },
     fontSize: {
         Title1: "56px",

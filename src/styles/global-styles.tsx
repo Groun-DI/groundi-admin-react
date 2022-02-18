@@ -164,6 +164,16 @@ input {
   -moz-appearance: none;
   appearance: none;
 }
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration,
+input[type=search]::-webkit-search-results-button,
+input[type=search]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+textarea:focus, input:focus{
+    outline: none;
+}
 
 `
 export default GlobalStyle;

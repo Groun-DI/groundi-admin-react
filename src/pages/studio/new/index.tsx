@@ -1,23 +1,16 @@
-import SearchInput from "components/input/search";
 import EmojiInput from "components/input/emoij";
-import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import client from "services/axios";
-import { Amenity } from 'entities/amenity.entity';
+import ComplimentaryForm from "containers/studio-create-form/complimentary";
+import OccupancyForm from "containers/studio-create-form/occupancy";
+import AmenityForm from "containers/studio-create-form/amenity";
+import PrecautionForm from "containers/studio-create-form/precaution";
+import ParkingLotForm from "containers/studio-create-form/parkingLot";
+import ContentForm from "containers/studio-create-form/content";
+import ImageForm from "containers/studio-create-form/image";
+import PriceForm from "containers/studio-create-form/price";
+import RefundForm from "containers/studio-create-form/refund";
+
 const StudioNew = () => {
-    const { register, handleSubmit } = useForm();
-    const [amenities, setAmenities] = useState<Amenity[]>([]);
-
-    const OnSubmit = (data: any) => {
-    }
-
-    useEffect(() => {
-        client.get<Amenity[]>('amenity').then(res => {
-            setAmenities(res.data);
-        });
-
-    }, [])
     return (
         <>
             <Header>
@@ -25,101 +18,37 @@ const StudioNew = () => {
                 <h5>저장 및 나가기</h5>
             </Header>
             <Body>
-                <form onSubmit={handleSubmit(OnSubmit)}>
+                <form>
                     <Section>
                         <Title>스튜디오에 들어갈 인원수를 알려주세요</Title>
                         <Content>
-                            <InputWrap>
-                                <label>기본</label>
-                                <input type="number" defaultValue={0} {...register('basicOccupancy', { required: true, min: 1, max: 100 })} />
-                                <label>명</label>
-                            </InputWrap>
-                            <InputWrap>
-                                <label>최대</label>
-                                <input type="number" defaultValue={0} {...register('maximumOccupancy', { required: true, min: 0, max: 100 })} />
-                                <label>명</label>
-                            </InputWrap>
+                            <OccupancyForm />
                         </Content>
                     </Section>
                     <Section>
                         <Title>수련자들에게 제공되는 물품이 있다면 선택해주세요</Title>
                         <Content>
-                            <SearchInput />
-                            <ItemWrap>
-                                <Item>볼스터</Item>
-                                <Item>블럭</Item>
-                            </ItemWrap>
+                            <ComplimentaryForm />
                         </Content>
                     </Section>
                     <Section>
                         <Title>스튜디오 편의시설 정보를 추가해 주세요.</Title>
                         <Content>
                             <ItemWrap>
-                                {
-                                    amenities.map((item, k) => (
-                                        <ItemBox key={k}>
-                                            <img src={item.image} alt="showerBooth"/>
-                                            <h5>{item.name}</h5>
-                                        </ItemBox>
-                                    ))
-                                }
+                                <AmenityForm />
                             </ItemWrap>
                         </Content>
                     </Section>
                     <Section>
                         <Title>스튜디오의 주의사항 정보를 추가해 주세요.</Title>
                         <Content>
-                            <List>
-                                <li>
-                                    <p>애완동물이 있어요</p>
-                                    <CheckBox>
-                                        <input type="checkbox" name="drone" />
-                                    </CheckBox>
-                                </li>
-                                <li><p>출입이 제한되지 않는 수영장/온수 욕조</p>
-                                    <CheckBox>
-                                        <input type="checkbox" name="drone" />
-                                    </CheckBox>
-                                </li>
-                                <li><p>근처의 호수, 강, 바다 등</p>
-                                    <CheckBox>
-                                        <input type="checkbox" name="drone" />
-                                    </CheckBox>
-                                </li>
-                                <li><p>등반 또는 놀이용 구조물</p>
-                                    <CheckBox>
-                                        <input type="checkbox" name="drone" />
-                                    </CheckBox>
-                                </li>
-                                <li><p>난간이나 보호 장치가 없는 높은 곳</p>
-                                    <CheckBox>
-                                        <input type="checkbox" name="drone" />
-                                    </CheckBox>
-                                </li>
-                                <li><p>위험 소지가 있는 동물</p>
-                                    <CheckBox>
-                                        <input type="checkbox" name="drone" />
-                                    </CheckBox>
-                                </li>
-                            </List>
+                            <PrecautionForm />
                         </Content>
                     </Section>
                     <Section>
                         <Title>스튜디오의 주차정보를 추가해 주세요.</Title>
                         <Content>
-                            <List>
-                                <li>
-                                    <p>주차가 가능한가요?</p>
-                                    <CheckBox>
-                                        <input type="checkbox" name="drone" />
-                                    </CheckBox>
-                                </li>
-                                <li><p>주차비는 무료인가요?</p>
-                                    <CheckBox>
-                                        <input type="checkbox" name="drone" />
-                                    </CheckBox>
-                                </li>
-                            </List>
+                            <ParkingLotForm />
                         </Content>
                     </Section>
                     <Section>
@@ -131,20 +60,24 @@ const StudioNew = () => {
                     <Section>
                         <Title>스튜디오를 설명해주세요.</Title>
                         <Content>
-                            <TextArea />
+                            <ContentForm />
                         </Content>
                     </Section>
                     <Section>
                         <Title>스튜디오를 사진을 넣어주세요.</Title>
-                        <Content>다음 단계(1/10)</Content>
+                        <ImageForm />
                     </Section>
                     <Section>
                         <Title>스튜디오를 가격을 입력해주세요.</Title>
-                        <Content>다음 단계(1/10)</Content>
+                        <Content>
+                            <PriceForm />
+                        </Content>
                     </Section>
                     <Section>
                         <Title>스튜디오의 환불정보를 입력해주세요.</Title>
-                        <Content>다음 단계(1/10)</Content>
+                        <Content>
+                            <RefundForm/>
+                        </Content>
                     </Section>
                 </form>
             </Body>
@@ -193,7 +126,7 @@ const Title = styled.h1`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 20%;
+    margin: 150px 0px 50px 0px;
     font-size: ${(props) => props.theme.fontSize.Title1};
 `
 const Section = styled.section`
@@ -202,7 +135,7 @@ const Section = styled.section`
     flex-direction: column;
     align-items: center;
     width:100%;
-    padding: 100px 20px;
+    padding: 80px 20px;
     scroll-snap-align: start;
 `
 
@@ -216,27 +149,10 @@ const Body = styled.div`
 const Content = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 80%;
+    margin: 20px 0px;
 `
 
-const InputWrap = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font-size: ${(props) => props.theme.fontSize.Title3};
-    margin: 30px 0px;
-    input{
-        width: 130px;
-        text-align: center;
-        font-size: ${(props) => props.theme.fontSize.Title2};
-        border: 0px;
-        border-bottom: 1px solid #c4c4c4;
-        margin: 0px 30px;
-    }
-`
 const Button = styled.button`
     color:white;
     width: 150px;
@@ -255,80 +171,4 @@ const ItemWrap = styled.div`
         height: 60px;
     }
 `
-const Item = styled.p`
-    background-color: black;
-    border-radius: 50px;
-    padding: 15px 30px;
-    color: white;
-    margin: 10px;
-    font-size: ${(props) => props.theme.fontSize.Regular};
-`
-
-const ItemBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    justify-items: center;
-    align-self: center;
-    align-content: center;
-    padding: 20px;
-    border: 1px solid black;
-    border-radius: 20px;
-    width: 150px;
-    height: 150px;
-    margin: 10px;
-    font-size: ${(props) => props.theme.fontSize.Small};
-    :hover{
-        border: 1px solid #c4c4c4;
-    }
-`
-
-const TextArea = styled.textarea`
-    width: 700px;
-    height: 800px;
-    border: 2px solid black;
-    border-radius: 30px;
-    padding: 20px 20px;
-    font-size: ${(props) => props.theme.fontSize.Large};
-    :hover{
-        border: 2px solid #c4c4c4c4;
-    }
-`
-
-const List = styled.ul`
-    width: 700px;
-    li{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        margin: 40px 0px;
-        font-size: ${(props) => props.theme.fontSize.Large};
-    }
-`
-
-const CheckBox = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  input[type="checkbox"] {
-    margin-right: 8px !important;
-    border: 2px solid black;
-    border-radius: 100%;
-    background-color: white;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 30px;
-    height: 30px;
-    margin: 0px;
-    padding: 10px;
-  }
-  input[type="checkbox"]:checked {
-    appearance: none;
-    background-size: contain;
-    background-image: url("/check.svg");
-  }
-`;
 export default StudioNew;
