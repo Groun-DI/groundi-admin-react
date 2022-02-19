@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import GlobalStyles from 'styles/global-styles';
 import { theme } from "styles/theme";
 import { ThemeProvider } from "styled-components";
+import GlobalFonts from "styles/fonts";
 import { CookiesProvider } from 'react-cookie';
 import { persistor, store } from 'store/store'
 import { Provider } from 'react-redux'
@@ -14,7 +15,8 @@ ReactDOM.render(
     <PersistGate loading={null} persistor={persistor}>
       <CookiesProvider>
         <ThemeProvider theme={theme}>
-          <GlobalStyles />
+          <GlobalFonts/>
+          <GlobalStyles/>
           <App />
         </ThemeProvider>
       </CookiesProvider>

@@ -1,8 +1,14 @@
+import { UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
 
-const ContentForm = () => {
+type Props = {
+    register: UseFormRegister<Record<string, any>>
+}
+
+const ContentForm = ({ register }: Props) => {
+
     return (
-        <TextArea />
+        <TextArea {...register('content', { required: true })} maxLength={500} />
     )
 }
 
@@ -17,5 +23,4 @@ const TextArea = styled.textarea`
         border: 2px solid #c4c4c4c4;
     }
 `
-
-export default ContentForm;
+export default ContentForm

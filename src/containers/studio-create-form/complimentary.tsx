@@ -1,12 +1,19 @@
 import { Complimentary } from "entities/complimentary.entity";
 import { useEffect, useRef, useState } from "react";
+import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import client from "services/axios";
 import styled from "styled-components";
 
-const ComplimentaryForm = () => {
+type Props = {
+    register: UseFormRegister<Record<string, any>>
+    setValue: UseFormSetValue<Record<string, any>>
+    getValues: UseFormGetValues<Record<string, any>>
+}
+
+const ComplimentaryForm = ({ register, setValue, getValues }: Props) => {
     const [items, setItems] = useState<Complimentary[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
-    const [selectItem, setSelectItem] = useState<any[]>([]);
+    const [selectItems, setSelectItems] = useState<any[]>([]);
     const [isOutSideClick, setIsOutSideClick] = useState<boolean>(true);
     const outSideClickRef = useRef<any>();
 
@@ -21,6 +28,10 @@ const ComplimentaryForm = () => {
         }
     }, []);
 
+    useEffect(() => {
+        setValue('complimentary', selectItems);
+    }, [setValue, selectItems]);
+
     const handleOurSideClickEvent = (e: MouseEvent) => {
         if (!outSideClickRef.current.contains(e.target)) {
             setIsOutSideClick(true);
@@ -28,18 +39,27 @@ const ComplimentaryForm = () => {
     }
 
     const handleAddItem = (item: Complimentary) => {
-        setSelectItem(oldArray => [...oldArray, item.name]);
+        const isInCludes = selectItems.includes(item.name);
+        if (!isInCludes && selectItems.length < 10) {
+            setSelectItems(oldArray => [...oldArray, item.name]);
+        }
+    }
+
+    const handlerDeleteItem = (item: string) => {
+        const deletedItems = selectItems.filter((element) => element !== item);
+        setSelectItems(deletedItems);
     }
 
     return (
         <>
             <ContentHeader show={isOutSideClick} ref={outSideClickRef} onClick={() => setIsOutSideClick(!isOutSideClick)}>
-                <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+                <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="사각 볼스터 / 블럭 / 요가매트 등"/>
                 <img src="/input-search.svg" alt="input-search" width={30} />
-                <DownDrop show={isOutSideClick}>
+                <DownDrop show={isOutSideClick} inputValue={inputValue}>
                     {
                         items.filter((val) => {
-                            if (val.name.toLowerCase().includes(inputValue.toLowerCase())) return val;
+                            if(selectItems.includes(val.name)) return null;
+                            return val.name.toLowerCase().includes(inputValue.toLowerCase());
                         }).map((item, k) => (
                             <DownDropItem key={k} onClick={() => handleAddItem(item)}>{item.name}</DownDropItem>
                         ))
@@ -49,8 +69,11 @@ const ComplimentaryForm = () => {
             <ContentMain>
                 <ItemList>
                     {
-                        selectItem.map((item, k) => (
-                            <Item key={k}>{item}</Item>
+                        selectItems.map((item, k) => (
+                            <div key={k} style={{ position: "relative" }}>
+                                <Item >{item}</Item>
+                                <DeleteButtonIcon onClick={() => handlerDeleteItem(item)} />
+                            </div>
                         ))
                     }
                 </ItemList>
@@ -59,21 +82,41 @@ const ComplimentaryForm = () => {
     )
 }
 
+const DeleteButtonIcon = styled.button`
+    position: absolute;
+    z-index: 1;
+    border-radius: 100%;
+    border: 0px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    background-image: url('/Close.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    top: 20px;
+    right: 20px;
+    :hover{
+        box-shadow: rgb(0 0 0) 0px 0px 0px 2px;
+    }
+`
+
+
 const ContentMain = styled.div`
     margin-top: 40px;
 `
 const ItemList = styled.div`
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, auto);
 `
 
 const Item = styled.div`
-    background-color: black;
+    background-color: ${(props) => props.theme.color.main};
     border-radius: 20px;
-    padding: 20px 30px;
+    padding: 20px 40px 20px 30px;
     color: white;
     margin: 10px;
-    font-size: ${(props) => props.theme.fontSize.Regular};
+    font-size: ${(props) => props.theme.fontSize.Large};
     text-align: center;
 `
 
@@ -99,18 +142,19 @@ const ContentHeader = styled.div<{ show: boolean }>`
     }
 `
 
-const DownDrop = styled.ul<{ show: boolean }>`
+const DownDrop = styled.ul<{ show: boolean, inputValue: string }>`
     display: ${(props) => props.show ? 'none' : 'block'};
     position: absolute;
     top:0;
     left:0;
     width: 100%;
     border-radius: 20px;
-    padding-top: 70px;
-    padding-bottom: 10px;
+    padding-top: 67px;
+    padding-bottom: ${(props) => props.inputValue === '' ? '0px' : '10px'};;
     max-height: 290px;
     overflow: hidden;
     box-shadow : 0 1px 6px 0 rgb(32 33 36 / 28%);
+    z-index: 20;
 `
 
 const DownDropItem = styled.li`
@@ -127,6 +171,7 @@ const DownDropItem = styled.li`
     :nth-child(4){
         margin-bottom: 20px;
     }
+    z-index: 20;
 `
 
 export default ComplimentaryForm;

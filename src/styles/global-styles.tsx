@@ -94,7 +94,7 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
-  font-family: "Noto Sans KR", "Apple SD Gothic Neo", Sans-serif;
+  font-family: "Nanum Gothic", "Noto Sans KR", "Apple SD Gothic Neo", Sans-serif;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -144,9 +144,6 @@ head {
   display: block;
 }
 
-html {
-  font-size: 62.5%;
-}
 * {
   box-sizing: border-box;
   word-break: keep-all;
@@ -171,6 +168,13 @@ input[type=search]::-webkit-search-results-decoration {
     -webkit-appearance: none;
     -moz-appearance: none;
 }
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 textarea:focus, input:focus{
     outline: none;
 }

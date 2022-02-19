@@ -9,11 +9,11 @@ const theme: DefaultTheme = {
     },
     fontSize: {
         Title1: "56px",
-        Title2: "36px",
-        Title3: "28px",
+        Title2: "48px",
+        Title3: "38px",
         Large: "24px",
-        Regular: "22px",
-        Small: "18px",
+        Regular: "18px",
+        Small: "14px",
         Micro: "9px",
     }
 };
