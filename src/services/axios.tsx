@@ -7,7 +7,7 @@ const client: AxiosInstance = axios.create(
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJya2Rtc2RkZHNAbmF2ZXIuY29tIiwicGhvbmVOdW1iZXIiOiIwMTA0Mjc1MTIxNSIsImlhdCI6MTY0NDgzNzU3NCwiZXhwIjoxNjQ1NDQyMzc0fQ.WOqwiCiAFcSynO4xxjIc8oc-xuIhdSHVXMaZRwBvjMY"
+            'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJya2RtczA1MjFAbmF2ZXIuY29tIiwicGhvbmVOdW1iZXIiOiIwMjA0MzA1MjM0NiIsImlhdCI6MTY0NTQwNzQ0OCwiZXhwIjoxNjQ2MDEyMjQ4fQ.5AfmCMO-WoCy3VaEe2pcMGeJHebepp0aMQoV-n6HZEY"
         }
     }
 )

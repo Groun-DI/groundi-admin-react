@@ -1,5 +1,5 @@
 
 export type Amenity = {
-    name: string,
+    id: string,
     image: string
 }

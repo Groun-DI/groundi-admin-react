@@ -15,23 +15,23 @@ const AmenityForm = ({ register, setValue, getValues }: Props) => {
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
     useEffect(() => {
-        register('amenity');
+        register('amenities');
         client.get<Amenity[]>('amenity').then(res => {
             setItems(res.data);
         });
     }, [register]);
 
     useEffect(() => {
-        setValue('amenity', selectItems)
+        setValue('amenities', selectItems)
     }, [setValue, selectItems]);
 
     const handlerOnClick = (item: Amenity) => {
-        const isInCludes = selectItems.includes(item.name);
+        const isInCludes = selectItems.includes(item.id);
         if (isInCludes) {
-            const deletedItems = selectItems.filter((element) => element !== item.name);
+            const deletedItems = selectItems.filter((element) => element !== item.id);
             setSelectItems(deletedItems);
         } else {
-            setSelectItems(oldArray => [...oldArray, item.name]);
+            setSelectItems(oldArray => [...oldArray, item.id]);
         }
     }
 
@@ -41,10 +41,10 @@ const AmenityForm = ({ register, setValue, getValues }: Props) => {
                 {
                     items.map((item, k) => (
                         <div key={k}>
-                            <Input type="checkbox" id={item.name} />
-                            <Item htmlFor={item.name} onClick={() => handlerOnClick(item)}>
-                                <img src={item.image} alt={item.name} />
-                                <h5>{item.name}</h5>
+                            <Input type="checkbox" id={item.id} />
+                            <Item htmlFor={item.id} onClick={() => handlerOnClick(item)}>
+                                <img src={item.image} alt={item.id} />
+                                <h5>{item.id}</h5>
                             </Item>
                         </div>
                     ))

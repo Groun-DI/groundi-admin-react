@@ -11,23 +11,29 @@ import RefundForm from "containers/studio-create-form/refund";
 import { useForm } from "react-hook-form";
 import NameForm from "containers/studio-create-form/name";
 import client from "services/axios";
+import { useParams } from "react-router-dom";
 
-const StudioNew = () => {
+const StudioCreate = () => {
+    let params = useParams();
     const { register, handleSubmit, setValue, getValues } = useForm();
     const OnSubmit = async (data: any) => {
         console.log(data);
-        const studioId: number = await client.post('studio/create', {
-            centerId: 1,
+        const res = await client.post('studio/create', {
+            centerId: Number(params.centerId),
             name: data.name,
             content: data.content,
             basicOccupancy: Number(data.basicOccupancy),
             maximumOccupancy: Number(data.maximumOccupancy),
             overCharge: Number(data.overCharge),
             lowestPrice: Number(data.lowestPrice),
-            highestPrice: Number(data.highestPrice)
+            highestPrice: Number(data.highestPrice),
+            amenities: data.amenities,
+            precautions: data.precautions,
+            complimentaries: data.complimentaries,
+            precaution: data.precaution
         });
 
-        console.log(studioId);
+        console.log(res.data);
     }
     return (
         <>
@@ -123,7 +129,7 @@ const StudioNew = () => {
                         </Container>
                         <button type="submit">다음</button>
                     </Section>
-                    
+
                 </form>
             </Body>
             <Footer>
@@ -224,4 +230,4 @@ const ItemWrap = styled.div`
         height: 60px;
     }
 `
-export default StudioNew;
+export default StudioCreate;

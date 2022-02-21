@@ -10,10 +10,11 @@ type Props = {
     getValues: UseFormGetValues<Record<string, any>>
 }
 
+
 const ComplimentaryForm = ({ register, setValue, getValues }: Props) => {
     const [items, setItems] = useState<Complimentary[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
-    const [selectItems, setSelectItems] = useState<any[]>([]);
+    const [selectItems, setSelectItems] = useState<string[]>([]);
     const [isOutSideClick, setIsOutSideClick] = useState<boolean>(true);
     const outSideClickRef = useRef<any>();
 
@@ -29,7 +30,7 @@ const ComplimentaryForm = ({ register, setValue, getValues }: Props) => {
     }, []);
 
     useEffect(() => {
-        setValue('complimentary', selectItems);
+        setValue('complimentaries', selectItems);
     }, [setValue, selectItems]);
 
     const handleOurSideClickEvent = (e: MouseEvent) => {
@@ -39,9 +40,9 @@ const ComplimentaryForm = ({ register, setValue, getValues }: Props) => {
     }
 
     const handleAddItem = (item: Complimentary) => {
-        const isInCludes = selectItems.includes(item.name);
+        const isInCludes = selectItems.includes(item.id);
         if (!isInCludes && selectItems.length < 10) {
-            setSelectItems(oldArray => [...oldArray, item.name]);
+            setSelectItems(oldArray => [...oldArray, item.id]);
         }
     }
 
@@ -53,15 +54,15 @@ const ComplimentaryForm = ({ register, setValue, getValues }: Props) => {
     return (
         <>
             <ContentHeader show={isOutSideClick} ref={outSideClickRef} onClick={() => setIsOutSideClick(!isOutSideClick)}>
-                <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="사각 볼스터 / 블럭 / 요가매트 등"/>
+                <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="사각 볼스터 / 블럭 / 요가매트 등" />
                 <img src="/input-search.svg" alt="input-search" width={30} />
                 <DownDrop show={isOutSideClick} inputValue={inputValue}>
                     {
                         items.filter((val) => {
-                            if(selectItems.includes(val.name)) return null;
-                            return val.name.toLowerCase().includes(inputValue.toLowerCase());
+                            if (selectItems.includes(val.id)) return null;
+                            return val.id.toLowerCase().includes(inputValue.toLowerCase());
                         }).map((item, k) => (
-                            <DownDropItem key={k} onClick={() => handleAddItem(item)}>{item.name}</DownDropItem>
+                            <DownDropItem key={k} onClick={() => handleAddItem(item)}>{item.id}</DownDropItem>
                         ))
                     }
                 </DownDrop>

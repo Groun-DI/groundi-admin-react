@@ -1,4 +1,4 @@
 export type Precaution = {
-    name: string,
+    id: string,
     content: string
 }

@@ -15,24 +15,25 @@ const PrecautionForm = ({ register, setValue, getValues }: Props) => {
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
     useEffect(() => {
-        register('precautionList');
+        register('precautions');
         register('precaution');
         client.get<Precaution[]>('precaution').then(res => {
+            console.log(res.data);
             setItems(res.data);
         });
     }, [register]);
 
     useEffect(() => {
-        setValue('precautionList', selectItems);
+        setValue('precautions', selectItems);
     }, [setValue, selectItems]);
 
     const handlerOnClick = (item: Precaution) => {
-        const isInCludes = selectItems.includes(item.name);
+        const isInCludes = selectItems.includes(item.id);
         if (isInCludes) {
-            const deletedItems = selectItems.filter((element) => element !== item.name);
+            const deletedItems = selectItems.filter((element) => element !== item.id);
             setSelectItems(deletedItems);
         } else {
-            setSelectItems(oldArray => [...oldArray, item.name]);
+            setSelectItems(oldArray => [...oldArray, item.id]);
         }
     }
 

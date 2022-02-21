@@ -1,4 +1,4 @@
 export type Complimentary = {
-    name: string,
+    id: string,
     image: string
 }
