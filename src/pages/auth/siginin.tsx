@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 
-const SignIn = () => {
+const AuthSignInPage = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
 
@@ -104,4 +104,4 @@ const ContentFooter = styled.div`
         margin: 0 5px;
     }
 `
-export default SignIn;
+export default AuthSignInPage;

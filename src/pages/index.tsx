@@ -1,12 +1,10 @@
 export { default as SignIn } from './auth/siginin';
 export { default as SignUp } from './auth/signup';
-export { default as CenterCreatePage } from './center-new';
-export { default as CenterListPage } from './center/list';
-export { default as CenterPage } from './center/main';
+export { default as CenterCreatePage } from './center/create';
+export { default as CenterPage } from './center';
 export { default as CenterDetailsPage } from './center/details';
-export { default as StudioCreatePage } from './studio/create';
-export { default as StudioListPage } from './studio';
+export { default as StudioCreatePage } from './center/studio/create';
+export { default as StudioListPage } from './center/studio';
 export { default as CalendarPage } from './center/calendar';
-export { default as CalendarByStudioPage } from './center/calendar/studio';
 export { default as CenterEarningsPage } from './center/earnings';
-export { default as StudioDetailsPage } from './studio/details';
+export { default as StudioDetailsPage } from './center/studio/details';
