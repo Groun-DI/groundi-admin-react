@@ -1,4 +1,4 @@
-import { Complimentary } from "entities/complimentary.entity";
+import { Complimentary } from "dto/complimentary.entity";
 import { useEffect, useRef, useState } from "react";
 import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import client from "services/axios";

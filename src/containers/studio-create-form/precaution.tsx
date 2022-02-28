@@ -1,4 +1,4 @@
-import { Precaution } from "entities/precaution.entity";
+import { Precaution } from "dto/precaution.entity";
 import { useEffect, useState } from "react";
 import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import client from "services/axios";

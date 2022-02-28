@@ -1,4 +1,4 @@
-import { Amenity } from "entities/amenity.entity";
+import { Amenity } from "dto/amenity.entity";
 import { useEffect, useState } from "react";
 import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import client from "services/axios";

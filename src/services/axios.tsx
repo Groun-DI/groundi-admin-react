@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
-import { GetRefreshToken, SetRefreshToken } from '../hooks/authorization'
+import { getRefreshToken, setRefreshToken } from '../hooks/useRefreshToken'
 
 const client: AxiosInstance = axios.create(
     {
@@ -7,7 +7,7 @@ const client: AxiosInstance = axios.create(
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJya2RtczA1MjFAbmF2ZXIuY29tIiwicGhvbmVOdW1iZXIiOiIwMjA0MzA1MjM0NiIsImlhdCI6MTY0NTQwNzQ0OCwiZXhwIjoxNjQ2MDEyMjQ4fQ.5AfmCMO-WoCy3VaEe2pcMGeJHebepp0aMQoV-n6HZEY"
+            'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJya2RtczA1MjFAbmF2ZXIuY29tIiwicGhvbmVOdW1iZXIiOiIwMjA0MzA1MjM0NiIsImlhdCI6MTY0NjAzMDgwMCwiZXhwIjoxNjQ2NjM1NjAwfQ.4fioe_BGH70XpKprHcH3-wdXPqT9e5Ltl28oFr-2eZs"
         }
     }
 )
@@ -36,14 +36,14 @@ client.interceptors.response.use(
         if (error.response && error.response.status === 401) {
             try {
                 const originalRequest = error.config;
-                const orignRefreshToken = GetRefreshToken();
+                const orignRefreshToken = getRefreshToken();
                 if (orignRefreshToken) {
                     const data = await client.post('auth/refresh', {
                         refreshToken: orignRefreshToken
                     });
                     if (data.data) {
                         const { accessToken, refreshToken } = data.data;
-                        SetRefreshToken(refreshToken);
+                        setRefreshToken(refreshToken);
                         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                         return originalRequest;
                     }

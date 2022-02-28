@@ -5,7 +5,10 @@ declare module "styled-components" {
         basicWidth: string;
         color: {
             main: string;
+            disabled_main: string;
             sub: string;
+            disabled: string;
+            placeholder: string;
         };
         fontSize: {
             Title1: string;
@@ -15,6 +18,14 @@ declare module "styled-components" {
             Regular: string;
             Small: string;
             Micro: string;
+        },
+        fontWeight: {
+            Regular: number,
+            Medium: number,
+            SemiBold: number,
+            Bold: number,
+            ExtraBold: number,
+            Black: number,
         }
     }
 }

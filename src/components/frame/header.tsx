@@ -1,4 +1,4 @@
-import { HandleLogout } from "hooks/authorization";
+import { useAuth } from 'hooks/useAuth';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
@@ -7,7 +7,8 @@ import { useLocation } from "react-router-dom";
 const Header = () => {
     const { pathname } = useLocation();
     const navigator = useNavigate();
-    if (pathname === '/center'|| pathname === '/studio/new') {
+    const { LoginOut } = useAuth();
+    if (pathname === '/center' || pathname === '/studio/new') {
         return null;
     }
     return (
@@ -31,8 +32,8 @@ const Header = () => {
                     </MainMenu>
                     <div>
                         <button onClick={async () => {
-                            const res = await HandleLogout();
-                            if (res) navigator('/signin')
+                            LoginOut();
+                            navigator('/signin')
                         }
                         }>로그아웃</button>
                         마이페이지

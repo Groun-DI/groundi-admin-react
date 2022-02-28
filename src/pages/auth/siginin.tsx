@@ -1,107 +1,122 @@
-import { HandleLogin } from '../../hooks/authorization';
-import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
+import Wrapper from 'components/style/Wrapper';
+import { BoxContainer, BoxContent, BoxFooter, BoxHeader, BoxWrapper } from 'components/style/Auth';
+import Flex from 'components/style/Flex';
+import Button from 'components/style/Button';
+import Typography from 'components/style/Typography';
+import Input from 'components/style/Input';
+import Lock from 'images/svg/lock.svg';
+import Profile from 'images/svg/profile.svg';
+import { useEffect, useState } from 'react';
+import CheckBox from 'components/style/CheckBox';
+import client, { setClientHeaders } from 'services/axios';
+import { setRefreshToken } from 'hooks/useRefreshToken';
 
+type Values = {
+    email: string,
+    password: string
+}
 const AuthSignInPage = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const initialValues: Values = { email: "", password: "" };
+    const [formValues, setFormValues] = useState(initialValues);
+    const [formErrors, setFormErrors] = useState(initialValues);
     const navigate = useNavigate();
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setFormErrors(validate(formValues));
         try {
-            const res = await HandleLogin(data);
-            if (res) navigate('/');
-        } catch {
-
+            const res = await client.post(process.env.REACT_APP_API_URL + 'auth/signin', formValues);
+            const { accessToken, refreshToken } = res.data;
+            setClientHeaders(accessToken);
+            setRefreshToken(refreshToken);
+            if (res.data) navigate('/');
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                return {
+                    error: err.message,
+                }
+            } else {
+                return {
+                    error: "error"
+                }
+            }
         }
     };
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+    }
+
+    const validate = (values: Values) => {
+        const error = initialValues;
+        if (!values.email) {
+            error.email = '필수 항목입니다';
+        } else if (!values.email.includes('@')) {
+            error.email = '이메일 형식이 잘못되었습니다.';
+        }
+        if (!values.password) {
+            error.password = '필수 항목입니다';
+        }
+        return error;
+    }
+
+    useEffect(() => {
+        console.log(formErrors);
+    }, [formErrors])
+
     return (
         <Wrapper>
-            <Container>
-                <Nav>
-                    <h1>GrounDI</h1>
-                </Nav>
-                <ContentHeader>
-                    <h1>내 소중한 공간을, 공유하다</h1>
-                    <h1>웰니스 공간대여 그라운디</h1>
-                </ContentHeader>
-                <ContentMain>
-                    <Form onSubmit={handleSubmit(onSubmit)}>
-                        <input type="email"
-                            {...register("email", { required: true })}
-                            placeholder="이메일" />
-                        {errors.email && <span>이메일을 입력해주세요</span>}
-                        <input type="password"
-                            {...register("password", { required: true })}
-                            placeholder="비밀번호" />
-                        {errors.password && <span>비밀번호를 입력해주세요</span>}
-                        <input type="checkbox" />
-                        <button type="submit">로그인</button>
-                    </Form>
-                </ContentMain>
-                <ContentFooter>
-                    <Link to="/signup">회원가입</Link>
-                    <ul>
-                        <li>
+            <BoxWrapper>
+                <BoxContainer>
+                    <BoxHeader>
+                        <Flex layout="column">
+                            <img src="/svg/logo.svg" alt="groundi logo" />
+                            <Typography.Title3 weight={700}>로그인</Typography.Title3>
+                        </Flex>
+                    </BoxHeader>
+                    <BoxContent>
+                        <form onSubmit={onSubmit}>
+                            <Input
+                                type="text"
+                                placeholder="groundi@groundi.com"
+                                name="email"
+                                value={formValues.email}
+                                onChange={handleChange}
+                                icon={Profile}
+                            />
+                            <p>{formErrors.email}</p>
+                            <Input
+                                type="password"
+                                placeholder="groundi@groundi.com"
+                                name="password"
+                                value={formValues.password}
+                                onChange={handleChange}
+                                icon={Lock}
+                            />
+                            <p>{formErrors.password}</p>
+                            <CheckBox
+                                label="로그인 상태 유지"
+                                name="password"
+                                value={formValues.password}
+                                onChange={handleChange}
+                            />
+                            <Button>로그인</Button>
+                        </form>
+                    </BoxContent>
+                    <BoxFooter>
+                        <Flex>
+                            <Link to="/signup">회원가입</Link>
                             <Link to="/signin/find-email">이메일 찾기</Link>
-                        </li>
-                        <li>
                             <Link to="/signin/find-password">비밀번호 찾기</Link>
-                        </li>
-                    </ul>
-                </ContentFooter>
-            </Container>
-        </Wrapper>
+                        </Flex>
+                    </BoxFooter>
+                </BoxContainer>
+            </BoxWrapper>
+        </Wrapper >
     )
 }
 
-
-const Wrapper = styled.div`
-    display: flex;
-    height: 100%;
-`
-
-const Container = styled.div`
-    margin: auto;
-    text-align: center;
-    height: 500px;
-    width: 500px;
-`
-const Nav = styled.div`
-    margin-bottom: 30px;
-`
-const ContentHeader = styled.div`
-    margin-bottom: 60px;
-`
-
-const ContentMain = styled.div`
-
-`
-
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-`
-
-const ContentFooter = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    ul{
-        list-style: none;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-    li{
-        margin: 0 5px;
-    }
-`
 export default AuthSignInPage;

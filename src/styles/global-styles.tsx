@@ -6,7 +6,9 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
+html, body{
+  height: 100%;
+}
 html,
 body,
 div,
