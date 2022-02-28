@@ -9,9 +9,9 @@ const HomePage = () => {
 
     useEffect(() => {
         client.get("center").then((res) => {
+            console.log(res);
             setCenters(res.data);
         });
-
     }, []);
 
     return (

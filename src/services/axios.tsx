@@ -6,8 +6,7 @@ const client: AxiosInstance = axios.create(
         baseURL: process.env.REACT_APP_API_URL,
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJya2RtczA1MjFAbmF2ZXIuY29tIiwicGhvbmVOdW1iZXIiOiIwMjA0MzA1MjM0NiIsImlhdCI6MTY0NjAzMDgwMCwiZXhwIjoxNjQ2NjM1NjAwfQ.4fioe_BGH70XpKprHcH3-wdXPqT9e5Ltl28oFr-2eZs"
+            'Accept': 'application/json'
         }
     }
 )
@@ -37,17 +36,18 @@ client.interceptors.response.use(
             try {
                 const originalRequest = error.config;
                 const orignRefreshToken = getRefreshToken();
+                console.log(orignRefreshToken)
                 if (orignRefreshToken) {
                     const data = await client.post('auth/refresh', {
                         refreshToken: orignRefreshToken
                     });
                     if (data.data) {
+                        console.log(data.data);
                         const { accessToken, refreshToken } = data.data;
                         setRefreshToken(refreshToken);
                         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                        return originalRequest;
+                        return await client.request(originalRequest);
                     }
-                    return Promise.reject(error)
                 }
             } catch (error) {
                 console.log(error);
