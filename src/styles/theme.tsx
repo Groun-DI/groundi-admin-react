@@ -8,7 +8,10 @@ const theme: DefaultTheme = {
         disabled_main: "#FF7967",
         sub: "#a5a0a0",
         disabled: "#E8E8E8",
-        placeholder: '#BBBBBB'
+        placeholder: '#BBBBBB',
+        offWhite: '#FCFCFC',
+        line: '#ECEEF3',
+        b_font: '#343A40',
     },
     fontSize: {
         Title1: "56px",
@@ -16,7 +19,7 @@ const theme: DefaultTheme = {
         Title3: "32px",
         Large: "24px",
         Regular: "18px",
-        Small: "14px",
+        Small: "16px",
         Micro: "9px",
     },
     fontWeight: {

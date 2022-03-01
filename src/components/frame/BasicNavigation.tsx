@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 
-const Header = () => {
+const BasicNavigation = () => {
     const { pathname } = useLocation();
     const navigator = useNavigate();
     const { LoginOut } = useAuth();
@@ -13,23 +13,9 @@ const Header = () => {
     }
     return (
         <>
-            <Nav>
-                <NavBar>
-                    <h1>LOGO</h1>
-                    <MainMenu>
-                        <li>
-                            today
-                        </li>
-                        <li>
-                            message
-                        </li>
-                        <li>
-                            <Link to='/space/create'>
-                                공간
-                            </Link>
-
-                        </li>
-                    </MainMenu>
+            <Wrapper>
+                <Container>
+                    <img src="/logo.svg" alt="logo" width="150px" />
                     <div>
                         <button onClick={async () => {
                             LoginOut();
@@ -38,26 +24,28 @@ const Header = () => {
                         }>로그아웃</button>
                         마이페이지
                     </div>
-                </NavBar>
-            </Nav>
+                </Container>
+            </Wrapper>
         </>
     )
 }
 
-const Nav = styled.div`
-
-`
-
-const NavBar = styled.div`
+const Wrapper = styled.div`
     display: flex;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    padding: 10px 30px;
+    background-color: white;
+    width: 100%;
+    border-bottom: 1px solid #c4c4c4;
+    box-shadow: white;
+`
+const Container = styled.div`
+    display: flex;
+    width: 100%;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
 `
-const MainMenu = styled.ul`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-`
-export default Header;
+export default BasicNavigation;

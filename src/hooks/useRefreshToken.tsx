@@ -8,9 +8,7 @@ export const getRefreshToken = () => {
 export const setRefreshToken = (refreshToken: string) => {
     const cookies = new Cookies();
     cookies.set("refreshToken", refreshToken, {
-        path: '/',
-        secure: true,
-        httpOnly: true
+        path: '/'
     })
 }
 

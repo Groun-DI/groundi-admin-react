@@ -9,6 +9,9 @@ declare module "styled-components" {
             sub: string;
             disabled: string;
             placeholder: string;
+            offWhite: string;
+            line: string;
+            b_font: string;
         };
         fontSize: {
             Title1: string;

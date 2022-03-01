@@ -2,7 +2,6 @@ export { default as SignIn } from './auth/siginin';
 export { default as SignUp } from './auth/signup';
 export { default as CenterCreatePage } from './center/create';
 export { default as CenterPage } from './center';
-export { default as HomePage } from './home';
 export { default as CenterDetailsPage } from './center/details';
 export { default as StudioCreatePage } from './center/studio/create';
 export { default as StudioListPage } from './center/studio';
