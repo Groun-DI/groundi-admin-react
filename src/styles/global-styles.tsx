@@ -9,6 +9,7 @@ a {
 html, body{
   height: 100%;
 }
+
 html,
 body,
 div,
@@ -122,10 +123,7 @@ ol,
 ul {
   list-style: none;
 }
-input[type="radio"],
-li:focus {
-  outline: none;
-}
+
 blockquote,
 q {
   quotes: none;

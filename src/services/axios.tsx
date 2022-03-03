@@ -36,13 +36,11 @@ client.interceptors.response.use(
             try {
                 const originalRequest = error.config;
                 const orignRefreshToken = getRefreshToken();
-                console.log(orignRefreshToken)
                 if (orignRefreshToken) {
                     const data = await client.post('auth/refresh', {
                         refreshToken: orignRefreshToken
                     });
                     if (data.data) {
-                        console.log(data.data);
                         const { accessToken, refreshToken } = data.data;
                         setRefreshToken(refreshToken);
                         originalRequest.headers.Authorization = `Bearer ${accessToken}`;

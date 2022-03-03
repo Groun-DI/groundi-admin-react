@@ -3,10 +3,14 @@ import styled from "styled-components";
 import Button from 'components/style/Button';
 import Typography from 'components/style/Typography';
 import BoxInput from 'components/input/BoxInput';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Wrapper from "components/style/Wrapper";
 import { theme } from "styles/theme";
 import Flex from "components/style/Flex";
+import NaverMapService from "services/naver.map.service";
+import NaverGeocodingService from "services/naver.geocoding.service";
+import AddressSearchModal from "containers/AddressSearchModal";
+import { createFalse } from "typescript";
 
 type Values = {
     name: string,
@@ -15,11 +19,15 @@ type Values = {
     latitude: string,
     longitude: string
 }
-
+const MapStyle = {
+    width: '500px',
+    height: '80px',
+}
 const CenterNew = () => {
     const initialValues: Values = { name: "", address: "", phoneNumber: "", latitude: "", longitude: "" };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState(initialValues);
+    const [stateAddressSearchModal, setStateAddressSearchModal] = useState<boolean>(false);
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -57,6 +65,7 @@ const CenterNew = () => {
         }
         return error;
     }
+
     return (
         <Wrapper>
             <Container>
@@ -66,35 +75,32 @@ const CenterNew = () => {
                 <ContentMain>
                     <form onSubmit={onSubmit}>
                         <Flex layout="column">
-                        <BoxInput
-                            type="text"
-                            placeholder="센터이름"
-                            label="센터이름"
-                            name="name"
-                            value={formValues.name}
-                            onChange={handleChange}
-                        />
-                        <p>{formErrors.name}</p>
-                        <BoxInput
-                            type="text"
-                            placeholder="전화번호"
-                            label="전화번호"
-                            name="phoneNumber"
-                            value={formValues.phoneNumber}
-                            onChange={handleChange}
-                        />
-                        <p>{formErrors.phoneNumber}</p>
-                        <BoxInput
-                            type="text"
-                            placeholder="주소"
-                            label="주소"
-                            name="address"
-                            value={formValues.address}
-                            onChange={handleChange}
-                        />
-                        <p>{formErrors.address}</p>
-                        <StyleButton>개설하기</StyleButton>
+                            <BoxInput
+                                type="text"
+                                placeholder="센터이름"
+                                label="센터이름"
+                                name="name"
+                                value={formValues.name}
+                                onChange={handleChange}
+                            />
+                            <p>{formErrors.name}</p>
+                            <BoxInput
+                                type="text"
+                                placeholder="전화번호"
+                                label="전화번호"
+                                name="phoneNumber"
+                                value={formValues.phoneNumber}
+                                onChange={handleChange}
+                            />
+                            <p>{formErrors.phoneNumber}</p>
+                            <button
+                                onClick={() => setStateAddressSearchModal(true)}
+                            >동/리/도로명으로 검색해주세요.</button>
+                            <AddressSearchModal isOpen={stateAddressSearchModal} isClose={(click:boolean) => setStateAddressSearchModal(click)}/>
+                            <p>{formErrors.address}</p>
                         </Flex>
+                        <NaverMapService lat={37.511337} lng={127.012084} CustomStyle={MapStyle} />
+                        <StyleButton>개설하기</StyleButton>
                     </form >
                 </ContentMain>
             </Container>

@@ -6,7 +6,7 @@ const theme: DefaultTheme = {
     color: {
         main: "#F84F39;",
         disabled_main: "#FF7967",
-        sub: "#a5a0a0",
+        dep_gray: "#a5a0a0",
         disabled: "#E8E8E8",
         placeholder: '#BBBBBB',
         offWhite: '#FCFCFC',
@@ -20,7 +20,7 @@ const theme: DefaultTheme = {
         Large: "24px",
         Regular: "18px",
         Small: "16px",
-        Micro: "9px",
+        Micro: "11px",
     },
     fontWeight: {
         Regular: 400,

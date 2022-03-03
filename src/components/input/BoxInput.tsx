@@ -2,7 +2,7 @@ import Typography from "components/style/Typography"
 import styled from "styled-components"
 
 type Props = {
-    label: string;
+    label?: string;
     type: string;
     name: string;
     placeholder: string;
@@ -16,9 +16,13 @@ const BoxInput: React.FC<Props> = ({ label, type, name, icon, value, placeholder
     return (
         <Wrapper>
             {/* <Img src={icon} alt="plus-icon" /> */}
-            <Label htmlFor={name}>
-                <Typography.Small>{label}</Typography.Small>
-            </Label>
+            {
+                label ?
+                    <Label htmlFor={name}>
+                        <Typography.Small>{label}</Typography.Small>
+                    </Label>
+                    : null
+            }
             <StyleInput
                 id={name}
                 type={type}
@@ -32,12 +36,11 @@ const BoxInput: React.FC<Props> = ({ label, type, name, icon, value, placeholder
 }
 const Wrapper = styled.div`
     width: 100%;
-    margin-top: 20px;
 `
 
 const StyleInput = styled.input`
     width: 100%;
-    padding: 25px 23px;
+    padding: 17px;
     border: 2px solid ${({ theme }) => theme.color.main};
     border-radius: 8px;
     font-size: ${({ theme }) => theme.fontSize.Regular};

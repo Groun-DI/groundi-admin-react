@@ -8,14 +8,12 @@ import ContentForm from "containers/studio-create-form/content";
 import ImageForm from "containers/studio-create-form/image";
 import PriceForm from "containers/studio-create-form/price";
 import RefundForm from "containers/studio-create-form/refund";
-import { useForm } from "react-hook-form";
 import NameForm from "containers/studio-create-form/name";
 import client from "services/axios";
 import { useParams } from "react-router-dom";
 
 const StudioCreate = () => {
     let params = useParams();
-    const { register, handleSubmit, setValue, getValues } = useForm();
     const OnSubmit = async (data: any) => {
         console.log(data);
         const res = await client.post('studio/create', {
@@ -37,7 +35,7 @@ const StudioCreate = () => {
     }
     return (
         <>
-            <Header>
+            {/* <Header>
                 <img src="/logo.svg" alt="logo" width="150px" />
                 <h5>저장 및 나가기</h5>
             </Header>
@@ -134,7 +132,7 @@ const StudioCreate = () => {
             </Body>
             <Footer>
                 <Button onClick={() => window.scrollTo(0, 800)}>다음 단계(1/10)</Button>
-            </Footer>
+            </Footer> */}
         </>
     )
 }

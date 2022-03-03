@@ -1,7 +1,7 @@
 import BasicNavigation from "components/frame/BasicNavigation";
 import Typography from "components/style/Typography";
 import Wrapper from "components/style/Wrapper";
-import MyCenterCard from "containers/studio-create-form/center/MyCenterCard";
+import MyCenterCard from "containers/MyCenterCard";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import client from "services/axios";

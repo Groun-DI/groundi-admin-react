@@ -6,7 +6,7 @@ declare module "styled-components" {
         color: {
             main: string;
             disabled_main: string;
-            sub: string;
+            dep_gray: string;
             disabled: string;
             placeholder: string;
             offWhite: string;
