@@ -297,7 +297,7 @@ const SubTitleWrap = styled.div`
     position: relative;
     margin-top: 7px;
     padding-left: 34px;
-    line-height: 1.3rem;
+    line-height: 2.1rem;
     color: #888;
     p{
         position: absolute;
@@ -310,7 +310,7 @@ const SubTitleWrap = styled.div`
         letter-spacing: -.31px;
         color: #888;
         text-align: center;
-        line-height: 1.1rem;
+        line-height: 1.8rem;
     }
 `
 export default AddressSearchModal

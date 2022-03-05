@@ -39,10 +39,7 @@ const CenterNew = () => {
         e.preventDefault();
         try {
             const res = await client.post(process.env.REACT_APP_API_URL + 'center/create', {
-                name: formValues.name,
-                address: formValues.address,
-                detailAddress: formValues.detailAddress,
-                phoneNumber: formValues.phoneNumber,
+                ...formValues,
                 latitude: Number(formValues.latitude),
                 longitude: Number(formValues.longitude)
             });
@@ -61,18 +58,14 @@ const CenterNew = () => {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let errors;
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
-        
         switch (name) {
             case 'name':
-                errors = ValidationUtils.isRequired(value);
-                inputs.centerName = {...inputs.centerName, ...errors};
+                inputs.centerName = { ...inputs.centerName, ...ValidationUtils.isRequired(value) };
                 break;
             case 'phoneNumber':
-                errors = ValidationUtils.isRequired(value);
-                inputs.phoneNumber = {...inputs.phoneNumber, ...errors};
+                inputs.phoneNumber = { ...inputs.phoneNumber, ...ValidationUtils.isRequired(value) };
                 break;
             default:
                 break;

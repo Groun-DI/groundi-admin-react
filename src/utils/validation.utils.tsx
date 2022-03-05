@@ -4,7 +4,7 @@ type Error = {
 }
 
 class ValidationUtils {
-    private static error: Error = { errorMessage: '', invalid: false };
+    private static error: Error = { errorMessage: '', invalid: true };
 
     static isRequired(value: string | number | []): Error {
         if (value === "") {
