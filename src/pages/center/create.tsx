@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Button from 'components/style/Button';
 import Typography from 'components/style/Typography';
 import BoxInput from 'components/input/BoxInput';
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import Wrapper from "components/style/Wrapper";
 import { theme } from "styles/theme";
 import Flex from "components/style/Flex";
@@ -11,7 +11,7 @@ import NaverMapService from "services/naver.map.service";
 import AddressSearchModal from "containers/AddressSearchModal";
 import AddressModalInputButton from "components/input/AddressModalInputButton";
 import { CenterCreateInput } from "inputs/center.create";
-import RequiredValidate from "hooks/validation/RequiredValidate";
+import ValidationUtils from "utils/validation.utils";
 
 type Values = {
     name: string,
@@ -21,17 +21,20 @@ type Values = {
     latitude: string,
     longitude: string
 }
+
 const MapStyle = {
     width: '100%',
     height: '30vh',
     marginTop: '20px',
     borderRadius: '8px'
 }
+
 const CenterNew = () => {
     const initialValues: Values = { name: "", detailAddress: "", address: "", phoneNumber: "", latitude: "", longitude: "" };
     const inputs = CenterCreateInput;
     const [formValues, setFormValues] = useState<Values>(initialValues);
     const [stateAddressSearchModal, setStateAddressSearchModal] = useState<boolean>(false);
+
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -61,16 +64,15 @@ const CenterNew = () => {
         let errors;
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
+        
         switch (name) {
             case 'name':
-                errors = RequiredValidate(value);
-                inputs.centerName.errorMessage = errors.errorMessage;
-                inputs.centerName.invalid = errors.invalid;
+                errors = ValidationUtils.isRequired(value);
+                inputs.centerName = {...inputs.centerName, ...errors};
                 break;
             case 'phoneNumber':
-                errors = RequiredValidate(value);
-                inputs.phoneNumber.errorMessage = errors.errorMessage;
-                inputs.phoneNumber.invalid = errors.invalid;
+                errors = ValidationUtils.isRequired(value);
+                inputs.phoneNumber = {...inputs.phoneNumber, ...errors};
                 break;
             default:
                 break;
