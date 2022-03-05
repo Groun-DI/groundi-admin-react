@@ -3,29 +3,23 @@ import { useEffect, useState } from "react";
 import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import client from "services/axios";
 import styled from "styled-components";
+import { CreateStudioValue } from "dto/create-studio.dto";
 
 type Props = {
-    register: UseFormRegister<Record<string, any>>
-    setValue: UseFormSetValue<Record<string, any>>
-    getValues: UseFormGetValues<Record<string, any>>
+    values: CreateStudioValue;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const PrecautionForm = ({ register, setValue, getValues }: Props) => {
+const PrecautionForm:React.FC<Props> = ({ values, onChange }) => {
     const [items, setItems] = useState<Precaution[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
     useEffect(() => {
-        register('precautions');
-        register('precaution');
         client.get<Precaution[]>('precaution').then(res => {
             console.log(res.data);
             setItems(res.data);
         });
-    }, [register]);
-
-    useEffect(() => {
-        setValue('precautions', selectItems);
-    }, [setValue, selectItems]);
+    }, []);
 
     const handlerOnClick = (item: Precaution) => {
         const isInCludes = selectItems.includes(item.id);
@@ -37,11 +31,11 @@ const PrecautionForm = ({ register, setValue, getValues }: Props) => {
         }
     }
 
-    const handlerOnChange = (value: string) => {
-        if (value.length < 500) {
-            setValue('precaution', value);
-        }
-    }
+    // const handlerOnChange = (value: string) => {
+    //     if (value.length < 500) {
+    //         setValue('precaution', value);
+    //     }
+    // }
 
     return (
         <Wrapper>
@@ -61,7 +55,8 @@ const PrecautionForm = ({ register, setValue, getValues }: Props) => {
             </ContentHeader>
             <ContentMain>
                 <p>상세설명이 필요하다면 아래 적어주세요.</p>
-                <TextArea onChange={(e) => handlerOnChange(e.target.value)} />
+                {/* <TextArea onChange={(e) => handlerOnChange(e.target.value)} /> */}
+                <TextArea/>
             </ContentMain>
         </Wrapper>
     )

@@ -1,14 +1,18 @@
 import { UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
+import { CreateStudioValue } from "dto/create-studio.dto";
 
 type Props = {
-    register: UseFormRegister<Record<string, any>>
+    values: CreateStudioValue;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ContentForm = ({ register }: Props) => {
+const ContentForm:React.FC<Props> = ({ values, onChange }) => {
 
     return (
-        <TextArea {...register('content', { required: true })} maxLength={500} />
+        <>
+        </>
+        // <TextArea onChange={onChange}/>
     )
 }
 

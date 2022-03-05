@@ -2,37 +2,65 @@ import AddressSearchInput from "components/input/AddressSearchInput"
 import BoxInput from "components/input/BoxInput"
 import Typography from "components/style/Typography"
 import Wrapper from "components/style/Wrapper"
-import { NgsResAddressBody } from "dto/naver-geocoding.dto"
+import { AddressDto, NgsResAddressBody } from "dto/naver-geocoding.dto"
 import { useCallback, useEffect, useRef, useState } from "react"
 import NaverGeocodingService from "services/naver.geocoding.service"
 import styled, { keyframes } from "styled-components"
 import { theme } from "styles/theme"
+import { CenterCreateInput } from "inputs/center.create"
 
-
-type Props = {
-    isOpen: boolean,
-    isClose: (click: boolean) => void;
+type Values = {
+    name: string,
+    address: string,
+    detailAddress: string,
+    phoneNumber: string,
+    latitude: string,
+    longitude: string
 }
 
-// type ResProps = {
-//     address: string,
-//     latitude: string,
-//     longitude: string
-// }
+type Props = {
+    isOpen: boolean;
+    isClose: (click: boolean) => void;
+    inputs: typeof CenterCreateInput;
+    formValue: Values;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-const AddressSearchModal: React.FC<Props> = ({ isOpen, isClose }) => {
+
+const AddressSearchModal: React.FC<Props> = ({ inputs, isOpen, isClose, formValue, onChange }) => {
     const [userInput, setUserInput] = useState<string>('');
     const [resAddress, setResAddress] = useState<NgsResAddressBody[]>();
     const [selectAddress, setSelectAddress] = useState<NgsResAddressBody>();
     const outSideClickRef = useRef<any>();
-    const handlerOnKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') setResAddress(await NaverGeocodingService(userInput));
+
+    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if (selectAddress) {
+            formValue.latitude = selectAddress.y;
+            formValue.longitude = selectAddress.x;
+            formValue.address = selectAddress.roadAddress;
+            isClose(false);
+        } else {
+            console.log("입력 값이 없습니다.");
+        }
     }
 
+    const handlerOnKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setResAddress(await NaverGeocodingService(userInput));
+            return false;
+        };
+    }
+
+    const handlerOnClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setResAddress(await NaverGeocodingService(userInput));
+        return false;
+    }
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserInput(e.target.value);
         setResAddress(await NaverGeocodingService(e.target.value));
-
     }
 
     const handleOurSideClickEvent = useCallback(e => {
@@ -49,80 +77,72 @@ const AddressSearchModal: React.FC<Props> = ({ isOpen, isClose }) => {
     }, [handleOurSideClickEvent]);
 
     return (
-        <StyleWrapper isOpen={isOpen}>
-            <Container ref={outSideClickRef}>
-                <ContentHeader>
-                    <Typography.Regular weight={theme.fontWeight.SemiBold}>주소 등록</Typography.Regular>
-                    <CloseButton onClick={(e) => isClose(false)}>
-                        <img src="/icon/close.svg" alt="검색 버튼" />
-                    </CloseButton>
-                </ContentHeader>
-                <ContentBody>
-                    <InputWrap>
-                        <AddressSearchInput
-                            type="text"
-                            placeholder="삼평동 681, 판교역로 235"
-                            name="address"
-                            value={userInput}
-                            onChange={handleChange}
-                            onKeyPress={handlerOnKeyPress}
-                        />
-                    </InputWrap>
-                    {
-                        resAddress ? (
-                            <SelectListBox>
-                                <ul>
-                                    {
-                                        resAddress.map((item, k) => (
-                                            <li key={k}>
-                                                <input type="radio" id={k.toString()} name="address" value={item.roadAddress} />
-                                                <label htmlFor={k.toString()} onClick={(e) => setSelectAddress(item)}>
-                                                    <span>
-                                                        <i className="fn-booking fn-booking-check2" aria-hidden="true" />
-                                                    </span>
-                                                    <Typography.Regular spacing={-0.3}>{item.roadAddress}</Typography.Regular>
-                                                    <SubTitleWrap>
-                                                        <Typography.Micro>지번</Typography.Micro>
-                                                        <Typography.Small color={theme.color.dep_gray} spacing={-0.3}>{item.jibunAddress} </Typography.Small>
-                                                    </SubTitleWrap>
-                                                </label>
-                                            </li>
-                                        ))
-                                    }
-                                </ul>
-                            </SelectListBox>
-                        ) : (
-                                <TypographyWrap>
-                                    <Typography.Small color={theme.color.dep_gray}>
-                                        도로명이나 지역명을 이용해서 검색해보세요.<br />건물번호, 번지를 입력하시면 정확하게 검색됩니다.
-                                </Typography.Small>
-                                </TypographyWrap>
-
-                            )
-                    }
-
-
-                </ContentBody>
-                {
-                    selectAddress && (
-                        <ContentFooter>
-                            <Typography.Regular>{selectAddress.roadAddress}</Typography.Regular>
-                            <BoxInput
-                                type="text"
-                                placeholder="건물명, 층, 호수 등 상세주소를 입력해주세요."
-                                name="address"
+        <>
+            <StyleWrapper isOpen={isOpen}>
+                <Container ref={outSideClickRef}>
+                    <ContentHeader>
+                        <Typography.Regular weight={theme.fontWeight.SemiBold}>주소 등록</Typography.Regular>
+                        <CloseButton onClick={(e) => isClose(false)}>
+                            <img src="/icon/close.svg" alt="검색 버튼" />
+                        </CloseButton>
+                    </ContentHeader>
+                    <ContentBody>
+                        <InputWrap>
+                            <AddressSearchInput {...inputs.address}
                                 value={userInput}
                                 onChange={handleChange}
+                                onKeyPress={handlerOnKeyPress}
+                                onClick={handlerOnClick}
                             />
-                            <Button><Typography.Small spacing={-.43} color="#fff" weight={theme.fontWeight.SemiBold}>입력하기</Typography.Small></Button>
-                        </ContentFooter>
-                    )
-                }
+                        </InputWrap>
+                        {
+                            resAddress ? (
+                                <SelectListBox>
+                                    <ul>
+                                        {
+                                            resAddress.map((item, k) => (
+                                                <li key={k}>
+                                                    <input type="radio" id={k.toString()} name="address" value={item.roadAddress} />
+                                                    <label htmlFor={k.toString()} onClick={(e) => setSelectAddress(item)}>
+                                                        <span>
+                                                            <i className="fn-booking fn-booking-check2" aria-hidden="true" />
+                                                        </span>
+                                                        <Typography.Regular spacing={-0.3}>{item.roadAddress}</Typography.Regular>
+                                                        <SubTitleWrap>
+                                                            <Typography.Micro>지번</Typography.Micro>
+                                                            <Typography.Small color={theme.color.dep_gray} spacing={-0.3}>{item.jibunAddress} </Typography.Small>
+                                                        </SubTitleWrap>
+                                                    </label>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                </SelectListBox>
+                            ) : (
+                                    <TypographyWrap>
+                                        <Typography.Small color={theme.color.dep_gray}>
+                                            도로명이나 지역명을 이용해서 검색해보세요.<br />건물번호, 번지를 입력하시면 정확하게 검색됩니다.
+                                        </Typography.Small>
+                                    </TypographyWrap>
+                                )
+                        }
+                    </ContentBody>
+                    {
+                        selectAddress && (
+                            <ContentFooter>
+                                <Typography.Regular>{selectAddress.roadAddress}</Typography.Regular>
+                                <BoxInput {...inputs.detailAddress} onChange={onChange} errorMessage="" />
+                                <Button type="button" onClick={handleSubmit}><Typography.Small spacing={-.43} color="#fff" weight={theme.fontWeight.SemiBold}>입력하기</Typography.Small></Button>
+                            </ContentFooter>
+                        )
+                    }
 
-            </Container>
-        </StyleWrapper>
+                </Container>
+            </StyleWrapper>
+        </>
     )
 }
+
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -142,7 +162,6 @@ const fadeOut = keyframes`
     opacity: 1;
   }
 `;
-
 
 const CloseButton = styled.button`
     position: absolute;
@@ -166,7 +185,9 @@ const Button = styled.button`
     height: 54px;
     margin-top: 23px;
     line-height: 2rem;
+    cursor: pointer;
 `
+
 const StyleWrapper = styled(Wrapper) <{ isOpen: boolean }>`
     display: block;
     position: absolute;
@@ -175,8 +196,8 @@ const StyleWrapper = styled(Wrapper) <{ isOpen: boolean }>`
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,.4);
-    visibility: ${({isOpen})=>isOpen? 'visible' : 'hidden'};
-    animation: ${({isOpen})=>isOpen? fadeIn : fadeOut} 0.15s ease-out;
+    visibility: ${({ isOpen }) => isOpen ? 'visible' : 'hidden'};
+    animation: ${({ isOpen }) => isOpen ? fadeIn : fadeOut} 0.15s ease-out;
     transition: visibility 0.15s ease-out;
 `
 const TypographyWrap = styled.div`

@@ -11,100 +11,97 @@ import RefundForm from "containers/studio-create-form/refund";
 import NameForm from "containers/studio-create-form/name";
 import client from "services/axios";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { CreateStudioValue, CreateStudioInputData } from "dto/create-studio.dto";
 
 const StudioCreate = () => {
     let params = useParams();
+    const [formValues, setFormValues] = useState(new CreateStudioValue());
+
     const OnSubmit = async (data: any) => {
         console.log(data);
-        const res = await client.post('studio/create', {
-            centerId: Number(params.centerId),
-            name: data.name,
-            content: data.content,
-            basicOccupancy: Number(data.basicOccupancy),
-            maximumOccupancy: Number(data.maximumOccupancy),
-            overCharge: Number(data.overCharge),
-            lowestPrice: Number(data.lowestPrice),
-            highestPrice: Number(data.highestPrice),
-            amenities: data.amenities,
-            precautions: data.precautions,
-            complimentaries: data.complimentaries,
-            precaution: data.precaution
-        });
+        // const res = await client.post('studio/create', {
+        //     centerId: Number(params.centerId),
+        //     name: data.name,
+        //     content: data.content,
+        //     basicOccupancy: Number(data.basicOccupancy),
+        //     maximumOccupancy: Number(data.maximumOccupancy),
+        //     overCharge: Number(data.overCharge),
+        //     lowestPrice: Number(data.lowestPrice),
+        //     highestPrice: Number(data.highestPrice),
+        //     amenities: data.amenities,
+        //     precautions: data.precautions,
+        //     complimentaries: data.complimentaries,
+        //     precaution: data.precaution
+        // });
 
-        console.log(res.data);
+        // console.log(res.data);
     }
+    useEffect(()=>{
+        console.log(formValues);
+    },[formValues])
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+    }
+
+    const Props = {
+        values: CreateStudioInputData,
+        value: formValues,
+        onChange: handleChange,
+    }
+
     return (
         <>
-            {/* <Header>
+            <Header>
                 <img src="/logo.svg" alt="logo" width="150px" />
                 <h5>저장 및 나가기</h5>
             </Header>
             <Body>
-                <form onSubmit={handleSubmit(OnSubmit)}>
+                <form onSubmit={OnSubmit}>
                     <Section>
                         <Title>스튜디오를 사용할 인원수을 알려주세요</Title>
                         <Container>
-                            <OccupancyForm
-                                register={register}
-                                setValue={setValue}
-                                getValues={getValues}
-                            />
+                            <OccupancyForm {...Props} />
                         </Container>
                     </Section>
-                    <Section>
+                    {/* <Section>
                         <Title>스튜디오의 편의시설 정보를 선택해주세요</Title>
                         <Container>
                             <ItemWrap>
-                                <AmenityForm
-                                    register={register}
-                                    setValue={setValue}
-                                    getValues={getValues}
-                                />
+                                <AmenityForm {...Props} />
                             </ItemWrap>
                         </Container>
                     </Section>
                     <Section>
                         <Title>스튜디오에 준비된 수련도구들을 검색하여 선택해주세요</Title>
                         <Container>
-                            <ComplimentaryForm
-                                register={register}
-                                setValue={setValue}
-                                getValues={getValues}
-                            />
+                            <ComplimentaryForm {...Props} />
                         </Container>
                     </Section>
                     <Section>
                         <Title>이용시 주의사항이 있다면 선택해주세요</Title>
                         <Container>
-                            <PrecautionForm
-                                register={register}
-                                setValue={setValue}
-                                getValues={getValues}
-                            />
+                            <PrecautionForm {...Props} />
                         </Container>
                     </Section>
                     <Section>
                         <Title>스튜디오의 주차정보를 알려주세요</Title>
                         <Container>
-                            <ParkingLotForm
-                                register={register}
-                                setValue={setValue}
-                                getValues={getValues}
-                            />
+                            <ParkingLotForm {...Props} />
                         </Container>
                     </Section>
                     <Section>
                         <Title>스튜디오 이름을 지어주세요</Title>
                         <Container>
-                            <NameForm
-                                register={register}
-                            />
+                            <NameForm {...Props} />
                         </Container>
                     </Section>
                     <Section>
                         <Title>스튜디오의 장점이 돋보일 수 있도록 설명해주세요!</Title>
                         <Container>
-                            <ContentForm register={register} />
+                            <ContentForm {...Props} />
                         </Container>
                     </Section>
                     <Section>
@@ -114,10 +111,7 @@ const StudioCreate = () => {
                     <Section>
                         <Title>스튜디오의 대여가격을 설정해주세요</Title>
                         <Container>
-                            <PriceForm
-                                register={register}
-                                setValue={setValue}
-                                getValues={getValues} />
+                            <PriceForm {...Props} />
                         </Container>
                     </Section>
                     <Section>
@@ -126,13 +120,12 @@ const StudioCreate = () => {
                             <RefundForm />
                         </Container>
                         <button type="submit">다음</button>
-                    </Section>
-
+                    </Section> */}
                 </form>
             </Body>
             <Footer>
                 <Button onClick={() => window.scrollTo(0, 800)}>다음 단계(1/10)</Button>
-            </Footer> */}
+            </Footer>
         </>
     )
 }

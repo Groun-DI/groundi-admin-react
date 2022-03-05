@@ -3,15 +3,15 @@ import { useEffect, useRef, useState } from "react";
 import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import client from "services/axios";
 import styled from "styled-components";
+import { CreateStudioValue } from "dto/create-studio.dto";
 
 type Props = {
-    register: UseFormRegister<Record<string, any>>
-    setValue: UseFormSetValue<Record<string, any>>
-    getValues: UseFormGetValues<Record<string, any>>
+    values: CreateStudioValue;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 
-const ComplimentaryForm = ({ register, setValue, getValues }: Props) => {
+const ComplimentaryForm:React.FC<Props> = ({ values, onChange }) => {
     const [items, setItems] = useState<Complimentary[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [selectItems, setSelectItems] = useState<string[]>([]);
@@ -29,9 +29,6 @@ const ComplimentaryForm = ({ register, setValue, getValues }: Props) => {
         }
     }, []);
 
-    useEffect(() => {
-        setValue('complimentaries', selectItems);
-    }, [setValue, selectItems]);
 
     const handleOurSideClickEvent = (e: MouseEvent) => {
         if (!outSideClickRef.current.contains(e.target)) {

@@ -9,7 +9,17 @@ a {
 html, body{
   height: 100%;
 }
+html{
+  font-size: 10px;
+}
 
+input{
+  
+  line-height: 2rem;
+  ::placeholder{
+    color: #BBBBBB;
+  }
+}
 html,
 body,
 div,
@@ -94,8 +104,6 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
-  font: inherit;
   vertical-align: baseline;
   font-family: "Nanum Gothic", "Noto Sans KR", "Apple SD Gothic Neo", Sans-serif;
 }

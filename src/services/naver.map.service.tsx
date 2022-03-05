@@ -7,11 +7,18 @@ type Props = {
 }
 
 const NaverMapService: React.FC<Props> = ({ lat, lng, CustomStyle }) => {
+    console.log(lat, lng);
     useEffect(() => {
-        new naver.maps.Map("map", {
+        var map = new naver.maps.Map("map", {
             center: new naver.maps.LatLng(lat, lng),
             zoom: 13,
         });
+
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(lat, lng),
+            map: map
+        });
+
     }, [lat, lng]);
 
     return (

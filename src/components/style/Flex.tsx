@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 type Props = {
     layout?: string;
-    content?: string
+    justify?: string;
+    gap?: number;
 }
 
 const Flex = styled.div<Props>`
@@ -10,7 +11,8 @@ const Flex = styled.div<Props>`
     height: 100%;
     flex-direction: ${({ layout }) => layout || 'row'};
     align-items: center;
-    justify-content: ${({ content }) => content || 'center'};
+    justify-content: ${({ justify }) => justify || 'center'};
+    gap:${({ gap }) => gap+"px" || "0px"}; 
     & > div,
     & >ul {
         flex:1;

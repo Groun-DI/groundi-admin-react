@@ -1,32 +1,25 @@
 import styled from "styled-components"
 
 type Props = {
-    label?: string;
-    type: string;
-    name: string;
-    placeholder: string;
-    value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    icon?: string;
     onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    value: string;
 }
 
 
-const AddressSearchInput: React.FC<Props> = ({ label, type, name, icon, value, placeholder, onChange, onKeyPress }) => {
+const AddressSearchInput: React.FC<Props> = ({ value, onChange, onKeyPress, onClick, ...inputProps }) => {
     return (
         <Wrapper>
             <Form>
                 <Input
-                    id={name}
-                    type={type}
-                    name={name}
-                    placeholder={placeholder}
-                    value={value}
+                    {...inputProps}
                     onChange={onChange}
                     onKeyPress={onKeyPress}
+                    value={value}
                 />
-                <Button>
-                    <img src="/icon/search.svg" alt="검색 버튼"/>
+                <Button onClick={onClick}>
+                    <img src="/icon/search.svg" alt="검색 버튼" />
                 </Button>
             </Form>
         </Wrapper>

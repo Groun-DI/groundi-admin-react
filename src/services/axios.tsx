@@ -26,7 +26,6 @@ export const setClientHeaders = (accessToken: string) => {
     )
 };
 
-
 client.interceptors.response.use(
     function (response) {
         return response
@@ -46,6 +45,8 @@ client.interceptors.response.use(
                         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                         return await client.request(originalRequest);
                     }
+                } else if (!orignRefreshToken) {
+                    window.location.href = '/signin';
                 }
             } catch (error) {
                 console.log(error);

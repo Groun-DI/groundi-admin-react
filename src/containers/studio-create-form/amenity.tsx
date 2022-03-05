@@ -1,29 +1,24 @@
 import { Amenity } from "dto/amenity.entity";
+import { CreateStudioValue } from "dto/create-studio.dto";
 import { useEffect, useState } from "react";
 import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import client from "services/axios";
 import styled from "styled-components";
 
 type Props = {
-    register: UseFormRegister<Record<string, any>>
-    setValue: UseFormSetValue<Record<string, any>>
-    getValues: UseFormGetValues<Record<string, any>>
+    values: CreateStudioValue;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const AmenityForm = ({ register, setValue, getValues }: Props) => {
+const AmenityForm:React.FC<Props> = ({ values, onChange }) => {
     const [items, setItems] = useState<Amenity[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
     useEffect(() => {
-        register('amenities');
         client.get<Amenity[]>('amenity').then(res => {
             setItems(res.data);
         });
-    }, [register]);
-
-    useEffect(() => {
-        setValue('amenities', selectItems)
-    }, [setValue, selectItems]);
+    }, []);
 
     const handlerOnClick = (item: Amenity) => {
         const isInCludes = selectItems.includes(item.id);

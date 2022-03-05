@@ -1,49 +1,28 @@
 import { useEffect } from "react";
 import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import styled from "styled-components";
+import { CreateStudioValue } from "dto/create-studio.dto";
 
 type Props = {
-    register: UseFormRegister<Record<string, any>>
-    setValue: UseFormSetValue<Record<string, any>>
-    getValues: UseFormGetValues<Record<string, any>>
+    values: CreateStudioValue;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-
-const ParkingLotForm = ({ register, setValue, getValues }: Props) => {
+const ParkingLotForm:React.FC<Props> = ({ values, onChange }) => {
     const Type: [string, string] = ['isAvailable', 'paymentType'];
     const maxLengthType: [number, number] = [2, 4];
-    useEffect(() => {
-        register('isAvailable');
-        register('paymentType');
-        register('first');
-        register('firstPayment');
-        register('addition');
-        register('additionPayment');
-        register('allDayPayment');
-        register('oneTimePayment');
-        register('content');
-        setValue("isAvailable", false);
-        setValue("paymentType", 'free');
-        setValue("first", "00:00");
-        setValue("firstPayment", 0);
-        setValue("addition", "00:00");
-        setValue("additionPayment", 0);
-        setValue("allDayPayment", 0);
-        setValue("oneTimePayment", 0);
-        setValue("content", '');
-    }, [register, setValue]);
 
-    const handleOnChangeSelect = (value: string, type: string) => {
-        switch (type) {
-            case Type[0]:
-                if (value === 'true') setValue("isAvailable", true);
-                else if (value === 'false') setValue("isAvailable", false)
-                break;
-            case Type[1]:
-                setValue("paymentType", value)
-                break;
-        }
-    }
+    // const handleOnChangeSelect = (value: string, type: string) => {
+    //     switch (type) {
+    //         case Type[0]:
+    //             if (value === 'true') setValue("isAvailable", true);
+    //             else if (value === 'false') setValue("isAvailable", false)
+    //             break;
+    //         case Type[1]:
+    //             setValue("paymentType", value)
+    //             break;
+    //     }
+    // }
 
     const handleOnInput = (e: React.ChangeEvent<HTMLInputElement>, maxLength: number) => {
         switch (maxLength) {
@@ -67,7 +46,7 @@ const ParkingLotForm = ({ register, setValue, getValues }: Props) => {
             <ContentHeader>
                 <InputWrapper>
                     <label>주차가</label>
-                    <Select onChange={(e) => handleOnChangeSelect(e.target.value, Type[0])}>
+                    <Select>
                         <option value="true">가능</option>
                         <option value="false">불가능</option>
                     </Select>
@@ -77,7 +56,7 @@ const ParkingLotForm = ({ register, setValue, getValues }: Props) => {
             <ContentMain>
                 <InputWrapper>
                     <label>주차비는</label>
-                    <Select onChange={(e) => handleOnChangeSelect(e.target.value, Type[1])}>
+                    <Select>
                         <option value="clock">시간제</option>
                         <option value="fixed">정액제</option>
                         <option value="free">무료</option>
@@ -89,61 +68,37 @@ const ParkingLotForm = ({ register, setValue, getValues }: Props) => {
                 <InputWrapper>
                     <label>최초</label>
                     <input type="number" defaultValue={1}
-                        onChange={(e) => {
-                            handleOnInput(e, maxLengthType[0]);
-                            setValue('first', e.target.value)
-                        }} />
+                        onChange={onChange} />
                     <label>시간</label>
                     <input type="number" defaultValue={30}
-                        onChange={(e) => {
-                            handleOnInput(e, maxLengthType[0]);
-                            setValue('first', e.target.value)
-                        }} />
+                        onChange={onChange} />
                     <label>분</label>
                     <input type="number" defaultValue={10000}
-                        onChange={(e) => {
-                            handleOnInput(e, maxLengthType[1]);
-                            setValue('firstPayment', e.target.value)
-                        }} />
+                        onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
                 <InputWrapper>
                     <label>최초</label>
                     <input type="number" defaultValue={1}
-                        onChange={(e) => {
-                            handleOnInput(e, maxLengthType[0]);
-                            setValue('addition', e.target.value)
-                        }} />
+                        onChange={onChange} />
                     <label>시간</label>
                     <input type="number" defaultValue={30}
-                        onChange={(e) => {
-                            handleOnInput(e, maxLengthType[0]);
-                            setValue('addition', e.target.value)
-                        }} />
+                        onChange={onChange} />
                     <label>분</label>
                     <input type="number" defaultValue={10000}
-                        onChange={(e) => {
-                            handleOnInput(e, maxLengthType[1]);
-                            setValue('additionPayment', e.target.value)
-                        }} />
+                        onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
                 <InputWrapper>
                     <label>하루종일</label>
                     <input type="number" defaultValue={30000}
-                        onChange={(e) => {
-                            handleOnInput(e, maxLengthType[1]);
-                            setValue('allDayPayment', e.target.value)
-                        }} />
+                        onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
                 <InputWrapper>
                     <label>한번만</label>
                     <input type="number" defaultValue={30000}
-                        onChange={(e) => {
-                            handleOnInput(e, maxLengthType[1]);
-                            setValue('oneTimePayment', e.target.value)
-                        }} />
+                        onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
             </ContentFooter>

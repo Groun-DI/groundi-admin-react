@@ -22,7 +22,6 @@ const Page = () => {
                             <Link to={`/center/${item.id}/studio-new`}>
                                 {item.name}
                             </Link>
-
                         </div>
                     ))
                 }

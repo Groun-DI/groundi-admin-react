@@ -14,3 +14,10 @@ export type NgsAddressElement = {
     code: string;
 }
 
+
+export type AddressDto = {
+    address: string,
+    detail_address: string,
+    latitude: string,
+    longitude: string
+}

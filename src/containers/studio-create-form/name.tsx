@@ -1,15 +1,17 @@
 import { UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
+import { CreateStudioValue } from "dto/create-studio.dto";
 
 type Props = {
-    register: UseFormRegister<Record<string, any>>
+    values: CreateStudioValue;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const NameForm = ({ register }: Props) => {
+const NameForm:React.FC<Props> = ({ values, onChange }) => {
 
     return (
         <InputWrapper>
-            <Input type="text" {...register('name', { required: true })} maxLength={20} />
+            <Input type="text" onChange={onChange} maxLength={20} />
             <Img src="/Emoji-smile.svg" alt="input-search" width={30} />
         </InputWrapper>
     )
