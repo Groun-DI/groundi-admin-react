@@ -5,6 +5,7 @@ declare module "styled-components" {
         basicWidth: string;
         color: {
             main: string;
+            main_light: string;
             disabled_main: string;
             dep_gray: string;
             disabled: string;
@@ -12,6 +13,7 @@ declare module "styled-components" {
             offWhite: string;
             line: string;
             b_font: string;
+            border: string;
         };
         fontSize: {
             Title1: string;

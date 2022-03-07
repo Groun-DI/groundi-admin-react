@@ -6,6 +6,7 @@ const theme: DefaultTheme = {
 
     color: {
         main: "#F84F39;",
+        main_light: "#EF887B",
         disabled_main: "#FF7967",
         dep_gray: "#a5a0a0",
         disabled: "#E8E8E8",
@@ -13,6 +14,7 @@ const theme: DefaultTheme = {
         offWhite: '#FCFCFC',
         line: '#ECEEF3',
         b_font: '#343A40',
+        border:"#DBDBDB"
     },
     fontSize: {
         Title1: rem(5.6),

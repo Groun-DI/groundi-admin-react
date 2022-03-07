@@ -1,14 +1,29 @@
 import { useEffect } from "react";
-import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import styled from "styled-components";
-import { CreateStudioValue } from "dto/create-studio.dto";
+import InputElementsUtils from "utils/inputs.utils";
+
+type Values = {
+    centerId: string;
+    name: string;
+    content: string;
+    basicOccupancy: string;
+    maximumOccupancy: string;
+    overCharge: string;
+    lowestPrice: string;
+    highestPrice: string;
+    precaution: string;
+    amenities: [];
+    precautions: [];
+    complimentaries: [];
+}
 
 type Props = {
-    values: CreateStudioValue;
+    inputs: typeof InputElementsUtils.studioCreate;
+    formValue: Values;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ParkingLotForm:React.FC<Props> = ({ values, onChange }) => {
+const ParkingLotForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
     const Type: [string, string] = ['isAvailable', 'paymentType'];
     const maxLengthType: [number, number] = [2, 4];
 

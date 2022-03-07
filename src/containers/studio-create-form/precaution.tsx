@@ -1,16 +1,32 @@
 import { Precaution } from "dto/precaution.entity";
 import { useEffect, useState } from "react";
-import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import client from "services/axios";
 import styled from "styled-components";
-import { CreateStudioValue } from "dto/create-studio.dto";
+import InputElementsUtils from "utils/inputs.utils";
+
+type Values = {
+    centerId: string;
+    name: string;
+    content: string;
+    basicOccupancy: string;
+    maximumOccupancy: string;
+    overCharge: string;
+    lowestPrice: string;
+    highestPrice: string;
+    precaution: string;
+    amenities: [];
+    precautions: [];
+    complimentaries: [];
+}
 
 type Props = {
-    values: CreateStudioValue;
+    inputs: typeof InputElementsUtils.studioCreate;
+    formValue: Values;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const PrecautionForm:React.FC<Props> = ({ values, onChange }) => {
+
+const PrecautionForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
     const [items, setItems] = useState<Precaution[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 

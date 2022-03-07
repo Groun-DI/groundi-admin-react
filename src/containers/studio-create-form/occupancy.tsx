@@ -1,54 +1,52 @@
 import { useEffect } from "react";
-import { UseFormGetValues, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import styled from "styled-components";
-import { CreateStudioInputData, CreateStudioValue } from "dto/create-studio.dto";
 import FormInput from "components/input/FormInput";
+import { CreateStudioValue } from "dto/create-studio.dto";
+import InputElementsUtils from "utils/inputs.utils";
+
+type Values = {
+    centerId: string;
+    name: string;
+    content: string;
+    basicOccupancy: string;
+    maximumOccupancy: string;
+    overCharge: string;
+    lowestPrice: string;
+    highestPrice: string;
+    precaution: string;
+    amenities: [];
+    precautions: [];
+    complimentaries: [];
+}
 
 type Props = {
-    values: typeof CreateStudioInputData;
-    value: CreateStudioValue;
+    inputs: typeof InputElementsUtils.studioCreate;
+    formValue: CreateStudioValue;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const OccupancyForm: React.FC<Props> = ({ values, value, onChange }) => {
-    // const maxlength = 3;
-    // const Type: [string, string] = ['BASIC', 'MAXIMUM'];
-
+const OccupancyForm: React.FC<Props> = ({ inputs, formValue, onChange }) => {
     // const handleOnInput = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
-    //     switch (type) {
-    //         case Type[0]:
-    //             if (e.target.value.length > maxlength) {
-    //                 e.target.value = e.target.value.substr(0, maxlength);
-    //             }
-    //             setValue("basicOccupancy", e.target.value)
-    //             break;
-    //         case Type[1]:
-    //             if (e.target.value.length > maxlength) {
-    //                 e.target.value = e.target.value.substr(0, maxlength);
-    //             }
-    //             setValue("maximumOccupancy", e.target.value)
-    //             break;
-    //     }
-    //     const maximumOccupancy = getValues("maximumOccupancy");
-    //     const basicOccupancy = getValues("basicOccupancy");
 
-    //     if (maximumOccupancy < basicOccupancy) {
-    //         console.log("최대인원을 기준 인원보다 높게 설정해주세요")
-    //     }
+    //     // if (maximumOccupancy < basicOccupancy) {
+    //     //     console.log("최대인원을 기준 인원보다 높게 설정해주세요")
+    //     // }
     // }
+
+
     return (
         <>
             <Wrapper>
                 <ContentHeader>
                     <InputWrapper>
                         <label>기준</label>
-                        <FormInput {...values.basicOccupancy}
-                            onChange={onChange}/>
+                        <FormInput {...inputs.basicOccupancy}
+                            onChange={onChange} value={formValue.basicOccupancy}/>
                         <label>인, </label>
                     </InputWrapper>
                     <InputWrapper>
                         <label>최대</label>
-                        <FormInput {...values.maximumOccupancy}
+                        <FormInput {...inputs.maximumOccupancy}
                             onChange={onChange}/>
                         <label>인까지 받을께요</label>
                     </InputWrapper>

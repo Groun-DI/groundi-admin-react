@@ -11,51 +11,76 @@ import RefundForm from "containers/studio-create-form/refund";
 import NameForm from "containers/studio-create-form/name";
 import client from "services/axios";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { CreateStudioValue, CreateStudioInputData } from "dto/create-studio.dto";
+import { useState } from "react";
+import { CreateStudioValue } from "dto/create-studio.dto";
+import ValidationUtils from "utils/validation.utils";
+import InputElementsUtils from "utils/inputs.utils";
 
 const StudioCreate = () => {
     let params = useParams();
     const [formValues, setFormValues] = useState(new CreateStudioValue());
+    const inputs = InputElementsUtils.studioCreate;
 
     const OnSubmit = async (data: any) => {
-        console.log(data);
-        // const res = await client.post('studio/create', {
-        //     centerId: Number(params.centerId),
-        //     name: data.name,
-        //     content: data.content,
-        //     basicOccupancy: Number(data.basicOccupancy),
-        //     maximumOccupancy: Number(data.maximumOccupancy),
-        //     overCharge: Number(data.overCharge),
-        //     lowestPrice: Number(data.lowestPrice),
-        //     highestPrice: Number(data.highestPrice),
-        //     amenities: data.amenities,
-        //     precautions: data.precautions,
-        //     complimentaries: data.complimentaries,
-        //     precaution: data.precaution
-        // });
+        console.log(formValues);
+        // const res = await client.post('studio/create', formValues);
 
         // console.log(res.data);
     }
-    useEffect(()=>{
-        console.log(formValues);
-    },[formValues])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
+        switch (name) {
+            case 'name':
+                inputs.studioName = { ...inputs.studioName, ...ValidationUtils.isRequired(value) };
+                break;
+            case 'content':
+                inputs.content = { ...inputs.content, ...ValidationUtils.isRequired(value) };
+                break;
+            case 'basicOccupancy':
+                inputs.basicOccupancy = { ...inputs.basicOccupancy, ...ValidationUtils.isNumberOfDigits(value, 3) };
+                setFormValues({ ...formValues, [name]: ValidationUtils.isNumberOfDigits(value, 3).value });
+                break;
+            case 'maximumOccupancy':
+                inputs.maximumOccupancy = { ...inputs.maximumOccupancy, ...ValidationUtils.isRequired(value) };
+                break;
+            case 'overCharge':
+                inputs.overCharge = { ...inputs.overCharge, ...ValidationUtils.isRequired(value) };
+                break;
+            case 'lowestPrice':
+                inputs.lowestPrice = { ...inputs.lowestPrice, ...ValidationUtils.isRequired(value) };
+                break;
+            case 'highestPrice':
+                inputs.highestPrice = { ...inputs.highestPrice, ...ValidationUtils.isRequired(value) };
+                break;
+            case 'precaution':
+                inputs.precaution = { ...inputs.precaution, ...ValidationUtils.isRequired(value) };
+                break;
+            case 'amenities':
+                inputs.amenities = { ...inputs.amenities, ...ValidationUtils.isRequired(value) };
+                break;
+            case 'precautions':
+                inputs.precautions = { ...inputs.precautions, ...ValidationUtils.isRequired(value) };
+                break;
+            case 'complimentaries':
+                inputs.complimentaries = { ...inputs.complimentaries, ...ValidationUtils.isRequired(value) };
+                break;
+            default:
+                break;
+        }
     }
 
     const Props = {
-        values: CreateStudioInputData,
-        value: formValues,
+        inputs: inputs,
+        formValue: formValues,
         onChange: handleChange,
     }
 
     return (
         <>
             <Header>
-                <img src="/logo.svg" alt="logo" width="150px" />
+                <img src="/logo.svg" alt="logo" width="130px" />
                 <h5>저장 및 나가기</h5>
             </Header>
             <Body>

@@ -46,7 +46,7 @@ client.interceptors.response.use(
                         return await client.request(originalRequest);
                     }
                 } else if (!orignRefreshToken) {
-                    window.location.href = '/signin';
+                    window.location.href = '/auth/signin';
                 }
             } catch (error) {
                 console.log(error);

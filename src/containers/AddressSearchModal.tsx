@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import NaverGeocodingService from "services/naver.geocoding.service"
 import styled, { keyframes } from "styled-components"
 import { theme } from "styles/theme"
-import { CenterCreateInput } from "inputs/center.create"
+import InputElementsUtils from "utils/inputs.utils"
 
 type Values = {
     name: string,
@@ -21,7 +21,7 @@ type Values = {
 type Props = {
     isOpen: boolean;
     isClose: (click: boolean) => void;
-    inputs: typeof CenterCreateInput;
+    inputs: typeof InputElementsUtils.centerCreate;
     formValue: Values;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
