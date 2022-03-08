@@ -2,31 +2,13 @@ import { Precaution } from "dto/precaution.entity";
 import { useEffect, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
-import InputElementsUtils from "utils/inputs.utils";
-
-type Values = {
-    centerId: string;
-    name: string;
-    content: string;
-    basicOccupancy: string;
-    maximumOccupancy: string;
-    overCharge: string;
-    lowestPrice: string;
-    highestPrice: string;
-    precaution: string;
-    amenities: [];
-    precautions: [];
-    complimentaries: [];
-}
 
 type Props = {
-    inputs: typeof InputElementsUtils.studioCreate;
-    formValue: Values;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    getValue: (values: string[]) => void;
 }
 
 
-const PrecautionForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
+const PrecautionForm: React.FC<Props> = ({ getValue }) => {
     const [items, setItems] = useState<Precaution[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
@@ -45,6 +27,7 @@ const PrecautionForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
         } else {
             setSelectItems(oldArray => [...oldArray, item.id]);
         }
+        getValue(selectItems);
     }
 
     // const handlerOnChange = (value: string) => {
@@ -72,7 +55,7 @@ const PrecautionForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
             <ContentMain>
                 <p>상세설명이 필요하다면 아래 적어주세요.</p>
                 {/* <TextArea onChange={(e) => handlerOnChange(e.target.value)} /> */}
-                <TextArea/>
+                <TextArea />
             </ContentMain>
         </Wrapper>
     )

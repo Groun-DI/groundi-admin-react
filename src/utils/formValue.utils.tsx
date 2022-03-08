@@ -24,9 +24,9 @@ class FormValuesUtils {
         lowestPrice: '',
         highestPrice: '',
         precaution: '',
-        amenities: [],
-        precautions: [],
-        complimentaries: []
+        amenities: [''],
+        precautions: [''],
+        complimentaries: ['']
     };
 }
 

@@ -1,5 +1,7 @@
-import { SignIn, SignUp, HomePage, CenterPage, CenterCreatePage, ReservationPage, StudioListPage, StudioCreatePage } from 'pages';
-import { BrowserRouter, Routes, Route, Router } from 'react-router-dom';
+import {
+    SignIn, SignUp, HomePage, CenterPage, CenterCreatePage, ReservationPage, StudioPage, StudioCreatePage, CalendarPage, StuidoReservationPage, StudioCalendarPage
+} from 'pages';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const App = () => {
     return (
@@ -10,15 +12,15 @@ const App = () => {
                 <Route path="/auth/signup" element={<SignUp />} />
                 <Route path="/new-center" element={<CenterCreatePage />} />
                 <Route path="/center/:centerId" element={<CenterPage />}>
-                    <Route path="reservation" element={<ReservationPage />} />
-                    <Route path="studio-new" element={<StudioCreatePage />} />
-                    {/* <Route path="/:centerId" element={CenterPage} />
-                    <Route path="/:centerId/calendar" element={ } />
-                    <Route path="/:centerId/calendar/:studioId" element={ } />
-                    <Route path="/:centerId/studio" element={ } />
-                    <Route path="/:centerId/manage-studio/:studioId" element={ } /> */}
+                    <Route path="reservation" element={<ReservationPage />}>
+                        <Route path=":studioId" element={<StuidoReservationPage />} />
+                    </Route>
+                    <Route path="calendar" element={<CalendarPage />}>
+                        <Route path=":studioId" element={<StudioCalendarPage />} />
+                    </Route>
+                    <Route path="studio" element={<StudioPage />} />
                 </Route>
-                <Route path="/studio" element={<StudioListPage />} />
+                <Route path="/center/:centerId/new-studio" element={<StudioCreatePage />} />
             </Routes>
         </BrowserRouter>
     );

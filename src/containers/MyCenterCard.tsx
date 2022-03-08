@@ -12,7 +12,7 @@ const MyCenterCard: React.FC<Props> = ({ item }) => {
                 <img src="/centerImage.png" alt="센터 대표 이미지" />
             </BoxContentHeader>
             <BoxContentMain>
-                <Link to={`/center/${item.id}`}>
+                <Link to={`/center/${item.id}/reservation`}>
                     <Typography.Small>{item.name}</Typography.Small>
                 </Link>
             </BoxContentMain>

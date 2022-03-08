@@ -1,31 +1,17 @@
+import Typography from "components/style/Typography";
 import { Amenity } from "dto/amenity.entity";
 import { useEffect, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
+import { theme } from "styles/theme";
+import FormValuesUtils from "utils/formValue.utils";
 import InputElementsUtils from "utils/inputs.utils";
 
-type Values = {
-    centerId: string;
-    name: string;
-    content: string;
-    basicOccupancy: string;
-    maximumOccupancy: string;
-    overCharge: string;
-    lowestPrice: string;
-    highestPrice: string;
-    precaution: string;
-    amenities: [];
-    precautions: [];
-    complimentaries: [];
-}
-
 type Props = {
-    inputs: typeof InputElementsUtils.studioCreate;
-    formValue: Values;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setValue: (name: string, value: string | string[]) => void;
 }
 
-const AmenityForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
+const AmenitiyForm: React.FC<Props> = ({ setValue }) => {
     const [items, setItems] = useState<Amenity[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
@@ -43,6 +29,7 @@ const AmenityForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
         } else {
             setSelectItems(oldArray => [...oldArray, item.id]);
         }
+        setValue('amenitiy' ,selectItems);
     }
 
     return (
@@ -53,8 +40,8 @@ const AmenityForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
                         <div key={k}>
                             <Input type="checkbox" id={item.id} />
                             <Item htmlFor={item.id} onClick={() => handlerOnClick(item)}>
-                                <img src={item.image} alt={item.id} />
-                                <h5>{item.id}</h5>
+                                <img src={item.image} alt={item.id}/>
+                                <Typography.Small weight={theme.fontWeight.SemiBold}>{item.id}</Typography.Small>
                             </Item>
                         </div>
                     ))
@@ -68,6 +55,7 @@ const Content = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
+    margin-top:70px;
 `
 
 const Item = styled.label`
@@ -75,16 +63,24 @@ const Item = styled.label`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    padding: 20px;
+    padding:20px;
     border: 1px solid rgb(221, 221, 221);
     background-color: white;
     border-radius: 20px;
-    width: 150px;
-    height: 150px;
-    font-size: ${(props) => props.theme.fontSize.Small};
+    width: 130px;
+    height: 130px;
     cursor: pointer;
+    h6{
+        color: ${({theme})=>theme.color.placeholder};
+    }
     :hover{
         box-shadow: rgb(0 0 0) 0px 0px 0px 2px;
+        h6{
+            color: ${({theme})=>theme.color.TitleActive};
+        }
+    }
+    img{
+        width: 40px;
     }
 `
 
@@ -93,7 +89,10 @@ const Input = styled.input`
     :checked+label{
         box-shadow: rgb(0 0 0) 0px 0px 0px 2px;
         background-color: rgb(247, 247, 247);
+        h6{
+            color: ${({theme})=>theme.color.TitleActive};
+        }
     }
 `;
 
-export default AmenityForm;
+export default AmenitiyForm;

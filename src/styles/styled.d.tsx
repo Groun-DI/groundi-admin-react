@@ -15,13 +15,13 @@ declare module "styled-components" {
             b_font: string;
             border: string;
             TitleActive: string;
+            hover:string;
         };
         fontSize: {
             Title1: string;
             Title2: string;
             Title3: string;
             Large: string;
-            Medium: string;
             Regular: string;
             Small: string;
             Micro: string;

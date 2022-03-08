@@ -1,24 +1,10 @@
 import styled from "styled-components";
+import FormValuesUtils from "utils/formValue.utils";
 import InputElementsUtils from "utils/inputs.utils";
-
-type Values = {
-    centerId: string;
-    name: string;
-    content: string;
-    basicOccupancy: string;
-    maximumOccupancy: string;
-    overCharge: string;
-    lowestPrice: string;
-    highestPrice: string;
-    precaution: string;
-    amenities: [];
-    precautions: [];
-    complimentaries: [];
-}
 
 type Props = {
     inputs: typeof InputElementsUtils.studioCreate;
-    formValue: Values;
+    formValue: typeof FormValuesUtils.studioCreate;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

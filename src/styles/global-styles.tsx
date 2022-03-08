@@ -12,7 +12,6 @@ html, body{
 html{
   font-size: 10px;
 }
-
 input{
   
   line-height: 2rem;

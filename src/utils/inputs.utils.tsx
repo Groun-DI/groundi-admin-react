@@ -96,18 +96,18 @@ class InputElementsUtils {
         basicOccupancy: {
             name: "basicOccupancy",
             type: "number",
-            placeholder: "",
+            placeholder: "2",
             errorMessage: "",
-            label: "",
+            label: "기준인원",
             invalid: false,
             required: true
         },
         maximumOccupancy: {
             name: "maximumOccupancy",
             type: "number",
-            placeholder: "",
+            placeholder: "4",
             errorMessage: "",
-            label: "",
+            label: "최대인원",
             invalid: false,
             required: true
         },

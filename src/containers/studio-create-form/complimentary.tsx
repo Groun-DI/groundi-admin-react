@@ -1,33 +1,13 @@
 import { Complimentary } from "dto/complimentary.entity";
 import { useEffect, useRef, useState } from "react";
-import { UseFormRegister, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import client from "services/axios";
 import styled from "styled-components";
-import { CreateStudioValue } from "dto/create-studio.dto";
-import InputElementsUtils from "utils/inputs.utils";
-
-type Values = {
-    centerId: string;
-    name: string;
-    content: string;
-    basicOccupancy: string;
-    maximumOccupancy: string;
-    overCharge: string;
-    lowestPrice: string;
-    highestPrice: string;
-    precaution: string;
-    amenities: [];
-    precautions: [];
-    complimentaries: [];
-}
 
 type Props = {
-    inputs: typeof InputElementsUtils.studioCreate;
-    formValue: Values;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    getValue: (values: string[]) => void;
 }
 
-const ComplimentaryForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
+const ComplimentaryForm: React.FC<Props> = ({ getValue }) => {
     const [items, setItems] = useState<Complimentary[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [selectItems, setSelectItems] = useState<string[]>([]);
@@ -38,7 +18,6 @@ const ComplimentaryForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
         client.get<Complimentary[]>('complimentary').then(res => {
             setItems(res.data);
         });
-
         window.addEventListener('mousedown', handleOurSideClickEvent);
         return () => {
             window.removeEventListener('mousedown', handleOurSideClickEvent);
@@ -47,6 +26,7 @@ const ComplimentaryForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
 
 
     const handleOurSideClickEvent = (e: MouseEvent) => {
+        e.preventDefault();
         if (!outSideClickRef.current.contains(e.target)) {
             setIsOutSideClick(true);
         }
@@ -57,11 +37,14 @@ const ComplimentaryForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
         if (!isInCludes && selectItems.length < 10) {
             setSelectItems(oldArray => [...oldArray, item.id]);
         }
+        getValue(selectItems);
     }
 
-    const handlerDeleteItem = (item: string) => {
+    const handlerDeleteItem = (e: React.MouseEvent<HTMLButtonElement>, item: string) => {
+        e.preventDefault();
         const deletedItems = selectItems.filter((element) => element !== item);
         setSelectItems(deletedItems);
+        getValue(selectItems);
     }
 
     return (
@@ -86,7 +69,7 @@ const ComplimentaryForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
                         selectItems.map((item, k) => (
                             <div key={k} style={{ position: "relative" }}>
                                 <Item >{item}</Item>
-                                <DeleteButtonIcon onClick={() => handlerDeleteItem(item)} />
+                                <DeleteButtonIcon onClick={(e) => handlerDeleteItem(e, item)} />
                             </div>
                         ))
                     }
@@ -136,9 +119,10 @@ const Item = styled.div`
 
 const ContentHeader = styled.div<{ show: boolean }>`
     position: relative;
-    box-shadow:${(props) => props.show ? '0 1px 6px 0 rgb(32 33 36 / 28%)' : 'none'};
+    box-shadow:${(props) => props.show ? 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' : 'none'};
     border-radius: 20px;
     width: 600px;
+    margin-top:70px;
     input{
         background-color: white;
         width: 100%;
@@ -167,7 +151,7 @@ const DownDrop = styled.ul<{ show: boolean, inputValue: string }>`
     padding-bottom: ${(props) => props.inputValue === '' ? '0px' : '10px'};;
     max-height: 290px;
     overflow: hidden;
-    box-shadow : 0 1px 6px 0 rgb(32 33 36 / 28%);
+    box-shadow : rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;;
     z-index: 20;
 `
 
@@ -180,7 +164,7 @@ const DownDropItem = styled.li`
     background-color: white;
     cursor: pointer;
     :hover{
-        background-color: #c4c4c4;
+        background-color: ${({ theme }) => theme.color.hover};
     }
     :nth-child(4){
         margin-bottom: 20px;
