@@ -14,14 +14,16 @@ const theme: DefaultTheme = {
         offWhite: '#FCFCFC',
         line: '#ECEEF3',
         b_font: '#343A40',
-        border:"#DBDBDB"
+        border:"#DBDBDB",
+        TitleActive:"#222222"
     },
     fontSize: {
         Title1: rem(5.6),
         Title2:rem(4.8),
         Title3: rem(3.2),
         Large: rem(2.4),
-        Regular: rem(1.8),
+        Medium: rem(1.8),
+        Regular: rem(1.4),
         Small:rem(1.6),
         Micro: rem(1.1),
     },

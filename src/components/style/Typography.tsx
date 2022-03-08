@@ -31,13 +31,19 @@ const Typography = {
         color: ${({ theme, color }) => color || theme.color.b_font};
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
     `,
-    Regular: styled.h5<Props>`
+    Meidum: styled.h5<Props>`
+        font-size: ${({ theme }) => theme.fontSize.Medium};
+        font-weight: ${({ theme }) => theme.fontWeight.SemiBold};
+        color: ${({ theme, color }) => color || theme.color.b_font};
+        letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
+    `,
+    Regular: styled.h6<Props>`
         font-size: ${({ theme }) => theme.fontSize.Regular};
         font-weight: ${({ weight }) => weight || 400};
         color: ${({ theme, color }) => color || theme.color.b_font};
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
     `,
-    Small: styled.h6<Props>`
+    Small: styled.p<Props>`
         font-size: ${({ theme }) => theme.fontSize.Small};
         font-weight: ${({ weight }) => weight || 400};
         color: ${({ theme, color }) => color || theme.color.b_font};
@@ -48,6 +54,7 @@ const Typography = {
         font-weight: ${({ weight }) => weight || 400};
         color: ${({ theme, color }) => color || theme.color.b_font};
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
+        line-height: 1.5;
     `
 }
 

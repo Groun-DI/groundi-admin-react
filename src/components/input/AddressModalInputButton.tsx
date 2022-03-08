@@ -40,7 +40,7 @@ const Button = styled.button`
     position: relative;
     width: 100%;
     padding: 17px;
-    border: 1px solid ${({ theme }) => theme.color.disabled};
+    border: 1px solid ${({ theme }) => theme.color.border};
     border-radius: 8px;
     font-size: ${({ theme }) => theme.fontSize.Small};
     margin-top: 10px;

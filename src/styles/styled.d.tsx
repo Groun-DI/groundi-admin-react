@@ -14,12 +14,14 @@ declare module "styled-components" {
             line: string;
             b_font: string;
             border: string;
+            TitleActive: string;
         };
         fontSize: {
             Title1: string;
             Title2: string;
             Title3: string;
             Large: string;
+            Medium: string;
             Regular: string;
             Small: string;
             Micro: string;

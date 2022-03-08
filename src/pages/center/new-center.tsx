@@ -15,6 +15,7 @@ import InputElementsUtils from "utils/inputs.utils";
 import FormValuesUtils from "utils/formValue.utils";
 import PhoneNumberInput from "components/input/PhoneNumberInput";
 import FileUploadInput from "components/input/fileUpload.input";
+import GoPrevNavigation from "components/frame/GoPrevNavigation";
 
 const MapStyle = {
     width: '100%',
@@ -91,72 +92,90 @@ const Page = () => {
     switch (nowFormStep) {
         case 1:
             return (
-                <Wrapper>
-                    <Container>
-                        <ContentHeader>
-                            <Typography.Title3 weight={theme.fontWeight.ExtraBold}>개설할 센터의 정보를 입력해주세요</Typography.Title3>
-                        </ContentHeader>
-                        <ContentMain>
-                            <Flex layout="column" gap={30}>
-                                <BoxInput {...inputs.centerName} onChange={handleChange} value={formValues.name} />
-                                <PhoneNumberInput {...inputs.phoneNumber} onChange={handleChange} value={formValues.phoneNumber}/>
-                                <AddressWrap>
-                                    <AddressModalInputButton
-                                        label="주소를 입력해주세요"
-                                        value={formValues.address}
-                                        onClick={() => setStateAddressSearchModal(true)}
-                                    >동/리/도로명으로 검색해주세요.</AddressModalInputButton>
-                                    {
-                                        formValues.address &&
-                                        <BoxInput
-                                            {...inputs.detailAddress}
-                                            value={formValues.detailAddress}
+                <>
+                    <GoPrevNavigation />
+                    <Wrapper>
+                        <Container>
+                            <ContentHeader>
+                                <Typography.Title3 weight={theme.fontWeight.ExtraBold}>개설할 센터의 정보를 입력해주세요</Typography.Title3>
+                            </ContentHeader>
+                            <ContentMain>
+                                <Flex layout="column" gap={30}>
+                                    <BoxInput {...inputs.centerName} onChange={handleChange} value={formValues.name} />
+                                    <PhoneNumberInput {...inputs.phoneNumber} onChange={handleChange} value={formValues.phoneNumber} />
+                                    <AddressWrap>
+                                        <AddressModalInputButton
+                                            label="주소를 입력해주세요"
+                                            value={formValues.address}
+                                            onClick={() => setStateAddressSearchModal(true)}
+                                        >동/리/도로명으로 검색해주세요.</AddressModalInputButton>
+                                        {
+                                            formValues.address &&
+                                            <BoxInput
+                                                {...inputs.detailAddress}
+                                                value={formValues.detailAddress}
+                                                onChange={handleChange}
+                                            />
+                                        }
+                                        <AddressSearchModal
+                                            isOpen={stateAddressSearchModal}
+                                            isClose={(click: boolean) => setStateAddressSearchModal(click)}
                                             onChange={handleChange}
-                                        />
-                                    }
-                                    <AddressSearchModal
-                                        isOpen={stateAddressSearchModal}
-                                        isClose={(click: boolean) => setStateAddressSearchModal(click)}
-                                        onChange={handleChange}
-                                        formValue={formValues}
-                                        inputs={inputs} />
-                                </AddressWrap>
-                            </Flex>
-                            {
-                                formValues.latitude && formValues.longitude &&
-                                <NaverMapService lat={Number(formValues.latitude)} lng={Number(formValues.longitude)} CustomStyle={MapStyle} />
-                            }
-                            <Flex>
-                                <StyleButton onClick={nextStep}
-                                    disabled={false}>다음</StyleButton>
-                            </Flex>
-                        </ContentMain>
-                    </Container>
-                </Wrapper>
+                                            formValue={formValues}
+                                            inputs={inputs} />
+                                    </AddressWrap>
+                                </Flex>
+                                {
+                                    formValues.latitude && formValues.longitude &&
+                                    <NaverMapService lat={Number(formValues.latitude)} lng={Number(formValues.longitude)} CustomStyle={MapStyle} />
+                                }
+                                <Flex>
+                                    <StyleButton onClick={nextStep}
+                                        disabled={false}>다음</StyleButton>
+                                </Flex>
+                            </ContentMain>
+                        </Container>
+                    </Wrapper>
+                </>
             )
         case 2:
             return (
-                <Wrapper>
-                    <Container>
-                        <ContentMain>
-                            <Flex layout="column" gap={30}>
-                                <BoxInput {...inputs.ceoName} onChange={handleChange} value={formValues.ceoName} />
-                                <BoxInput {...inputs.busniessType} onChange={handleChange} value={formValues.busniessType} />
-                                <BoxInput {...inputs.busniessCode} onChange={handleChange} value={formValues.busniessCode} />
-                                <FileUploadInput {...inputs.businessAttachment} onChange={handleChange} value={formValues.businessAttachment}/>
-                            </Flex>
-                            <Flex>
-                                <StyleButton type="submit" onClick={onSubmit}
-                                    disabled={!inputs.ceoName.invalid || !inputs.busniessType.invalid || !inputs.busniessCode.invalid ? true : false}>개설 완료하기!</StyleButton>
-                            </Flex>
-                        </ContentMain>
-                    </Container>
-                </Wrapper>
+                <>
+                    <GoPrevNavigation />
+                    <Wrapper>
+                        <Container>
+                            <ContentMain>
+                                <Flex layout="column" gap={30}>
+                                    <BoxInput {...inputs.ceoName} onChange={handleChange} value={formValues.ceoName} />
+                                    <BoxInput {...inputs.busniessType} onChange={handleChange} value={formValues.busniessType} />
+                                    <InputWrap>
+                                        <BoxInput {...inputs.busniessCode} onChange={handleChange} value={formValues.busniessCode} />
+                                        <FileUploadInput {...inputs.businessAttachment} onChange={handleChange} value={formValues.businessAttachment} />
+                                        <Typography.Micro>
+                                            • 5MB 이하의 jpg, jpeg, gif, png 파일형식만 가능합니다.<br />
+                                            • 주민등록번호 등 개인정보가 보이지 않도록 처리한 뒤 업로드 바랍니다.<br /> 
+                                            • 주민등록번호 등 개인정보가 표시된 경우, 해당 서류는 접수 즉시 파기되며 서비스 이용이 지연될 수 있습니다.
+                                        </Typography.Micro>
+                                    </InputWrap>
+                                </Flex>
+                                <Flex>
+                                    <StyleButton type="submit" onClick={onSubmit}
+                                        disabled={!inputs.ceoName.invalid || !inputs.busniessType.invalid || !inputs.busniessCode.invalid ? true : false}>개설 완료하기!</StyleButton>
+                                </Flex>
+                            </ContentMain>
+                        </Container>
+                    </Wrapper>
+                </>
             )
         default: return (<>오케이</>);
     }
 }
-
+const InputWrap = styled.div`
+    width: 100%;
+    p{
+        margin-top:10px;
+    }
+`
 
 const AddressWrap = styled.div`
     width: 100%;
@@ -169,11 +188,11 @@ const Container = styled.div`
 `
 
 const ContentMain = styled.div`
-    margin-top: 30px;
+    margin-top: 70px;
 `
 
 const ContentHeader = styled.div`
-    margin-top: 30px;
+    margin-top: 10px;
 `
 
 const StyleButton = styled(Button) <{ disabled: boolean }>`

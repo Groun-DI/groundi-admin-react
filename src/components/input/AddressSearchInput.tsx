@@ -33,7 +33,7 @@ const Form = styled.form`
     display: flex;
     padding-right: 56px;
     border-radius: 12px;
-    border: 1px solid #e2e5e8;
+    border: 1px solid ${({ theme }) => theme.color.border};
     box-shadow: 0 3px 10px 0 rgb(0 0 0 / 3%);
     background-color: #fff;
     box-sizing: border-box;

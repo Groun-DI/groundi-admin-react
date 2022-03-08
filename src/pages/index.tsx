@@ -1,9 +1,11 @@
 export { default as SignIn } from './auth/siginin';
 export { default as SignUp } from './auth/signup';
-export { default as HomePage } from './center';
+export { default as HomePage } from './center/home';
+export { default as CenterPage } from './center';
 export { default as CenterCreatePage } from './center/new-center';
 export { default as StudioCreatePage } from './center/studio/create';
 export { default as StudioListPage } from './center/studio';
 export { default as CalendarPage } from './center/calendar';
 export { default as CenterEarningsPage } from './center/earnings';
 export { default as StudioDetailsPage } from './center/studio/details';
+export { default as ReservationPage } from './center/reservation';
