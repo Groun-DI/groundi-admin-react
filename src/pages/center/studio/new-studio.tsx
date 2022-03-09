@@ -19,18 +19,41 @@ import { theme } from "styles/theme";
 import Wrapper from "components/style/Wrapper";
 
 const StudioCreate = () => {
-    //let params = useParams();
+    let params = useParams();
+    const inputs = InputElementsUtils.studioCreate;
     const [formValues, setFormValues] = useState(FormValuesUtils.studioCreate);
     const [parkingFormValues, setparkingFormValues] = useState(FormValuesUtils.centerParkingLotCreate);
     const [nowStep, setNowStep] = useState<number>(1);
-    const inputs = InputElementsUtils.studioCreate;
+
 
     const OnSubmit = async (data: any) => {
         console.log(formValues);
         console.log(parkingFormValues);
-        // const res = await client.post('studio/create', formValues);
+        const studioRes = await client.post('studio/create', {
+            ...formValues,
+            centerId: Number(params),
+            basicOccupancy: Number(formValues.basicOccupancy),
+            maximumOccupancy: Number(formValues.maximumOccupancy),
+            overCharge: Number(formValues.overCharge),
+            lowestPrice: Number(formValues.lowestPrice),
+            highestPrice: Number(formValues.highestPrice)
+        });
 
-        // console.log(res.data);
+        console.log(studioRes);
+
+        const parkingLotRes = await client.post('parkingLot/create', {
+            isAvailable: parkingFormValues.isAvailable,
+            paymentType: parkingFormValues.paymentType,
+            firstTime: parkingFormValues.firstHour + ':' + parkingFormValues.firstMinute,
+            firstPayment: Number(parkingFormValues.firstPayment),
+            additionTime: parkingFormValues.additionHour + ':' + parkingFormValues.additionMinute,
+            additionPayment: Number(parkingFormValues.additionPayment),
+            allDayPayment: Number(parkingFormValues.allDayPayment),
+            oneTimePayment: Number(parkingFormValues.oneTimePayment),
+            content: Number(formValues.highestPrice)
+        });
+
+        console.log(parkingLotRes);
     }
 
 
