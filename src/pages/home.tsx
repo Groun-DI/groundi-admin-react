@@ -25,7 +25,7 @@ const Page = () => {
                     <ContentHeader>
                         <Typography.Large weight={theme.fontWeight.SemiBold}>내 센터</Typography.Large>
                         <ButtonBox>
-                            <Link to="/center-new"><Typography.Regular weight={theme.fontWeight.SemiBold} color={theme.color.main}>새로운 센터 등록 +</Typography.Regular></Link>
+                            <Link to="/new-center"><Typography.Regular weight={theme.fontWeight.SemiBold} color={theme.color.main}>새로운 센터 등록 +</Typography.Regular></Link>
                         </ButtonBox>
                     </ContentHeader>
                     <ContentMain>

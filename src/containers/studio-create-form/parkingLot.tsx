@@ -4,12 +4,12 @@ import FormValuesUtils from "utils/formValue.utils";
 import InputElementsUtils from "utils/inputs.utils";
 
 type Props = {
-    inputs: typeof InputElementsUtils.studioCreate;
-    formValue: typeof FormValuesUtils.studioCreate;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    formValue: typeof FormValuesUtils.centerParkingLotCreate;
+    onChange: (e: React.MouseEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
-const ParkingLotForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
+const ParkingLotForm: React.FC<Props> = ({ formValue, onChange }) => {
+    const inputs = InputElementsUtils.centerParkingLotCreate;
     const Type: [string, string] = ['isAvailable', 'paymentType'];
     const maxLengthType: [number, number] = [2, 4];
 
@@ -47,7 +47,7 @@ const ParkingLotForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
             <ContentHeader>
                 <InputWrapper>
                     <label>주차가</label>
-                    <Select>
+                    <Select {...inputs.isAvailable} value={formValue.isAvailable} onChange={onChange}>
                         <option value="true">가능</option>
                         <option value="false">불가능</option>
                     </Select>
@@ -57,7 +57,7 @@ const ParkingLotForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
             <ContentMain>
                 <InputWrapper>
                     <label>주차비는</label>
-                    <Select>
+                    <Select {...inputs.paymentType} value={formValue.paymentType} onChange={onChange}>
                         <option value="clock">시간제</option>
                         <option value="fixed">정액제</option>
                         <option value="free">무료</option>
@@ -68,45 +68,38 @@ const ParkingLotForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
             <ContentFooter>
                 <InputWrapper>
                     <label>최초</label>
-                    <input type="number" defaultValue={1}
-                        onChange={onChange} />
+                    <input {...inputs.firstHour} value={formValue.firstHour} onChange={onChange} />
                     <label>시간</label>
-                    <input type="number" defaultValue={30}
-                        onChange={onChange} />
+                    <input {...inputs.firstMinute} value={formValue.firstMinute} onChange={onChange} />
                     <label>분</label>
-                    <input type="number" defaultValue={10000}
-                        onChange={onChange} />
+                    <input {...inputs.firstPayment} onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
                 <InputWrapper>
                     <label>최초</label>
-                    <input type="number" defaultValue={1}
-                        onChange={onChange} />
+                    <input {...inputs.additionHour} value={formValue.additionHour} onChange={onChange} />
                     <label>시간</label>
-                    <input type="number" defaultValue={30}
-                        onChange={onChange} />
+                    <input {...inputs.additionMinute} value={formValue.additionMinute} onChange={onChange} />
                     <label>분</label>
-                    <input type="number" defaultValue={10000}
-                        onChange={onChange} />
+                    <input {...inputs.additionPayment} defaultValue={10000} value={formValue.additionPayment} onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
                 <InputWrapper>
                     <label>하루종일</label>
-                    <input type="number" defaultValue={30000}
-                        onChange={onChange} />
+                    <input {...inputs.allDayPayment} value={formValue.allDayPayment} onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
                 <InputWrapper>
                     <label>한번만</label>
-                    <input type="number" defaultValue={30000}
-                        onChange={onChange} />
+                    <input {...inputs.oneTimePayment} value={formValue.oneTimePayment} onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
             </ContentFooter>
         </>
-
     )
 }
+
+
 const ContentFooter = styled.div`
 
 `

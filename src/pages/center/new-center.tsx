@@ -131,7 +131,7 @@ const Page = () => {
                                 }
                                 <Flex>
                                     <StyleButton onClick={nextStep}
-                                        disabled={false}>다음</StyleButton>
+                                        disabled={!inputs.centerName.invalid || inputs.phoneNumber.invalid || !formValues.address ? true : false}>다음</StyleButton>
                                 </Flex>
                             </ContentMain>
                         </Container>
@@ -153,7 +153,7 @@ const Page = () => {
                                         <FileUploadInput {...inputs.businessAttachment} onChange={handleChange} value={formValues.businessAttachment} />
                                         <Typography.Micro>
                                             • 5MB 이하의 jpg, jpeg, gif, png 파일형식만 가능합니다.<br />
-                                            • 주민등록번호 등 개인정보가 보이지 않도록 처리한 뒤 업로드 바랍니다.<br /> 
+                                            • 주민등록번호 등 개인정보가 보이지 않도록 처리한 뒤 업로드 바랍니다.<br />
                                             • 주민등록번호 등 개인정보가 표시된 경우, 해당 서류는 접수 즉시 파기되며 서비스 이용이 지연될 수 있습니다.
                                         </Typography.Micro>
                                     </InputWrap>

@@ -5,19 +5,20 @@ import InputElementsUtils from "utils/inputs.utils";
 type Props = {
     inputs: typeof InputElementsUtils.studioCreate;
     formValue: typeof FormValuesUtils.studioCreate;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ContentForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
+const ContentForm: React.FC<Props> = ({ inputs, formValue, onChange }) => {
 
     return (
         <>
+            <Input {...inputs.content} value={formValue.content} type="textarea" onChange={onChange} />
         </>
-        // <TextArea onChange={onChange}/>
+
     )
 }
 
-const TextArea = styled.textarea`
+const Input = styled.input`
     width: 800px;
     height: 300px;
     border: 2px solid black;

@@ -35,9 +35,9 @@ const AdminNavigation = () => {
                         </Link>
                     </ContentHeader>
                     <ContentBody>
-                        <Link to={`/center/${centerId}/reservation`}><Typography.Regular className={pathname.includes('reservation') ? 'active' : 'disable'}>예약관리</Typography.Regular></Link>
-                        <Link to={`/center/${centerId}/calendar`}><Typography.Regular className={pathname.includes('calendar') ? 'active' : 'disable'}>캘린더</Typography.Regular></Link>
-                        <Link to={`/center/${centerId}/studio`}><Typography.Regular className={pathname.includes('studio') ? 'active' : 'disable'}>스튜디오</Typography.Regular></Link>
+                        <Link to={`/center/${centerId}/reservation`}><Typography.Small className={pathname.includes('reservation') ? 'active' : 'disable'}>예약관리</Typography.Small></Link>
+                        <Link to={`/center/${centerId}/calendar`}><Typography.Small className={pathname.includes('calendar') ? 'active' : 'disable'}>캘린더</Typography.Small></Link>
+                        <Link to={`/center/${centerId}/studio`}><Typography.Small className={pathname.includes('studio') ? 'active' : 'disable'}>스튜디오</Typography.Small></Link>
                     </ContentBody>
                     <ContentFooter>
                         <ContentWrap>

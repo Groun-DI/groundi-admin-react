@@ -4,11 +4,11 @@ import client from "services/axios";
 import styled from "styled-components";
 
 type Props = {
-    getValue: (values: string[]) => void;
+    setValue: (name:string, values: string[]) => void;
 }
 
 
-const PrecautionForm: React.FC<Props> = ({ getValue }) => {
+const PrecautionForm: React.FC<Props> = ({ setValue }) => {
     const [items, setItems] = useState<Precaution[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
@@ -19,6 +19,10 @@ const PrecautionForm: React.FC<Props> = ({ getValue }) => {
         });
     }, []);
 
+    useEffect(()=>{
+        setValue('precautions', selectItems);
+    },[setValue, selectItems])
+
     const handlerOnClick = (item: Precaution) => {
         const isInCludes = selectItems.includes(item.id);
         if (isInCludes) {
@@ -27,18 +31,11 @@ const PrecautionForm: React.FC<Props> = ({ getValue }) => {
         } else {
             setSelectItems(oldArray => [...oldArray, item.id]);
         }
-        getValue(selectItems);
     }
-
-    // const handlerOnChange = (value: string) => {
-    //     if (value.length < 500) {
-    //         setValue('precaution', value);
-    //     }
-    // }
 
     return (
         <Wrapper>
-            <ContentHeader>
+            <Content>
                 <ul>
                     {
                         items.map((item, k) => (
@@ -51,12 +48,7 @@ const PrecautionForm: React.FC<Props> = ({ getValue }) => {
                         ))
                     }
                 </ul>
-            </ContentHeader>
-            <ContentMain>
-                <p>상세설명이 필요하다면 아래 적어주세요.</p>
-                {/* <TextArea onChange={(e) => handlerOnChange(e.target.value)} /> */}
-                <TextArea />
-            </ContentMain>
+            </Content>
         </Wrapper>
     )
 }
@@ -64,7 +56,7 @@ const PrecautionForm: React.FC<Props> = ({ getValue }) => {
 const Wrapper = styled.div`
     width: 100%;
 `
-const ContentHeader = styled.div`
+const Content = styled.div`
     width: 100%;
     li{
         display: flex;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 type Props = {
     errorMessage: string,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: React.MouseEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => void;
     label: string;
     value?: string | number | [],
     invalid: boolean

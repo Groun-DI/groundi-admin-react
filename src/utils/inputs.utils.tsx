@@ -76,7 +76,7 @@ class InputElementsUtils {
 
     static studioCreate = {
         studioName: {
-            name: "studioName",
+            name: "name",
             type: "text",
             placeholder: "",
             errorMessage: "",
@@ -138,8 +138,11 @@ class InputElementsUtils {
             invalid: false,
             required: true
         },
-        precaution: {
-            name: "precaution",
+    }
+
+    static centerParkingLotCreate = {
+        isAvailable: {
+            name: "isAvailable",
             type: "text",
             placeholder: "",
             errorMessage: "",
@@ -147,8 +150,8 @@ class InputElementsUtils {
             invalid: false,
             required: true
         },
-        amenities: {
-            name: "amenities",
+        paymentType: {
+            name: "paymentType",
             type: "text",
             placeholder: "",
             errorMessage: "",
@@ -156,8 +159,8 @@ class InputElementsUtils {
             invalid: false,
             required: true
         },
-        precautions: {
-            name: "precautions",
+        firstHour: {
+            name: "firstHour",
             type: "text",
             placeholder: "",
             errorMessage: "",
@@ -165,15 +168,78 @@ class InputElementsUtils {
             invalid: false,
             required: true
         },
-        complimentaries: {
-            name: "complimentaries",
+        firstMinute: {
+            name: "firstMinute",
             type: "text",
             placeholder: "",
             errorMessage: "",
             label: "",
             invalid: false,
             required: true
-        }
+        },
+        firstPayment: {
+            name: "firstPayment",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        additionHour: {
+            name: "additionHour",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        additionMinute: {
+            name: "additionMinute",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        additionPayment: {
+            name: "additionPayment",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        allDayPayment: {
+            name: "allDayPayment",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        oneTimePayment: {
+            name: "oneTimePayment",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        content: {
+            name: "content",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
     }
 }
 

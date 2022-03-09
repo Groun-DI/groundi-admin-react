@@ -1,25 +1,29 @@
+import StudioNameInput from "components/input/StudioNameInput";
+import { useState } from "react";
 import styled from "styled-components";
 import FormValuesUtils from "utils/formValue.utils";
 import InputElementsUtils from "utils/inputs.utils";
 
 type Props = {
-    inputs: typeof InputElementsUtils.studioCreate;
+    inputs: typeof InputElementsUtils.studioCreate,
     formValue: typeof FormValuesUtils.studioCreate;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: React.MouseEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const NameForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
-
+const NameForm: React.FC<Props> = ({ inputs, formValue, onChange }) => {
+   // const inputs = InputElementsUtils.studioCreate;
     return (
+        <>
         <InputWrapper>
-            <Input type="text" onChange={onChange} maxLength={20} />
-            <Img src="/Emoji-smile.svg" alt="input-search" width={30} />
+            <Input {...inputs.studioName} onChange={(e)=>onChange(e)} value={formValue.name} />
+            {/* <Img src="/Emoji-smile.svg" alt="input-search" width={30} /> */}
         </InputWrapper>
+        </>
     )
 }
 
 const InputWrapper = styled.div`
-    position: relative;
+    /* position: relative; */
 `
 
 const Input = styled.input`

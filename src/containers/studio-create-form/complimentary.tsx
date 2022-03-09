@@ -4,10 +4,10 @@ import client from "services/axios";
 import styled from "styled-components";
 
 type Props = {
-    getValue: (values: string[]) => void;
+    setValue: (name:string, values: string[]) => void;
 }
 
-const ComplimentaryForm: React.FC<Props> = ({ getValue }) => {
+const ComplimentaryForm: React.FC<Props> = ({ setValue }) => {
     const [items, setItems] = useState<Complimentary[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [selectItems, setSelectItems] = useState<string[]>([]);
@@ -24,9 +24,12 @@ const ComplimentaryForm: React.FC<Props> = ({ getValue }) => {
         }
     }, []);
 
+    useEffect(()=>{
+        setValue('complimentaries', selectItems);
+    },[selectItems, setValue]);
+
 
     const handleOurSideClickEvent = (e: MouseEvent) => {
-        e.preventDefault();
         if (!outSideClickRef.current.contains(e.target)) {
             setIsOutSideClick(true);
         }
@@ -37,14 +40,12 @@ const ComplimentaryForm: React.FC<Props> = ({ getValue }) => {
         if (!isInCludes && selectItems.length < 10) {
             setSelectItems(oldArray => [...oldArray, item.id]);
         }
-        getValue(selectItems);
     }
 
     const handlerDeleteItem = (e: React.MouseEvent<HTMLButtonElement>, item: string) => {
         e.preventDefault();
         const deletedItems = selectItems.filter((element) => element !== item);
         setSelectItems(deletedItems);
-        getValue(selectItems);
     }
 
     return (
@@ -97,8 +98,6 @@ const DeleteButtonIcon = styled.button`
         box-shadow: rgb(0 0 0) 0px 0px 0px 2px;
     }
 `
-
-
 const ContentMain = styled.div`
     margin-top: 40px;
 `

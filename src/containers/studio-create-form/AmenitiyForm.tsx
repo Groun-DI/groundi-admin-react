@@ -4,11 +4,9 @@ import { useEffect, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import FormValuesUtils from "utils/formValue.utils";
-import InputElementsUtils from "utils/inputs.utils";
 
 type Props = {
-    setValue: (name: string, value: string | string[]) => void;
+    setValue: (name: string, values: string[]) => void;
 }
 
 const AmenitiyForm: React.FC<Props> = ({ setValue }) => {
@@ -21,6 +19,10 @@ const AmenitiyForm: React.FC<Props> = ({ setValue }) => {
         });
     }, []);
 
+    useEffect(()=>{
+        setValue('amenities', selectItems);
+    },[selectItems, setValue]);
+
     const handlerOnClick = (item: Amenity) => {
         const isInCludes = selectItems.includes(item.id);
         if (isInCludes) {
@@ -29,8 +31,8 @@ const AmenitiyForm: React.FC<Props> = ({ setValue }) => {
         } else {
             setSelectItems(oldArray => [...oldArray, item.id]);
         }
-        setValue('amenitiy' ,selectItems);
     }
+
 
     return (
         <>
@@ -40,8 +42,8 @@ const AmenitiyForm: React.FC<Props> = ({ setValue }) => {
                         <div key={k}>
                             <Input type="checkbox" id={item.id} />
                             <Item htmlFor={item.id} onClick={() => handlerOnClick(item)}>
-                                <img src={item.image} alt={item.id}/>
-                                <Typography.Small weight={theme.fontWeight.SemiBold}>{item.id}</Typography.Small>
+                                <img src={item.image} alt={item.id} />
+                                <Typography.Small weight={theme.fontWeight.Medium}>{item.id}</Typography.Small>
                             </Item>
                         </div>
                     ))
@@ -55,7 +57,7 @@ const Content = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
-    margin-top:70px;
+    margin-top:7vh;
 `
 
 const Item = styled.label`
@@ -71,12 +73,12 @@ const Item = styled.label`
     height: 130px;
     cursor: pointer;
     h6{
-        color: ${({theme})=>theme.color.placeholder};
+        color: ${({ theme }) => theme.color.placeholder};
     }
     :hover{
         box-shadow: rgb(0 0 0) 0px 0px 0px 2px;
         h6{
-            color: ${({theme})=>theme.color.TitleActive};
+            color: ${({ theme }) => theme.color.TitleActive};
         }
     }
     img{
@@ -85,12 +87,12 @@ const Item = styled.label`
 `
 
 const Input = styled.input`
-    display: none;
+    visibility: hidden;
     :checked+label{
         box-shadow: rgb(0 0 0) 0px 0px 0px 2px;
         background-color: rgb(247, 247, 247);
         h6{
-            color: ${({theme})=>theme.color.TitleActive};
+            color: ${({ theme }) => theme.color.TitleActive};
         }
     }
 `;

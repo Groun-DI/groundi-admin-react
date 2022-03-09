@@ -7,6 +7,9 @@ const theme: DefaultTheme = {
     color: {
         main: "#F84F39;",
         main_light: "#EF887B",
+        sub: '#6E917B',
+        sub_light: '#88AC96',
+        sub_dark:'#5B7966',
         disabled_main: "#FF7967",
         dep_gray: "#a5a0a0",
         disabled: "#E8E8E8",

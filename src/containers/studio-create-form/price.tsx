@@ -5,10 +5,10 @@ import InputElementsUtils from "utils/inputs.utils";
 type Props = {
     inputs: typeof InputElementsUtils.studioCreate;
     formValue: typeof FormValuesUtils.studioCreate;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const PriceForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
+const PriceForm: React.FC<Props> = ({ inputs, formValue, onChange }) => {
     // const maxlength = 4;
     // const Type: [string, string, string] = ['lowest', 'highest', 'over'];
 
@@ -39,20 +39,17 @@ const PriceForm:React.FC<Props> = ({ inputs, formValue, onChange }) => {
             <Wrapper>
                 <InputWrapper>
                     <label>최저</label>
-                    <input type="number" defaultValue={10000}
-                        onChange={onChange} />
+                    <input {...inputs.lowestPrice} value={formValue.lowestPrice} onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
                 <InputWrapper>
                     <label>최고</label>
-                    <input type="number" defaultValue={30000}
-                        onChange={onChange} />
+                    <input {...inputs.highestPrice} value={formValue.highestPrice} onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
                 <InputWrapper>
                     <label>인원추가시</label>
-                    <input type="number" defaultValue={30000}
-                        onChange={onChange} />
+                    <input {...inputs.overCharge} value={formValue.overCharge} onChange={onChange} />
                     <label>원</label>
                 </InputWrapper>
             </Wrapper>

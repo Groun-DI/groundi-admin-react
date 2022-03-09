@@ -1,5 +1,5 @@
 class FormValuesUtils {
-    static centerCreate= {
+    static centerCreate = {
         name: '',
         address: '',
         detailAddress: '',
@@ -18,16 +18,28 @@ class FormValuesUtils {
         centerId: '',
         name: '',
         content: '',
-        basicOccupancy: '',
-        maximumOccupancy: '',
+        basicOccupancy: '2',
+        maximumOccupancy: '4',
         overCharge: '',
         lowestPrice: '',
         highestPrice: '',
-        precaution: '',
         amenities: [''],
         precautions: [''],
         complimentaries: ['']
     };
+    static centerParkingLotCreate = {
+        isAvailable: '',
+        paymentType: '',
+        firstHour: '',
+        firstMinute: '',
+        firstPayment: '',
+        additionHour: '',
+        additionMinute: '',
+        additionPayment: '',
+        allDayPayment: '',
+        oneTimePayment: '',
+        content: '',
+    }
 }
 
 
