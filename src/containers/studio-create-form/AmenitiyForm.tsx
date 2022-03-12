@@ -4,12 +4,10 @@ import { useEffect, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
 import { theme } from "styles/theme";
+import { useStudioContext } from "hooks/useStudioCreateContext";
 
-type Props = {
-    setValue: (name: string, values: string[]) => void;
-}
-
-const AmenitiyForm: React.FC<Props> = ({ setValue }) => {
+const AmenitiyForm: React.FC = () => {
+    const { SetOnChageFormValue } = useStudioContext();
     const [items, setItems] = useState<Amenity[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
@@ -19,9 +17,9 @@ const AmenitiyForm: React.FC<Props> = ({ setValue }) => {
         });
     }, []);
 
-    useEffect(()=>{
-        setValue('amenities', selectItems);
-    },[selectItems, setValue]);
+    useEffect(() => {
+        SetOnChageFormValue('amenities', selectItems);
+    }, [selectItems, SetOnChageFormValue]);
 
     const handlerOnClick = (item: Amenity) => {
         const isInCludes = selectItems.includes(item.id);
@@ -36,28 +34,37 @@ const AmenitiyForm: React.FC<Props> = ({ setValue }) => {
 
     return (
         <>
-            <Content>
-                {
-                    items.map((item, k) => (
-                        <div key={k}>
-                            <Input type="checkbox" id={item.id} />
-                            <Item htmlFor={item.id} onClick={() => handlerOnClick(item)}>
-                                <img src={item.image} alt={item.id} />
-                                <Typography.Small weight={theme.fontWeight.Medium}>{item.id}</Typography.Small>
-                            </Item>
-                        </div>
-                    ))
-                }
-            </Content>
+            <Conatiner>
+                <Typography.Large>(중복선택 가능)</Typography.Large>
+                <Content>
+
+                    {
+                        items.map((item, k) => (
+                            <div key={k}>
+                                <Input type="checkbox" id={item.id} />
+                                <Item htmlFor={item.id} onClick={() => handlerOnClick(item)}>
+                                    <img src={item.image} alt={item.id} />
+                                    <Typography.Small weight={theme.fontWeight.Medium}>{item.id}</Typography.Small>
+                                </Item>
+                            </div>
+                        ))
+                    }
+                </Content>
+            </Conatiner>
         </>
     )
 }
+
+const Conatiner = styled.div`
+    text-align: center;
+    margin-top: 3vh;
+`
 
 const Content = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
-    margin-top:7vh;
+    margin-top:3vh;
 `
 
 const Item = styled.label`
@@ -65,14 +72,15 @@ const Item = styled.label`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    padding:20px;
+    padding:40px;
     border: 1px solid rgb(221, 221, 221);
     background-color: white;
     border-radius: 20px;
-    width: 130px;
-    height: 130px;
+    width: 175px;
+    height: 150px;
     cursor: pointer;
     h6{
+        margin-top: 10px;
         color: ${({ theme }) => theme.color.placeholder};
     }
     :hover{

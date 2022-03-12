@@ -2,12 +2,13 @@ import { Complimentary } from "dto/complimentary.entity";
 import { useEffect, useRef, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
+import { useStudioContext } from "hooks/useStudioCreateContext";
+import Typography from "components/style/Typography";
+import { theme } from "styles/theme";
 
-type Props = {
-    setValue: (name:string, values: string[]) => void;
-}
 
-const ComplimentaryForm: React.FC<Props> = ({ setValue }) => {
+const ComplimentaryForm: React.FC = () => {
+    const { SetOnChageFormValue } = useStudioContext();
     const [items, setItems] = useState<Complimentary[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [selectItems, setSelectItems] = useState<string[]>([]);
@@ -24,9 +25,9 @@ const ComplimentaryForm: React.FC<Props> = ({ setValue }) => {
         }
     }, []);
 
-    useEffect(()=>{
-        setValue('complimentaries', selectItems);
-    },[selectItems, setValue]);
+    useEffect(() => {
+        SetOnChageFormValue('complimentaries', selectItems);
+    }, [selectItems, SetOnChageFormValue]);
 
 
     const handleOurSideClickEvent = (e: MouseEvent) => {
@@ -50,35 +51,44 @@ const ComplimentaryForm: React.FC<Props> = ({ setValue }) => {
 
     return (
         <>
-            <ContentHeader show={isOutSideClick} ref={outSideClickRef} onClick={() => setIsOutSideClick(!isOutSideClick)}>
-                <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="사각 볼스터 / 블럭 / 요가매트 등" />
-                <img src="/input-search.svg" alt="input-search" width={30} />
-                <DownDrop show={isOutSideClick} inputValue={inputValue}>
-                    {
-                        items.filter((val) => {
-                            if (selectItems.includes(val.id)) return null;
-                            return val.id.toLowerCase().includes(inputValue.toLowerCase());
-                        }).map((item, k) => (
-                            <DownDropItem key={k} onClick={() => handleAddItem(item)}>{item.id}</DownDropItem>
-                        ))
-                    }
-                </DownDrop>
-            </ContentHeader>
-            <ContentMain>
-                <ItemList>
-                    {
-                        selectItems.map((item, k) => (
-                            <div key={k} style={{ position: "relative" }}>
-                                <Item >{item}</Item>
-                                <DeleteButtonIcon onClick={(e) => handlerDeleteItem(e, item)} />
-                            </div>
-                        ))
-                    }
-                </ItemList>
-            </ContentMain>
+            <Conatiner>
+                <Typography.Large>(중복선택 가능 최대 20개)</Typography.Large>
+                <ContentHeader show={isOutSideClick} ref={outSideClickRef} onClick={() => setIsOutSideClick(!isOutSideClick)}>
+                    <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="사각 볼스터 / 블럭 / 요가매트 등" />
+                    <img src="/input-search.svg" alt="input-search" width={30} />
+                    <DownDrop show={isOutSideClick} inputValue={inputValue}>
+                        {
+                            items.filter((val) => {
+                                if (selectItems.includes(val.id)) return null;
+                                return val.id.toLowerCase().includes(inputValue.toLowerCase());
+                            }).map((item, k) => (
+                                <DownDropItem key={k} onClick={() => handleAddItem(item)}>{item.id}</DownDropItem>
+                            ))
+                        }
+                    </DownDrop>
+                </ContentHeader>
+                <ContentMain>
+                    <Typography.Large weight={theme.fontWeight.SemiBold}>선택된 수련물품</Typography.Large>
+                    <ItemList>
+                        {
+                            selectItems.map((item, k) => (
+                                <div key={k} style={{ position: "relative" }}>
+                                    <Item >{item}</Item>
+                                    <DeleteButtonIcon onClick={(e) => handlerDeleteItem(e, item)} />
+                                </div>
+                            ))
+                        }
+                    </ItemList>
+                </ContentMain>
+            </Conatiner>
         </>
     )
 }
+
+const Conatiner = styled.div`
+    text-align: center;
+    margin-top: 3vh;
+`
 
 const DeleteButtonIcon = styled.button`
     position: absolute;
@@ -99,7 +109,8 @@ const DeleteButtonIcon = styled.button`
     }
 `
 const ContentMain = styled.div`
-    margin-top: 40px;
+    margin-top: 5vh;
+    text-align: left;
 `
 const ItemList = styled.div`
     display: grid;
@@ -118,17 +129,18 @@ const Item = styled.div`
 
 const ContentHeader = styled.div<{ show: boolean }>`
     position: relative;
-    box-shadow:${(props) => props.show ? 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' : 'none'};
-    border-radius: 20px;
+    /* box-shadow:${(props) => props.show ? 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' : 'none'}; */
+    border-radius: 8px;
     width: 600px;
-    margin-top:70px;
+    margin-top:3vh;
+    border: ${(props) => props.show ? '1px solid #DBDBDB' : 'none'};
     input{
         background-color: white;
         width: 100%;
         padding: 20px 70px;
         font-size: ${(props) => props.theme.fontSize.Large};
         border:0px;
-        border-radius: 20px;
+        border-radius: 8px;
     }
 
     img{
@@ -145,12 +157,12 @@ const DownDrop = styled.ul<{ show: boolean, inputValue: string }>`
     top:0;
     left:0;
     width: 100%;
-    border-radius: 20px;
+    border-radius: 8px;
     padding-top: 67px;
     padding-bottom: ${(props) => props.inputValue === '' ? '0px' : '10px'};;
     max-height: 290px;
     overflow: hidden;
-    box-shadow : rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;;
+    border:  1px solid ${({theme})=>theme.color.border};
     z-index: 20;
 `
 

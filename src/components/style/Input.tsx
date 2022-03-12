@@ -38,11 +38,11 @@ const StyleInput = styled.input`
     border-bottom: 1px solid black;
     font-size: ${({ theme }) => theme.fontSize.Regular};
 `
-const Img = styled.img`
-    position: absolute;
-    top: 0px;
-    left: 5px;
-`
+// const Img = styled.img`
+//     position: absolute;
+//     top: 0px;
+//     left: 5px;
+// `
 
 
 

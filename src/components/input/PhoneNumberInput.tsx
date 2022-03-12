@@ -1,7 +1,6 @@
 import InitialSelect from "components/select/Initial"
 import Flex from "components/style/Flex"
 import Typography from "components/style/Typography"
-import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { theme } from "styles/theme"
 

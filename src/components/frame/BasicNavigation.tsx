@@ -1,5 +1,4 @@
 import { useAuth } from 'hooks/useAuth';
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";

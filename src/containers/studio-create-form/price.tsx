@@ -1,14 +1,15 @@
 import styled from "styled-components";
-import FormValuesUtils from "utils/formValue.utils";
-import InputElementsUtils from "utils/inputs.utils";
+import { useStudioContext } from "hooks/useStudioCreateContext";
 
-type Props = {
-    inputs: typeof InputElementsUtils.studioCreate;
-    formValue: typeof FormValuesUtils.studioCreate;
-    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => void;
-}
+const PriceForm: React.FC = () => {
+    const { formValues, inputElements, SetOnChageFormValue } = useStudioContext();
 
-const PriceForm: React.FC<Props> = ({ inputs, formValue, onChange }) => {
+    const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        SetOnChageFormValue(name, value);
+    }
+
+
     // const maxlength = 4;
     // const Type: [string, string, string] = ['lowest', 'highest', 'over'];
 
@@ -39,17 +40,17 @@ const PriceForm: React.FC<Props> = ({ inputs, formValue, onChange }) => {
             <Wrapper>
                 <InputWrapper>
                     <label>최저</label>
-                    <input {...inputs.lowestPrice} value={formValue.lowestPrice} onChange={onChange} />
+                    <input {...inputElements.lowestPrice} value={formValues.lowestPrice} onChange={handlerOnChange} />
                     <label>원</label>
                 </InputWrapper>
                 <InputWrapper>
                     <label>최고</label>
-                    <input {...inputs.highestPrice} value={formValue.highestPrice} onChange={onChange} />
+                    <input {...inputElements.highestPrice} value={formValues.highestPrice} onChange={handlerOnChange} />
                     <label>원</label>
                 </InputWrapper>
                 <InputWrapper>
                     <label>인원추가시</label>
-                    <input {...inputs.overCharge} value={formValue.overCharge} onChange={onChange} />
+                    <input {...inputElements.overCharge} value={formValues.overCharge} onChange={handlerOnChange} />
                     <label>원</label>
                 </InputWrapper>
             </Wrapper>

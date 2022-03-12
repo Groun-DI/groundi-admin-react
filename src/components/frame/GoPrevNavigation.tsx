@@ -1,13 +1,8 @@
-import { useAuth } from 'hooks/useAuth';
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 
 const GoPrevNavigation = () => {
     const { pathname } = useLocation();
-    const navigator = useNavigate();
-    const { LoginOut } = useAuth();
     if (pathname === '/center' || pathname === '/studio/new') {
         return null;
     }

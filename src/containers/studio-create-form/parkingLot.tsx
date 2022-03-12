@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import styled from "styled-components";
 import FormValuesUtils from "utils/formValue.utils";
 import InputElementsUtils from "utils/inputs.utils";
@@ -10,7 +9,6 @@ type Props = {
 
 const ParkingLotForm: React.FC<Props> = ({ formValue, onChange }) => {
     const inputs = InputElementsUtils.centerParkingLotCreate;
-    const Type: [string, string] = ['isAvailable', 'paymentType'];
     const maxLengthType: [number, number] = [2, 4];
 
     // const handleOnChangeSelect = (value: string, type: string) => {

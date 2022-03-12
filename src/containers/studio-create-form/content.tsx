@@ -1,18 +1,17 @@
 import styled from "styled-components";
-import FormValuesUtils from "utils/formValue.utils";
-import InputElementsUtils from "utils/inputs.utils";
+import { useStudioContext } from "hooks/useStudioCreateContext";
 
-type Props = {
-    inputs: typeof InputElementsUtils.studioCreate;
-    formValue: typeof FormValuesUtils.studioCreate;
-    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => void;
-}
+const ContentForm: React.FC = () => {
+    const { formValues, inputElements, SetOnChageFormValue } = useStudioContext();
 
-const ContentForm: React.FC<Props> = ({ inputs, formValue, onChange }) => {
+    const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        SetOnChageFormValue(name, value);
+    }
 
     return (
         <>
-            <Input {...inputs.content} value={formValue.content} type="textarea" onChange={onChange} />
+            <Input {...inputElements.content} value={formValues.content} type="textarea" onChange={handlerOnChange} />
         </>
 
     )

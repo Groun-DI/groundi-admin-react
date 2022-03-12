@@ -1,23 +1,20 @@
-import StudioNameInput from "components/input/StudioNameInput";
-import { useState } from "react";
+import { useStudioContext } from "hooks/useStudioCreateContext";
 import styled from "styled-components";
-import FormValuesUtils from "utils/formValue.utils";
-import InputElementsUtils from "utils/inputs.utils";
 
-type Props = {
-    inputs: typeof InputElementsUtils.studioCreate,
-    formValue: typeof FormValuesUtils.studioCreate;
-    onChange: (e: React.MouseEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => void;
-}
+const NameForm: React.FC = () => {
+    const { formValues, inputElements, SetOnChageFormValue } = useStudioContext();
 
-const NameForm: React.FC<Props> = ({ inputs, formValue, onChange }) => {
-   // const inputs = InputElementsUtils.studioCreate;
+    const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        SetOnChageFormValue(name, value);
+    }
+
     return (
         <>
-        <InputWrapper>
-            <Input {...inputs.studioName} onChange={(e)=>onChange(e)} value={formValue.name} />
-            {/* <Img src="/Emoji-smile.svg" alt="input-search" width={30} /> */}
-        </InputWrapper>
+            <InputWrapper>
+                <Input {...inputElements.studioName} onChange={handlerOnChange} value={formValues.name} />
+                {/* <Img src="/Emoji-smile.svg" alt="input-search" width={30} /> */}
+            </InputWrapper>
         </>
     )
 }
@@ -38,10 +35,10 @@ const Input = styled.input`
     }
 `
 
-const Img = styled.img`
-    position: absolute;
-    transform: translate(-50%, -50%);
-    left: 40px;
-    top: 50%;
-`
+// const Img = styled.img`
+//     position: absolute;
+//     transform: translate(-50%, -50%);
+//     left: 40px;
+//     top: 50%;
+// `
 export default NameForm

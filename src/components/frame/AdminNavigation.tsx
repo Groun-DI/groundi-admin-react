@@ -1,6 +1,4 @@
-import { useAuth } from 'hooks/useAuth';
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import Flex from 'components/style/Flex';
@@ -14,7 +12,6 @@ import { theme } from 'styles/theme';
 const AdminNavigation = () => {
     const { centerId } = useParams();
     const { pathname } = useLocation();
-    const { LoginOut } = useAuth();
     const [userProfileImg, setUserProfileImg] = useState<string>('');
     const [isMyprofileModalOpen, setIsMyprofileModalOpen] = useState<boolean>(false);
     const [isNotifyModalOpen, setIsNotifyModalOpen] = useState<boolean>(false);

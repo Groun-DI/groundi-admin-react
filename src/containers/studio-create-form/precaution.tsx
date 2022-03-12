@@ -2,13 +2,10 @@ import { Precaution } from "dto/precaution.entity";
 import { useEffect, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
+import { useStudioContext } from "hooks/useStudioCreateContext";
 
-type Props = {
-    setValue: (name:string, values: string[]) => void;
-}
-
-
-const PrecautionForm: React.FC<Props> = ({ setValue }) => {
+const PrecautionForm: React.FC= () => {
+    const { SetOnChageFormValue } = useStudioContext();
     const [items, setItems] = useState<Precaution[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
@@ -20,8 +17,8 @@ const PrecautionForm: React.FC<Props> = ({ setValue }) => {
     }, []);
 
     useEffect(()=>{
-        setValue('precautions', selectItems);
-    },[setValue, selectItems])
+        SetOnChageFormValue('precautions', selectItems);
+    },[SetOnChageFormValue, selectItems])
 
     const handlerOnClick = (item: Precaution) => {
         const isInCludes = selectItems.includes(item.id);

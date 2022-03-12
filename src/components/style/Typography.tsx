@@ -16,6 +16,7 @@ const Typography = {
     Title2: styled.h2<Props>`
         font-size: ${({ theme }) => theme.fontSize.Title2};
         font-weight: ${({ weight }) => weight || 400};
+        line-height: 1.3;
         color: ${({ theme, color }) => color || theme.color.b_font};
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
     `,
@@ -23,12 +24,14 @@ const Typography = {
         font-size: ${({ theme }) => theme.fontSize.Title3};
         font-weight: ${({ weight }) => weight || 400};
         color: ${({ theme, color }) => color || theme.color.b_font};
+        line-height: 1.5;
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
     `,
     Large: styled.h4<Props>`
         font-size: ${({ theme }) => theme.fontSize.Large};
         font-weight: ${({ weight }) => weight || 400};
         color: ${({ theme, color }) => color || theme.color.b_font};
+        line-height: 1.5;
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
     `,
     Regular: styled.h5<Props>`
