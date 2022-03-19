@@ -73,7 +73,7 @@ const Item = styled.label`
     justify-content: space-around;
     align-items: center;
     padding:40px;
-    border: 1px solid rgb(221, 221, 221);
+    border: 1px solid ${({ theme }) => theme.color.border};
     background-color: white;
     border-radius: 20px;
     width: 175px;
@@ -81,12 +81,12 @@ const Item = styled.label`
     cursor: pointer;
     h6{
         margin-top: 10px;
-        color: ${({ theme }) => theme.color.placeholder};
+        color: ${({ theme }) => theme.color.TitleActive};
     }
     :hover{
-        box-shadow: rgb(0 0 0) 0px 0px 0px 2px;
+        border: 1px solid ${({ theme }) => theme.color.main_light};
         h6{
-            color: ${({ theme }) => theme.color.TitleActive};
+            color: ${({ theme }) => theme.color.main};
         }
     }
     img{
@@ -97,10 +97,10 @@ const Item = styled.label`
 const Input = styled.input`
     visibility: hidden;
     :checked+label{
-        box-shadow: rgb(0 0 0) 0px 0px 0px 2px;
-        background-color: rgb(247, 247, 247);
+        border: 1px solid ${({ theme }) => theme.color.main_light};
+        background-color: ${({ theme }) => theme.color.hover};
         h6{
-            color: ${({ theme }) => theme.color.TitleActive};
+            color: ${({ theme }) => theme.color.main};
         }
     }
 `;

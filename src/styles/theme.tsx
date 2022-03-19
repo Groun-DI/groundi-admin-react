@@ -18,7 +18,7 @@ const theme: DefaultTheme = {
         line: '#ECEEF3',
         b_font: '#343A40',
         border:"#DBDBDB",
-        TitleActive:"#222222",
+        TitleActive:"#343A40",
         hover : 'rgb(255, 250, 250)'
     },
     fontSize: {

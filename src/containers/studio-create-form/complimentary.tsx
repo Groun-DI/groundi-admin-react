@@ -73,8 +73,9 @@ const ComplimentaryForm: React.FC = () => {
                         {
                             selectItems.map((item, k) => (
                                 <div key={k} style={{ position: "relative" }}>
-                                    <Item >{item}</Item>
-                                    <DeleteButtonIcon onClick={(e) => handlerDeleteItem(e, item)} />
+                                    <Item >{item}
+                                        <DeleteButtonIcon onClick={(e) => handlerDeleteItem(e, item)} />
+                                    </Item>
                                 </div>
                             ))
                         }
@@ -97,16 +98,14 @@ const DeleteButtonIcon = styled.button`
     border: 0px;
     width: 20px;
     height: 20px;
-    background-color: white;
     background-image: url('/Close.svg');
     background-repeat: no-repeat;
+    background-color: ${(props) => props.theme.color.hover};
     background-position: center;
     cursor: pointer;
-    top: 20px;
+    top: 50%;
     right: 20px;
-    :hover{
-        box-shadow: rgb(0 0 0) 0px 0px 0px 2px;
-    }
+    transform: translate(0 , -50%);
 `
 const ContentMain = styled.div`
     margin-top: 5vh;
@@ -118,10 +117,12 @@ const ItemList = styled.div`
 `
 
 const Item = styled.div`
-    background-color: ${(props) => props.theme.color.main};
-    border-radius: 20px;
+    position: relative;
+    border: 1px solid ${(props) => props.theme.color.main};
+    background-color: ${(props) => props.theme.color.hover};
+    border-radius: 100px;
     padding: 20px 40px 20px 30px;
-    color: white;
+    color:  ${(props) => props.theme.color.main};
     margin: 10px;
     font-size: ${(props) => props.theme.fontSize.Large};
     text-align: center;
@@ -162,7 +163,7 @@ const DownDrop = styled.ul<{ show: boolean, inputValue: string }>`
     padding-bottom: ${(props) => props.inputValue === '' ? '0px' : '10px'};;
     max-height: 290px;
     overflow: hidden;
-    border:  1px solid ${({theme})=>theme.color.border};
+    border:  1px solid ${({ theme }) => theme.color.border};
     z-index: 20;
 `
 
