@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { useStudioContext } from "hooks/useStudioCreateContext";
+import Typography from "components/style/Typography";
+import { theme } from "styles/theme";
+import CSS from 'csstype';
 
 const PriceForm: React.FC = () => {
     const { formValues, inputElements, SetOnChageFormValue } = useStudioContext();
@@ -7,6 +10,12 @@ const PriceForm: React.FC = () => {
     const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         SetOnChageFormValue(name, value);
+    }
+
+    const unitStyle: CSS.Properties = {
+        position: "absolute",
+        top: "15px",
+        right: "20px",
     }
 
 
@@ -38,20 +47,20 @@ const PriceForm: React.FC = () => {
     return (
         <>
             <Wrapper>
+                <Typography.Large weight={theme.fontWeight.SemiBold}><Accent>최저</Accent> 대여 금액(1시간 기준)</Typography.Large>
                 <InputWrapper>
-                    <label>최저</label>
-                    <input {...inputElements.lowestPrice} value={formValues.lowestPrice} onChange={handlerOnChange} />
-                    <label>원</label>
+                    <Input {...inputElements.lowestPrice} onChange={handlerOnChange} value={formValues.lowestPrice} />
+                    <Typography.Regular style={unitStyle}>원</Typography.Regular>
                 </InputWrapper>
+                <Typography.Large weight={theme.fontWeight.SemiBold}><Accent>최고</Accent> 대여 금액(1시간 기준)</Typography.Large>
                 <InputWrapper>
-                    <label>최고</label>
-                    <input {...inputElements.highestPrice} value={formValues.highestPrice} onChange={handlerOnChange} />
-                    <label>원</label>
+                    <Input {...inputElements.highestPrice} onChange={handlerOnChange} value={formValues.highestPrice} />
+                    <Typography.Regular style={unitStyle}>원</Typography.Regular>
                 </InputWrapper>
+                <Typography.Large weight={theme.fontWeight.SemiBold}><Accent>인원추가</Accent> 금액(1인 기준)</Typography.Large>
                 <InputWrapper>
-                    <label>인원추가시</label>
-                    <input {...inputElements.overCharge} value={formValues.overCharge} onChange={handlerOnChange} />
-                    <label>원</label>
+                    <Input {...inputElements.overCharge} onChange={handlerOnChange} value={formValues.overCharge} />
+                    <Typography.Regular style={unitStyle}>원</Typography.Regular>
                 </InputWrapper>
             </Wrapper>
         </>
@@ -60,23 +69,28 @@ const PriceForm: React.FC = () => {
 }
 const Wrapper = styled.div`
     padding: 10px;
+    margin-top: 40px;
 `
 
 const InputWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-    font-size: ${(props) => props.theme.fontSize.Title3};
-    margin: 60px 0px;
-    input{
-        width: 300px;
-        text-align: center;
-        font-weight: 600;
-        font-size: ${(props) => props.theme.fontSize.Title1};
-        border: 0px;
-        border-bottom: 1px solid #c4c4c4;
-        margin: 0px 20px;
+    position: relative;
+`
+
+const Accent = styled.span`
+    color: ${(props) => props.theme.color.main};
+`
+
+const Input = styled.input`
+    width: 700px;
+    height: 50px;
+    border: 1px solid ${(props) => props.theme.color.border};
+    border-radius: 8px;
+    padding: 20px 20px;
+    padding-right: 50px;
+    font-size: ${(props) => props.theme.fontSize.Large};
+    :hover{
+        border: 2px solid #c4c4c4c4;
     }
+    margin-bottom: 40px;
 `
 export default PriceForm;

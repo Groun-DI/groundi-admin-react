@@ -18,19 +18,19 @@ import { CreateStduioProvider } from "hooks/useStudioCreateContext";
 const StudioCreate = () => {
     const Display = [
         {
-            title: <>스튜디오를 사용할 수 있는<br/><span>인원 수를</span> 알려주세요.</>,
+            title: <>스튜디오를 사용할 수 있는<br /><span>인원 수를</span> 알려주세요.</>,
             component: <OccupancyForm />
         },
         {
-            title: <>스튜디오 <span>편의시설</span><br/>정보를 추가해 주세요.</>,
+            title: <>스튜디오 <span>편의시설</span><br />정보를 추가해 주세요.</>,
             component: <AmenitiyForm />
         },
         {
-            title: <>스튜디오에 준비된 <span>수련물품</span>을<br/>검색하여 추가해주세요.</>,
+            title: <>스튜디오에 준비된 <span>수련물품</span>을<br />검색하여 추가해주세요.</>,
             component: <ComplimentaryForm />
         },
         {
-            title: "이용시 주의사항이 있다면 선택해주세요",
+            title: <>스튜디오에 이용시 관련<br /><span>주의사항</span>이 있다면 추가해주세요.</>,
             component: <PrecautionForm />
         },
         // {
@@ -38,11 +38,11 @@ const StudioCreate = () => {
         //     component: <ParkingLotForm/>
         // },
         {
-            title: "스튜디오 이름을 지어주세요",
+            title: <>스튜디오의 <span>이름</span>을<br />만들어주세요</>,
             component: <NameForm />
         },
         {
-            title: "스튜디오의 장점이 돋보일 수 있도록 설명해주세요!",
+            title: <>스튜디오를 <br /><span>설명</span>해주세요</>,
             component: <ContentForm />
         },
         {
@@ -50,7 +50,7 @@ const StudioCreate = () => {
             component: <ImageForm />
         },
         {
-            title: "스튜디오의 대여가격을 설정해주세요",
+            title: <>스튜디오의 <span>대여가격</span>을<br />설정해주세요</>,
             component: <PriceForm />
         },
         {
@@ -71,7 +71,7 @@ const StudioCreate = () => {
                         Display.map((item, key) => (
                             <Section key={key}>
                                 <StyledTypographyTitle2 weight={theme.fontWeight.SemiBold}>{item.title}</StyledTypographyTitle2>
-                                <Line/>
+                                <Line />
                                 <Container>
                                     {item.component}
                                 </Container>
@@ -112,7 +112,7 @@ const StyledTypographyTitle2 = styled(Typography.Title2)`
     margin-top: 7vh;
     text-align: center;
     span{
-        color: ${({theme}) => theme.color.main};
+        color: ${({ theme }) => theme.color.main};
     }
 `
 const Line = styled.hr`
@@ -121,7 +121,7 @@ const Line = styled.hr`
     margin-top: 3vh;
     border: 0px;
     border-radius: 3px;
-    border-top: 1px solid ${({theme}) => theme.color.TitleActive}; 
+    border-top: 1px solid ${({ theme }) => theme.color.TitleActive}; 
 `
 const Body = styled.div`
     margin: 0 auto;

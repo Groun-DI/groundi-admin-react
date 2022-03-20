@@ -87,7 +87,7 @@ class InputElementsUtils {
         content: {
             name: "content",
             type: "text",
-            placeholder: "",
+            placeholder: "\"자신에 대한 간략한 소개면 좋아요!\"\n*무엇을 중요하게 생각해요. 무엇을 나누고 싶어요.",
             errorMessage: "",
             label: "",
             invalid: false,

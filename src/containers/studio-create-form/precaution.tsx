@@ -9,11 +9,12 @@ import { theme } from "styles/theme";
 const PrecautionForm: React.FC = () => {
     const { SetOnChageFormValue } = useStudioContext();
     const [items, setItems] = useState<Precaution[]>([]);
+    const [otherPrecautions, setOtherPrecautions] = useState<String>();
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
     useEffect(() => {
         client.get<Precaution[]>('precaution').then(res => {
-            console.log(res.data);
+            res.data.push({ id: "2", content: "너구리" })
             setItems(res.data);
         });
     }, []);
@@ -32,29 +33,32 @@ const PrecautionForm: React.FC = () => {
         }
     }
 
+    const handelerOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setOtherPrecautions(e.target.value);
+    }
+
     return (
         <Wrapper>
-            <Typography.Large>(중복선택 가능 최대 20개)</Typography.Large>
-            <ContentWrap>
+            <Typography.Large>(중복선택 가능)</Typography.Large>
+            <ContentWrap style={{ marginBottom: "70px" }}>
                 <Typography.Large weight={theme.fontWeight.SemiBold}>안전 장치</Typography.Large>
                 <Content>
-                    <ul>
-                        {
-                            items.map((item, k) => (
-                                <li key={k}>
-                                    <Input type="checkbox" name="drone" />
-                                    <CheckBox onClick={() => handlerOnClick(item)}>
-                                        <p>{item.content}</p>
-                                    </CheckBox>
-                                </li>
-                            ))
-                        }
-                    </ul>
+                    {
+                        items.map((item, k) => (
+                            <div>
+                                <Input type="checkbox" id={"precaution_" + item.id} />
+                                <CheckBox htmlFor={"precaution_" + item.id} onClick={() => handlerOnClick(item)}>
+                                    <Typography.Regular weight={theme.fontWeight.Bold}>{item.content}</Typography.Regular>
+                                </CheckBox>
+                            </div>
+                        ))
+                    }
                 </Content>
             </ContentWrap>
             <Typography.Large weight={theme.fontWeight.SemiBold}>다른 주의사항이 있다면 적어주세요.</Typography.Large>
             <ContentWrap>
-                <TextArea />
+                <Typography.Small style={{ textAlign: "right" }}>{otherPrecautions ? otherPrecautions.length : 0}/400</Typography.Small>
+                <TextArea maxLength={400} onChange={handelerOnChange} placeholder={"\"자신에 대한 간략한 소개면 좋아요!\"\n*무엇을 중요하게 생각해요. 무엇을 나누고 싶어요."} />
             </ContentWrap>
         </Wrapper>
     )
@@ -75,19 +79,43 @@ const Content = styled.div`
 `
 
 const CheckBox = styled.label`
+    display: flex;
     position: relative;
     width: 100%;
     color: ${(props) => props.theme.color.placeholder};
     border: 1px solid ${(props) => props.theme.color.border};
-    padding: 20px 16px;
+    padding: 15px 16px;
     border-radius: 8px;
+    cursor: pointer;
+    h5{
+        color: ${(props) => props.theme.color.placeholder};
+        line-height: 23px;
+    }
+
+    :hover{
+        border: 1px solid ${({ theme }) => theme.color.main_light};
+        h5{
+            color: ${(props) => theme.color.main_light};
+            line-height: 23px;
+        }
+        ::before{
+            background: url('/svg/check.svg') no-repeat center;
+            background-color:${({ theme }) => theme.color.main};
+            border: 1px solid ${({ theme }) => theme.color.main};
+        }
+    }
 
     ::before{
         content: '';
-        position: absolute;
-        background: url('/check.svg') no-repeat center;
-        width: 30px;
-        height: 30px;
+        position: inline-block;
+        vertical-align:center;
+        background: url('/svg/check-placeholder.svg') no-repeat center;
+        fill: red;
+        margin-right: 10px;
+        width: 25px;
+        height: 25px;
+        border: 1px solid ${({ theme }) => theme.color.placeholder};
+        border-radius: 20px;
     }
 `;
 
@@ -97,8 +125,17 @@ const Input = styled.input`
     :checked+label{
         border: 1px solid ${({ theme }) => theme.color.main_light};
         background-color: ${({ theme }) => theme.color.hover};
-        h6{
+        h5{
             color: ${({ theme }) => theme.color.main};
+        }
+
+        p{
+            color: ${({ theme }) => theme.color.main};
+        }
+        ::before{
+            background: url('/svg/check.svg') no-repeat center;
+            background-color:${({ theme }) => theme.color.main};
+            border: 1px solid ${({ theme }) => theme.color.main};
         }
     }
 `;
@@ -106,14 +143,19 @@ const Input = styled.input`
 
 const TextArea = styled.textarea`
     width: 100%;
-    height: 150px;
-    border: 2px solid black;
+    height: 250px;
+    border: 1px solid ${(props) => props.theme.color.border};
     margin-top: 10px;
-    border-radius: 30px;
+    border-radius: 8px;
     padding: 30px 40px;
     font-size: ${(props) => props.theme.fontSize.Large};
-    :hover{
-        border: 2px solid #c4c4c4c4;
+    resize: none;
+    -webkit-transition: border 0.5s;
+    transition: border 0.5s;
+    :focus{
+        border: 1px solid ${({ theme }) => theme.color.main};
+        -webkit-transition: border 0.5s;
+        transition: border 0.5s;
     }
 `
 export default PrecautionForm;
