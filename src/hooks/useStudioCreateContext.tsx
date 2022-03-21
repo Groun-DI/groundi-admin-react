@@ -6,14 +6,14 @@ import { useCallback } from "react";
 interface Value {
     formValues: typeof FormValuesUtils.studioCreate,
     inputElements: typeof InputElementsUtils.studioCreate,
-    SetOnChageFormValue: (name: string, value: string | string[]) => any,
+    SetFormValue: (name: string, value: string | string[]) => any,
     Submit: () => Promise<any>,
 }
 
 const defaultValue: Value = {
     formValues: FormValuesUtils.studioCreate,
     inputElements: InputElementsUtils.studioCreate,
-    SetOnChageFormValue: (name: string, value: string | string[]) => { },
+    SetFormValue: (name: string, value: string | string[]) => { },
     Submit: () => { return Promise.resolve('LoginOut') }
 }
 
@@ -27,7 +27,7 @@ export const CreateStduioProvider = (props: { children: React.ReactNode }) => {
     const inputElements = InputElementsUtils.studioCreate;
     const [formValues, setFormValues] = useState(FormValuesUtils.studioCreate);
 
-    const SetOnChageFormValue = useCallback((name: string, value: string | string[]) => {
+    const SetFormValue = useCallback((name: string, value: string | string[]) => {
         setFormValues(oldArray => ({ ...oldArray, [name]: value }));
     }, []);
 
@@ -35,7 +35,7 @@ export const CreateStduioProvider = (props: { children: React.ReactNode }) => {
 
     }
 
-    const value = { formValues, inputElements, SetOnChageFormValue, Submit };
+    const value = { formValues, inputElements, SetFormValue, Submit };
     return <createStudioContext.Provider value={value} {...props} />
 };
 

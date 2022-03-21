@@ -8,7 +8,7 @@ import { theme } from "styles/theme";
 
 
 const ComplimentaryForm: React.FC = () => {
-    const { SetOnChageFormValue } = useStudioContext();
+    const { SetFormValue } = useStudioContext();
     const [items, setItems] = useState<Complimentary[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [selectItems, setSelectItems] = useState<string[]>([]);
@@ -26,8 +26,8 @@ const ComplimentaryForm: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        SetOnChageFormValue('complimentaries', selectItems);
-    }, [selectItems, SetOnChageFormValue]);
+        SetFormValue('complimentaries', selectItems);
+    }, [selectItems, SetFormValue]);
 
 
     const handleOurSideClickEvent = (e: MouseEvent) => {

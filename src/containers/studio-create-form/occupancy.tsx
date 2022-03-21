@@ -7,7 +7,7 @@ import { useStudioContext } from "hooks/useStudioCreateContext";
 import { useCallback } from "react";
 
 const OccupancyForm: React.FC = () => {
-    const { inputElements, SetOnChageFormValue } = useStudioContext();
+    const { inputElements, SetFormValue } = useStudioContext();
 
     const basicOccupancyChange = useCallback((value: number) => {
         if (value < 1 || 100 < value) {
@@ -15,8 +15,8 @@ const OccupancyForm: React.FC = () => {
         }
         inputElements.basicOccupancy.invalid = false;
 
-        SetOnChageFormValue(inputElements.basicOccupancy.name, value.toString());
-    }, [SetOnChageFormValue, inputElements.basicOccupancy])
+        SetFormValue(inputElements.basicOccupancy.name, value.toString());
+    }, [SetFormValue, inputElements.basicOccupancy]);
 
     const maximumOccupancyChange = useCallback((value: number) => {
         if (value < 1 || 100 < value) {
@@ -24,8 +24,8 @@ const OccupancyForm: React.FC = () => {
         }
         inputElements.maximumOccupancy.invalid = false;
 
-        SetOnChageFormValue(inputElements.maximumOccupancy.name, value.toString());
-    }, [SetOnChageFormValue, inputElements.maximumOccupancy])
+        SetFormValue(inputElements.maximumOccupancy.name, value.toString());
+    }, [SetFormValue, inputElements.maximumOccupancy]);
 
     return (
         <>

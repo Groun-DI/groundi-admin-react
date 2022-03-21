@@ -7,7 +7,7 @@ import { theme } from "styles/theme";
 import { useStudioContext } from "hooks/useStudioCreateContext";
 
 const AmenitiyForm: React.FC = () => {
-    const { SetOnChageFormValue } = useStudioContext();
+    const { SetFormValue } = useStudioContext();
     const [items, setItems] = useState<Amenity[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
@@ -18,8 +18,8 @@ const AmenitiyForm: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        SetOnChageFormValue('amenities', selectItems);
-    }, [selectItems, SetOnChageFormValue]);
+        SetFormValue('amenities', selectItems);
+    }, [selectItems, SetFormValue]);
 
     const handlerOnClick = (item: Amenity) => {
         const isInCludes = selectItems.includes(item.id);

@@ -4,12 +4,12 @@ import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 
 const NameForm: React.FC = () => {
-    const { formValues, inputElements, SetOnChageFormValue } = useStudioContext();
+    const { formValues, inputElements, SetFormValue } = useStudioContext();
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         console.log(name + value + e.target);
-        SetOnChageFormValue(name, value);
+        SetFormValue(name, value);
     }
 
     return (

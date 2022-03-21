@@ -5,11 +5,11 @@ import { theme } from "styles/theme";
 import CSS from 'csstype';
 
 const PriceForm: React.FC = () => {
-    const { formValues, inputElements, SetOnChageFormValue } = useStudioContext();
+    const { formValues, inputElements, SetFormValue } = useStudioContext();
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        SetOnChageFormValue(name, value);
+        SetFormValue(name, value);
     }
 
     const unitStyle: CSS.Properties = {

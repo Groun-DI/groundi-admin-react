@@ -7,7 +7,7 @@ import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 
 const PrecautionForm: React.FC = () => {
-    const { SetOnChageFormValue } = useStudioContext();
+    const { SetFormValue } = useStudioContext();
     const [items, setItems] = useState<Precaution[]>([]);
     const [otherPrecautions, setOtherPrecautions] = useState<String>();
     const [selectItems, setSelectItems] = useState<string[]>([]);
@@ -20,8 +20,8 @@ const PrecautionForm: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        SetOnChageFormValue('precautions', selectItems);
-    }, [SetOnChageFormValue, selectItems])
+        SetFormValue('precautions', selectItems);
+    }, [SetFormValue, selectItems])
 
     const handlerOnClick = (item: Precaution) => {
         const isInCludes = selectItems.includes(item.id);

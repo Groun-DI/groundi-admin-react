@@ -9,7 +9,6 @@ import ImageForm from "containers/studio-create-form/image";
 import PriceForm from "containers/studio-create-form/price";
 import RefundForm from "containers/studio-create-form/refund";
 import NameForm from "containers/studio-create-form/name";
-import { useState, useEffect } from "react";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 import Wrapper from "components/style/Wrapper";

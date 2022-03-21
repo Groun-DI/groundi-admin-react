@@ -1,106 +1,54 @@
 import Typography from "components/style/Typography";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 
 type Props = {
     onChange: (value: number) => void,
 }
 
-type context = {
-    countNumber: number,
-    setCountNumber: React.Dispatch<React.SetStateAction<number>>,
-    onChange: (value: number) => void,
-    incrementValid: boolean,
-    decrementValid: boolean,
-    setIncrementValid: React.Dispatch<React.SetStateAction<boolean>>,
-    setDecrementValid: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-const useValue = () => {
+const IncrementStepper: React.FC<Props> = ({ onChange }) => {
     const [countNumber, setCountNumber] = useState<number>(1);
     const [incrementValid, setIncrementValid] = useState<boolean>(false);
     const [decrementValid, setDecrementValid] = useState<boolean>(true);
-    const onChange = (value: number) => { }
-    return {
-        countNumber,
-        setCountNumber,
-        onChange,
-        incrementValid,
-        decrementValid,
-        setIncrementValid,
-        setDecrementValid
-    }
-}
-
-const IncrementStepperContext = createContext<context>({} as ReturnType<typeof useValue>);
-const useIncrementStepperContext = () => useContext(IncrementStepperContext);
-
-
-const IncrementStepper: React.FC<Props> = ({ onChange }) => {
-    const value = useValue();
 
     const OnValid = useCallback(() =>{
-        if (value.countNumber <= 1) {
-            value.setDecrementValid(true);
-            value.setIncrementValid(false);
-        } else if (100 >= value.countNumber) {
-            value.setDecrementValid(false);
-            value.setIncrementValid(false);
-        } else if (100 < value.countNumber) {
-            value.setDecrementValid(false);
-            value.setIncrementValid(true);
+        if (countNumber <= 1) {
+            setDecrementValid(true);
+            setIncrementValid(false);
+        } else if (100 >= countNumber) {
+            setDecrementValid(false);
+            setIncrementValid(false);
+        } else if (100 < countNumber) {
+            setDecrementValid(false);
+            setIncrementValid(true);
         }
-    },[value]);
-
-    useEffect(() => {
-        OnValid();
-        onChange(value.countNumber);
-    }, [value.countNumber, onChange, OnValid]);
-
-    return (
-        <IncrementStepperContext.Provider value={value}>
-            <DecrementStepperButton />
-            <StepperText />
-            <IncrementStepperButton />
-        </IncrementStepperContext.Provider>
-    )
-}
-
-const IncrementStepperButton = () => {
-    const { countNumber, setCountNumber, incrementValid } = useIncrementStepperContext();
+    },[countNumber]);
 
     const handlerPlus = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setCountNumber(countNumber + 1);
-    }
-
-    return (
-        <PlusButton name="decrement" value={countNumber} onClick={handlerPlus} disabled={incrementValid} />
-    )
-}
-
-const DecrementStepperButton = () => {
-    const { countNumber, setCountNumber, decrementValid } = useIncrementStepperContext();
+    };
 
     const handlerMius = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setCountNumber(countNumber - 1);
-    }
+    };
+
+    useEffect(() => {
+        OnValid();
+        onChange(countNumber);
+    }, [OnValid, onChange, countNumber]);
 
     return (
-        <MinusButton name="increment" value={countNumber} onClick={handlerMius} disabled={decrementValid} />
+        <>
+            <MinusButton name="increment" value={countNumber} onClick={handlerMius} disabled={decrementValid} />
+            <TypographyWrap>
+                <Typography.Large>{countNumber}</Typography.Large>
+            </TypographyWrap>
+            <PlusButton name="decrement" value={countNumber} onClick={handlerPlus} disabled={incrementValid} />
+        </>
     )
 }
-
-const StepperText = () => {
-    const { countNumber } = useIncrementStepperContext();
-    return (
-        <TypographyWrap>
-            <Typography.Large>{countNumber}</Typography.Large>
-        </TypographyWrap>
-    )
-}
-
 
 const PlusButton = styled.button`
     width: 32px;
@@ -116,9 +64,6 @@ const PlusButton = styled.button`
     :hover{
         border: 2px solid ${({ theme }) => theme.color.sub};
         background: url('/icon/plus-active.svg') no-repeat center;
-    }
-    :focus{
-        outline: 2px solid ${({ theme }) => theme.color.sub_light};
     }
     :disabled{
         border: 2px solid ${({ theme }) => theme.color.border};
@@ -153,4 +98,5 @@ const MinusButton = styled.button`
 const TypographyWrap = styled.div`
     padding: 0 20px;
 `
+
 export default IncrementStepper;
