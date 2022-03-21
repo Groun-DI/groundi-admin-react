@@ -55,7 +55,7 @@ const ComplimentaryForm: React.FC = () => {
                 <Typography.Large>(중복선택 가능 최대 20개)</Typography.Large>
                 <ContentHeader show={isOutSideClick} ref={outSideClickRef} onClick={() => setIsOutSideClick(!isOutSideClick)}>
                     <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="사각 볼스터 / 블럭 / 요가매트 등" />
-                    <img src="/input-search.svg" alt="input-search" width={30} />
+                    <img src="/input-search.svg" alt="input-search" width={25} />
                     <DownDrop show={isOutSideClick} inputValue={inputValue}>
                         {
                             items.filter((val) => {
@@ -93,7 +93,6 @@ const Conatiner = styled.div`
 
 const DeleteButtonIcon = styled.button`
     position: absolute;
-    z-index: 1;
     border-radius: 100%;
     border: 0px;
     width: 20px;
@@ -112,12 +111,14 @@ const ContentMain = styled.div`
     text-align: left;
 `
 const ItemList = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, auto);
+    display: block;
+    width: 100%;
 `
 
 const Item = styled.div`
     position: relative;
+    float: left;
+    margin-bottom: 1.25em;
     border: 1px solid ${(props) => props.theme.color.main};
     background-color: ${(props) => props.theme.color.hover};
     border-radius: 100px;
@@ -126,11 +127,11 @@ const Item = styled.div`
     margin: 10px;
     font-size: ${(props) => props.theme.fontSize.Large};
     text-align: center;
+    word-break: none;
 `
 
 const ContentHeader = styled.div<{ show: boolean }>`
     position: relative;
-    /* box-shadow:${(props) => props.show ? 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' : 'none'}; */
     border-radius: 8px;
     width: 600px;
     margin-top:3vh;
@@ -159,12 +160,12 @@ const DownDrop = styled.ul<{ show: boolean, inputValue: string }>`
     left:0;
     width: 100%;
     border-radius: 8px;
-    padding-top: 67px;
+    padding-top: 70px;
     padding-bottom: ${(props) => props.inputValue === '' ? '0px' : '10px'};;
     max-height: 290px;
     overflow: hidden;
     border:  1px solid ${({ theme }) => theme.color.border};
-    z-index: 20;
+    z-index: 1;
 `
 
 const DownDropItem = styled.li`
@@ -181,7 +182,7 @@ const DownDropItem = styled.li`
     :nth-child(4){
         margin-bottom: 20px;
     }
-    z-index: 20;
+    z-index: 2;
 `
 
 export default ComplimentaryForm;

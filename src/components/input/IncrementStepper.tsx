@@ -53,16 +53,19 @@ const IncrementStepper: React.FC<Props> = ({ onChange }) => {
 const PlusButton = styled.button`
     width: 32px;
     height: 32px;
-    border: 2px solid ${({ theme }) => theme.color.sub_light};
+    border: 2px solid ${({ theme }) => theme.color.main_light};
     box-sizing: border-box;
     border-radius: 32px;
     background: url('/icon/plus-initial.svg') no-repeat center;
+    svg{
+        fill: ${({ theme }) => theme.color.main};
+    }
     cursor: pointer;
     button{
         visibility: hidden;
     }
     :hover{
-        border: 2px solid ${({ theme }) => theme.color.sub};
+        border: 2px solid ${({ theme }) => theme.color.main};
         background: url('/icon/plus-active.svg') no-repeat center;
     }
     :disabled{
@@ -75,18 +78,15 @@ const PlusButton = styled.button`
 const MinusButton = styled.button`
     width: 32px;
     height: 32px;
-    border: 2px solid ${({ theme }) => theme.color.sub_light};
+    border: 2px solid ${({ theme }) => theme.color.main_light};
     box-sizing: border-box;
     border-radius: 32px;
     background: url('/icon/minus-initial.svg') no-repeat center;
     
     cursor: pointer;
     :hover{
-        border: 2px solid ${({ theme }) => theme.color.sub};
+        border: 2px solid ${({ theme }) => theme.color.main};
         background: url('/icon/minus-active.svg') no-repeat center;
-    }
-    :focus{
-        outline: 2px solid ${({ theme }) => theme.color.sub_light};
     }
     :disabled{
         border: 2px solid ${({ theme }) => theme.color.border};

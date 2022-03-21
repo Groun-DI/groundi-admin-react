@@ -30,18 +30,18 @@ const OccupancyForm: React.FC = () => {
     return (
         <>
             <Container>
-                <ContentWrap>
+                <Content>
                     <Typography.Title3 weight={theme.fontWeight.SemiBold}>{inputElements.basicOccupancy.label}</Typography.Title3>
                     <InputWrap>
                         <IncrementStepper onChange={basicOccupancyChange}/>
                     </InputWrap>
-                </ContentWrap>
-                <ContentWrap>
+                </Content>
+                <Content>
                     <Typography.Title3 weight={theme.fontWeight.SemiBold}>{inputElements.maximumOccupancy.label}</Typography.Title3>
                     <InputWrap>
                         <IncrementStepper onChange={maximumOccupancyChange}/>
                     </InputWrap>
-                </ContentWrap>
+                </Content>
             </Container>
         </>
     )
@@ -60,7 +60,7 @@ const InputWrap = styled(Flex)`
     margin-top: 1.5vh;
 `
 
-const ContentWrap = styled.div`
+const Content = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -36,6 +36,10 @@ declare module "styled-components" {
             Bold: number,
             ExtraBold: number,
             Black: number,
+        },
+        device: {
+            mobile: string,
+            tablet: string,
         }
     }
 }

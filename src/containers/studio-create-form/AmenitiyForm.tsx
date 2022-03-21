@@ -65,6 +65,14 @@ const Content = styled.div`
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     margin-top:3vh;
+
+    @media ${({ theme }) => theme.device.tablet} {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        grid-template-columns: repeat(2, 1fr);
+    }
 `
 
 const Item = styled.label`
@@ -89,13 +97,33 @@ const Item = styled.label`
             color: ${({ theme }) => theme.color.main};
         }
     }
-    img{
+    svg{
         width: 40px;
+    }
+
+    @media ${({ theme }) => theme.device.tablet} {
+        width: 155px;
+        height: 130px;
+        padding:30px;
+        svg{
+            width: 35px;
+        }
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        width: 125px;
+        height: 100px;
+        padding: 20px;
+        svg{
+            width: 28px;
+        }
     }
 `
 
 const Input = styled.input`
     visibility: hidden;
+    position: absolute;
+    left: -333px;
     :checked+label{
         border: 1px solid ${({ theme }) => theme.color.main_light};
         background-color: ${({ theme }) => theme.color.hover};
