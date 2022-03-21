@@ -3,7 +3,7 @@ import ComplimentaryForm from "containers/studio-create-form/complimentary";
 import OccupancyForm from "containers/studio-create-form/occupancy";
 import AmenitiyForm from "containers/studio-create-form/AmenitiyForm";
 import PrecautionForm from "containers/studio-create-form/precaution";
-// import ParkingLotForm from "containers/studio-create-form/parkingLot";
+import ParkingLotForm from "containers/studio-create-form/parkingLot";
 import ContentForm from "containers/studio-create-form/content";
 import ImageForm from "containers/studio-create-form/image";
 import PriceForm from "containers/studio-create-form/price";
@@ -32,10 +32,10 @@ const StudioCreate = () => {
             title: <>스튜디오에 이용시 관련<br /><span>주의사항</span>이 있다면 추가해주세요.</>,
             component: <PrecautionForm />
         },
-        // {
-        //     title: "스튜디오의 주차정보를 알려주세요",
-        //     component: <ParkingLotForm/>
-        // },
+        {
+            title: "스튜디오의 주차정보를 알려주세요",
+            component: <ParkingLotForm/>
+        },
         {
             title: <>스튜디오의 <span>이름</span>을<br />만들어주세요</>,
             component: <NameForm />

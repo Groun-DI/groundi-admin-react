@@ -7,7 +7,7 @@ import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 
 const PrecautionForm: React.FC = () => {
-    const { SetFormValue } = useStudioContext();
+    const { inputElements, SetFormValue } = useStudioContext();
     const [items, setItems] = useState<Precaution[]>([]);
     const [otherPrecautions, setOtherPrecautions] = useState<String>();
     const [selectItems, setSelectItems] = useState<string[]>([]);
@@ -40,12 +40,12 @@ const PrecautionForm: React.FC = () => {
     return (
         <Wrapper>
             <Typography.Large>(중복선택 가능)</Typography.Large>
-            <ContentWrap style={{ marginBottom: "70px" }}>
+            <ContentHeader>
                 <Typography.Large weight={theme.fontWeight.SemiBold}>안전 장치</Typography.Large>
-                <Content>
+                <>
                     {
-                        items.map((item, k) => (
-                            <div>
+                        items.map((item, key) => (
+                            <div key={key}>
                                 <Input type="checkbox" id={"precaution_" + item.id} />
                                 <CheckBox htmlFor={"precaution_" + item.id} onClick={() => handlerOnClick(item)}>
                                     <Typography.Regular weight={theme.fontWeight.Bold}>{item.content}</Typography.Regular>
@@ -53,19 +53,24 @@ const PrecautionForm: React.FC = () => {
                             </div>
                         ))
                     }
-                </Content>
-            </ContentWrap>
-            <Typography.Large weight={theme.fontWeight.SemiBold}>다른 주의사항이 있다면 적어주세요.</Typography.Large>
-            <ContentWrap>
+                </>
+            </ContentHeader>
+            <ContentMain>
+                <Typography.Large weight={theme.fontWeight.SemiBold}>다른 주의사항이 있다면 적어주세요.</Typography.Large>
                 <Typography.Small style={{ textAlign: "right" }}>{otherPrecautions ? otherPrecautions.length : 0}/400</Typography.Small>
-                <TextArea maxLength={400} onChange={handelerOnChange} placeholder={"\"자신에 대한 간략한 소개면 좋아요!\"\n*무엇을 중요하게 생각해요. 무엇을 나누고 싶어요."} />
-            </ContentWrap>
+                <TextArea onChange={handelerOnChange} {...inputElements.content} />
+            </ContentMain>
         </Wrapper>
     )
 }
 
-const ContentWrap = styled.div`
+const ContentHeader = styled.div`
     margin-top: 3vh;
+    text-align: left;
+`
+
+const ContentMain = styled.div`
+    margin-top: 6vh;
     text-align: left;
 `
 
@@ -74,13 +79,11 @@ const Wrapper = styled.div`
     text-align: center;
     margin-top: 3vh;
 `
-const Content = styled.div`
-    width: 100%;
-`
 
 const CheckBox = styled.label`
     display: flex;
     position: relative;
+    align-items: center;
     width: 100%;
     color: ${(props) => props.theme.color.placeholder};
     border: 1px solid ${(props) => props.theme.color.border};

@@ -87,6 +87,7 @@ class InputElementsUtils {
         content: {
             name: "content",
             type: "text",
+            maxLength:400,
             placeholder: "\"자신에 대한 간략한 소개면 좋아요!\"\n*무엇을 중요하게 생각해요. 무엇을 나누고 싶어요.",
             errorMessage: "",
             label: "",
@@ -131,6 +132,87 @@ class InputElementsUtils {
         },
         highestPrice: {
             name: "highestPrice",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        parkingIsAvailable: {
+            name: "parkingIsAvailable",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        parkingPaymentType: {
+            name: "parkingPaymentType",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        parkingFirstTime: {
+            name: "parkingFirstTime",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        parkingFirstPayment: {
+            name: "parkingFirstPayment",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        parkingAdditionTime: {
+            name: "parkingAdditionTime",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        parkingAdditionPayment: {
+            name: "parkingAdditionPayment",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        parkingAllDayPayment: {
+            name: "parkingAllDayPayment",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        parkingOneTimePayment: {
+            name: "parkingOneTimePayment",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        parkingContent: {
+            name: "parkingContent",
             type: "text",
             placeholder: "",
             errorMessage: "",

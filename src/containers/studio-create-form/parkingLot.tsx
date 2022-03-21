@@ -1,13 +1,12 @@
+import Toggle from "components/input/Toggle";
+import Typography from "components/style/Typography";
+import { useStudioContext } from "hooks/useStudioCreateContext";
 import styled from "styled-components";
-import FormValuesUtils from "utils/formValue.utils";
+import { theme } from "styles/theme";
 import InputElementsUtils from "utils/inputs.utils";
 
-type Props = {
-    formValue: typeof FormValuesUtils.centerParkingLotCreate;
-    onChange: (e: React.MouseEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-}
-
-const ParkingLotForm: React.FC<Props> = ({ formValue, onChange }) => {
+const ParkingLotForm: React.FC = () => {
+    const { formValues, inputElements, SetFormValue } = useStudioContext();
     const inputs = InputElementsUtils.centerParkingLotCreate;
     const maxLengthType: [number, number] = [2, 4];
 
@@ -22,6 +21,18 @@ const ParkingLotForm: React.FC<Props> = ({ formValue, onChange }) => {
     //             break;
     //     }
     // }
+
+    const handlerToggle = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        console.log(formValues.parkingIsAvailable);
+        SetFormValue(inputElements.parkingIsAvailable.name, (formValues.parkingIsAvailable === "true" ? "false" : "true"));
+    }
+
+
+    const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        SetFormValue(name, value);
+    }
 
     const handleOnInput = (e: React.ChangeEvent<HTMLInputElement>, maxLength: number) => {
         switch (maxLength) {
@@ -40,63 +51,78 @@ const ParkingLotForm: React.FC<Props> = ({ formValue, onChange }) => {
         }
     }
 
+    const ToggleProps = {
+        left: '',
+        right: '',
+        leftColor: '#fff',
+        rightColor: '#fff',
+        leftBgColor: theme.color.main,
+        rightBgColor: theme.color.main_light,
+        circleColor: '#fff',
+        setChecked: handlerToggle
+    }
+
     return (
-        <>
+        <Container>
             <ContentHeader>
-                <InputWrapper>
-                    <label>주차가</label>
-                    <Select {...inputs.isAvailable} value={formValue.isAvailable} onChange={onChange}>
-                        <option value="true">가능</option>
-                        <option value="false">불가능</option>
-                    </Select>
-                    <label>해요</label>
-                </InputWrapper>
+                <Toggle {...ToggleProps} />
+                <StyledTypographyTitle3 weight={theme.fontWeight.SemiBold} isValiable={formValues.parkingIsAvailable}>건물내 주차가 가능한가요?</StyledTypographyTitle3>
+
             </ContentHeader>
-            <ContentMain>
-                <InputWrapper>
-                    <label>주차비는</label>
-                    <Select {...inputs.paymentType} value={formValue.paymentType} onChange={onChange}>
-                        <option value="clock">시간제</option>
-                        <option value="fixed">정액제</option>
-                        <option value="free">무료</option>
-                    </Select>
-                    <label>에요</label>
-                </InputWrapper>
-            </ContentMain>
-            <ContentFooter>
-                <InputWrapper>
-                    <label>최초</label>
-                    <input {...inputs.firstHour} value={formValue.firstHour} onChange={onChange} />
-                    <label>시간</label>
-                    <input {...inputs.firstMinute} value={formValue.firstMinute} onChange={onChange} />
-                    <label>분</label>
-                    <input {...inputs.firstPayment} onChange={onChange} />
-                    <label>원</label>
-                </InputWrapper>
-                <InputWrapper>
-                    <label>최초</label>
-                    <input {...inputs.additionHour} value={formValue.additionHour} onChange={onChange} />
-                    <label>시간</label>
-                    <input {...inputs.additionMinute} value={formValue.additionMinute} onChange={onChange} />
-                    <label>분</label>
-                    <input {...inputs.additionPayment} defaultValue={10000} value={formValue.additionPayment} onChange={onChange} />
-                    <label>원</label>
-                </InputWrapper>
-                <InputWrapper>
-                    <label>하루종일</label>
-                    <input {...inputs.allDayPayment} value={formValue.allDayPayment} onChange={onChange} />
-                    <label>원</label>
-                </InputWrapper>
-                <InputWrapper>
-                    <label>한번만</label>
-                    <input {...inputs.oneTimePayment} value={formValue.oneTimePayment} onChange={onChange} />
-                    <label>원</label>
-                </InputWrapper>
-            </ContentFooter>
-        </>
+            {
+                formValues.parkingIsAvailable === "true" && (
+                    <>
+                        <ContentMain>
+                            <InputWrapper>
+                                <label>주차비는</label>
+                                <Select {...inputs.paymentType} value={formValues.parkingPaymentType} onChange={handlerOnChange}>
+                                    <option value="clock">시간제</option>
+                                    <option value="fixed">정액제</option>
+                                    <option value="free">무료</option>
+                                </Select>
+                                <label>에요</label>
+                            </InputWrapper>
+                        </ContentMain>
+                        <ContentFooter>
+                            <InputWrapper>
+                                <label>최초 시간</label>
+                                <input {...inputs.firstHour} value={formValues.parkingFirstTime} onChange={handlerOnChange} />
+                                <label>분</label>
+                                <input {...inputs.firstPayment} onChange={handlerOnChange} />
+                                <label>원</label>
+                            </InputWrapper>
+                            <InputWrapper>
+                                <label>추가 시간</label>
+                                <input {...inputs.additionHour} value={formValues.parkingAdditionTime} onChange={handlerOnChange} />
+                                <label>분</label>
+                                <input {...inputs.additionPayment} defaultValue={10000} value={formValues.parkingAdditionPayment} onChange={handlerOnChange} />
+                                <label>원</label>
+                            </InputWrapper>
+                            <InputWrapper>
+                                <label>하루종일</label>
+                                <input {...inputs.allDayPayment} value={formValues.parkingAllDayPayment} onChange={handlerOnChange} />
+                                <label>원</label>
+                            </InputWrapper>
+                            <InputWrapper>
+                                <label>한번만</label>
+                                <input {...inputs.oneTimePayment} value={formValues.parkingOneTimePayment} onChange={handlerOnChange} />
+                                <label>원</label>
+                            </InputWrapper>
+                        </ContentFooter>
+                    </>
+                )
+            }
+        </Container>
     )
 }
 
+const StyledTypographyTitle3 = styled(Typography.Title3) <{ isValiable: string }>`
+    color: ${(props) => props.isValiable === "true" ? props.theme.color.main : props.theme.color.main_light};
+`
+
+const Container = styled.div`
+
+`
 
 const ContentFooter = styled.div`
 
@@ -104,8 +130,13 @@ const ContentFooter = styled.div`
 
 const ContentHeader = styled.div`
     display: flex;
-    flex-direction: row;
-
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3vh;
+    h3{
+        margin-top: 0.3vh;
+    }
 `
 const ContentMain = styled.div`
     display: flex;
@@ -132,7 +163,7 @@ const InputWrapper = styled.div`
     margin: 10px;
     font-weight: 400;
     color: black;
-    input{
+    /* input{
         width: 200px;
         color: #F84F39;
         text-align: center;
@@ -140,6 +171,6 @@ const InputWrapper = styled.div`
         border: 0px;
         border-bottom: 1px solid #c4c4c4;
         margin: 0px 20px;
-    }
+    } */
 `
 export default ParkingLotForm;
