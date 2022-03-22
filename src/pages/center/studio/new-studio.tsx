@@ -11,10 +11,21 @@ import RefundForm from "containers/studio-create-form/refund";
 import NameForm from "containers/studio-create-form/name";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
-import Wrapper from "components/style/Wrapper";
 import { CreateStduioProvider } from "hooks/useStudioCreateContext";
+import { useState } from "react";
 
 const StudioCreate = () => {
+    const [step, setStep] = useState<number>(0);
+
+    const nextStep = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setStep(step + 1);
+    }
+
+    const goPrevios = () => {
+        setStep(step - 1);
+    }
+
     const Display = [
         {
             title: <>스튜디오를 사용할 수 있는<br /><span>인원 수를</span> 알려주세요.</>,
@@ -34,7 +45,7 @@ const StudioCreate = () => {
         },
         {
             title: "스튜디오의 주차정보를 알려주세요",
-            component: <ParkingLotForm/>
+            component: <ParkingLotForm />
         },
         {
             title: <>스튜디오의 <span>이름</span>을<br />만들어주세요</>,
@@ -59,31 +70,38 @@ const StudioCreate = () => {
     ]
 
     return (
-        <>
+        <Wrapper>
             <Header>
                 <img src="/logo.svg" alt="logo" width="130px" />
                 <h5>저장 및 나가기</h5>
             </Header>
             <Body>
                 <CreateStduioProvider>
-                    {
-                        Display.map((item, key) => (
-                            <Section key={key}>
-                                <StyledTypographyTitle2 weight={theme.fontWeight.SemiBold}>{item.title}</StyledTypographyTitle2>
-                                <Line />
-                                <Container>
-                                    {item.component}
-                                </Container>
-                            </Section>
-                        ))
-                    }
+                    <Section>
+                        <StyledTypographyTitle2 weight={theme.fontWeight.SemiBold}>{Display[step].title}</StyledTypographyTitle2>
+                        <Line />
+                        <Container>
+                            {Display[step].component}
+                        </Container>
+                    </Section>
                 </CreateStduioProvider>
             </Body>
-        </>
+            <Footer>
+                <button onClick={goPrevios}>이전</button>
+                <button onClick={nextStep}>다음</button>
+            </Footer>
+        </Wrapper>
     )
 }
 
-
+const Wrapper = styled.div`
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; 
+    ::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera*/
+    }
+    overflow-y: none;
+`
 const Header = styled.div`
     display: flex;
     flex-direction: row;
@@ -91,6 +109,7 @@ const Header = styled.div`
     align-items: center;
     height: 80px;
     padding: 10px 30px;
+    top: 0px;
     position: fixed;
     background-color: white;
     width: 100%;
@@ -99,13 +118,12 @@ const Header = styled.div`
 `;
 
 const Section = styled(Wrapper)`
-    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     width:100%;
-    scroll-snap-align: start;
     padding-top: 80px;
+    padding-bottom: 130px;
 `
 const StyledTypographyTitle2 = styled(Typography.Title2)`
     margin-top: 7vh;
@@ -124,15 +142,8 @@ const Line = styled.hr`
 `
 const Body = styled.div`
     margin: 0 auto;
-    max-width: 1000px;
-    height: 100vh;
-    padding-top: 75px;
-    padding-bottom: 75px;
-    scroll-snap-type: y mandatory;
-    overflow-y: scroll;
-    ::-webkit-scrollbar {
-        display: none;
-    }
+    max-width: 600px;
+    width: 100%;
 `
 
 const Container = styled.div`
@@ -142,4 +153,21 @@ const Container = styled.div`
     height: 100%;
     width: 100%;
 `
+
+
+const Footer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 10px 30px;
+    position: fixed;
+    bottom: 0;
+    background-color: white;
+    width: 100%;
+    border-top: 1px solid #c4c4c4;
+    box-shadow: white;
+`;
+
 export default StudioCreate;
