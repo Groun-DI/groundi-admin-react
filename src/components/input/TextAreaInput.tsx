@@ -4,13 +4,14 @@ import { theme } from "styles/theme"
 
 type Props = {
     errorMessage: string,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     label: string;
     value?: string | number | [],
     mark?: string
+    height: number
 }
 
-const BoxInput: React.FC<Props> = ({ value, label, errorMessage, mark, onChange, ...inputProps }) => {
+const TextAreaInput: React.FC<Props> = ({ value, height, label, errorMessage, mark, onChange, ...inputProps }) => {
     return (
         <Wrapper>
             {
@@ -21,7 +22,7 @@ const BoxInput: React.FC<Props> = ({ value, label, errorMessage, mark, onChange,
                     : null
             }
             <InputWrap>
-                <Input {...inputProps} onChange={onChange} value={value} autoComplete="off" />
+                <Input {...inputProps} onChange={onChange} value={value} autoComplete="off" height={height} />
                 {
                     mark && <Typography.Regular><Mark>{mark}</Mark></Typography.Regular>
                 }
@@ -46,7 +47,7 @@ const Mark = styled.span`
     right: 15px;
     transform: translate(0, -50%);
 `
-const Input = styled.input`
+const Input = styled.textarea<{ height: number }>`
     position: relative;
     width: 100%;
     padding: 18px;
@@ -54,6 +55,7 @@ const Input = styled.input`
     border-radius: 8px;
     font-size: ${({ theme }) => theme.fontSize.Small};
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 2%);
+    height: ${({ height }) => height}px;
     :hover{
         border: 1px solid ${({ theme }) => theme.color.main};
     }
@@ -72,4 +74,4 @@ const Span = styled.span`
 const Label = styled.label`
     text-align: left;
 `
-export default BoxInput;
+export default TextAreaInput;

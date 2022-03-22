@@ -86,7 +86,7 @@ class InputElementsUtils {
         },
         content: {
             name: "content",
-            type: "text",
+            type: "textarea",
             maxLength:400,
             placeholder: "\"자신에 대한 간략한 소개면 좋아요!\"\n*무엇을 중요하게 생각해요. 무엇을 나누고 싶어요.",
             errorMessage: "",
@@ -150,7 +150,7 @@ class InputElementsUtils {
         },
         parkingPaymentType: {
             name: "parkingPaymentType",
-            type: "text",
+            type: "radio",
             placeholder: "",
             errorMessage: "",
             label: "",
@@ -214,6 +214,15 @@ class InputElementsUtils {
         parkingContent: {
             name: "parkingContent",
             type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        refundCode: {
+            name: "refundCode",
+            type: "radio",
             placeholder: "",
             errorMessage: "",
             label: "",

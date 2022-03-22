@@ -37,7 +37,6 @@ const AmenitiyForm: React.FC = () => {
             <Conatiner>
                 <Typography.Large>(중복선택 가능)</Typography.Large>
                 <Content>
-
                     {
                         items.map((item, k) => (
                             <div key={k}>

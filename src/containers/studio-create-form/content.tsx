@@ -2,48 +2,36 @@ import styled from "styled-components";
 import { useStudioContext } from "hooks/useStudioCreateContext";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
+import TextAreaInput from "components/input/TextAreaInput";
+import ValidationUtils from "utils/validation.utils";
 
 const ContentForm: React.FC = () => {
     const { formValues, inputElements, SetFormValue } = useStudioContext();
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        SetFormValue(name, value);
+        inputElements.content = { ...inputElements.content, ...ValidationUtils.isNumberOfDigits(value, 400) };
+        if (inputElements.content.invalid) 
+            SetFormValue(name, value);
     }
 
     return (
         <ContentWrap>
             <Typography.Large weight={theme.fontWeight.SemiBold}>설명 입력</Typography.Large>
-            <Typography.Small style={{ textAlign: "right" }}>{formValues.content ? formValues.content.length : 0}/400</Typography.Small>
-            <TextArea {...inputElements.content} onChange={handlerOnChange} maxLength={400} >
-                {formValues.content}
-            </TextArea>
+            <TextAreaInput {...inputElements.content} onChange={handlerOnChange} height={250}/>
+            <StyledTypographySmall>{formValues.content ? formValues.content.length : 0}/400</StyledTypographySmall>
         </ContentWrap>
-
     )
 }
 
+const StyledTypographySmall = styled(Typography.Small)`
+    text-align: right;
+    margin-top: 1vh;
+`
 const ContentWrap = styled.div`
-    margin-top: 3vh;
+    margin-top: 5.6vh;
     text-align: left;
     width: 100%;
-`
-
-const TextArea = styled.textarea`
-    width: 100%;
-    height: 300px;
-    border: 1px solid ${(props) => props.theme.color.border};
-    margin-top: 10px;
-    border-radius: 8px;
-    padding: 30px 40px;
-    font-size: ${(props) => props.theme.fontSize.Large};
-    resize: none;
-    -webkit-transition: border 0.5s;
-    transition: border 0.5s;
-    :focus{
-        border: 1px solid ${({ theme }) => theme.color.main};
-        -webkit-transition: border 0.5s;
-        transition: border 0.5s;
-    }
+    max-width: 600px;
 `
 export default ContentForm

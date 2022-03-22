@@ -23,6 +23,7 @@ class FormValuesUtils {
         overCharge: '',
         lowestPrice: '',
         highestPrice: '',
+        refundCode: '',
         amenities: [''],
         precautions: [''],
         complimentaries: [''],

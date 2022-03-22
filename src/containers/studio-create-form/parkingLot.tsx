@@ -1,12 +1,16 @@
+import BoxInput from "components/input/BoxInput";
 import Toggle from "components/input/Toggle";
 import Typography from "components/style/Typography";
 import { useStudioContext } from "hooks/useStudioCreateContext";
+import { useState } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import InputElementsUtils from "utils/inputs.utils";
+import TimeStampModal from "containers/TimeStampModal";
 
 const ParkingLotForm: React.FC = () => {
     const { formValues, inputElements, SetFormValue } = useStudioContext();
+    const [stateTimeStampModal, setStateTimeStampModal] = useState<boolean>(false);
     const inputs = InputElementsUtils.centerParkingLotCreate;
     const maxLengthType: [number, number] = [2, 4];
 
@@ -23,9 +27,12 @@ const ParkingLotForm: React.FC = () => {
     // }
 
     const handlerToggle = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        console.log(formValues.parkingIsAvailable);
         SetFormValue(inputElements.parkingIsAvailable.name, (formValues.parkingIsAvailable === "true" ? "false" : "true"));
+    }
+
+    const handlerOnClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+        const value = (e.target as HTMLLabelElement).htmlFor;
+        SetFormValue(inputElements.parkingPaymentType.name, value);
     }
 
 
@@ -51,6 +58,52 @@ const ParkingLotForm: React.FC = () => {
         }
     }
 
+    const PaymentTypeContainer = () => {
+        switch (formValues.parkingPaymentType) {
+            case 'free':
+                return;
+            case 'paytopay':
+                return (
+                    <InputWrap>
+                        <Typography.Large weight={theme.fontWeight.SemiBold}>1회 주차 시</Typography.Large>
+                        <input {...inputs.oneTimePayment} value={formValues.parkingOneTimePayment} onChange={handlerOnChange} />
+                        <label>원</label>
+                    </InputWrap>
+                )
+            case 'time':
+                return (
+                    <>
+                        <InputWrap>
+                            <Typography.Large weight={theme.fontWeight.SemiBold}>최초</Typography.Large>
+                            <button onClick={() => setStateTimeStampModal(true)}>
+                                {formValues.parkingFirstTime}
+                            </button>
+                            <TimeStampModal
+                                isOpen={stateTimeStampModal}
+                                isClose={(click: boolean) => setStateTimeStampModal(click)}
+                                getValue={(value: string) => SetFormValue(inputElements.parkingFirstTime.name, value)} />
+                            <BoxInput {...inputs.firstPayment} onChange={handlerOnChange} mark="원" />
+                        </InputWrap>
+                        <InputWrap>
+                            <Typography.Large weight={theme.fontWeight.SemiBold}>추가 요금</Typography.Large>
+                            <button onClick={() => setStateTimeStampModal(true)}>
+                                {formValues.parkingAdditionTime}
+                            </button>
+                            <TimeStampModal
+                                isOpen={stateTimeStampModal}
+                                isClose={(click: boolean) => setStateTimeStampModal(click)}
+                                getValue={(value: string) => SetFormValue(inputElements.parkingAdditionTime.name, value)} />
+                            <BoxInput {...inputs.additionPayment} value={formValues.parkingAdditionPayment} onChange={handlerOnChange} mark="원" />
+                        </InputWrap>
+                        <InputWrap>
+                            <Typography.Large weight={theme.fontWeight.SemiBold}>최대</Typography.Large>
+                            <BoxInput {...inputs.allDayPayment} value={formValues.parkingAllDayPayment} onChange={handlerOnChange} mark="원" />
+                        </InputWrap>
+                    </>
+                )
+        }
+    }
+
     const ToggleProps = {
         left: '',
         right: '',
@@ -67,47 +120,29 @@ const ParkingLotForm: React.FC = () => {
             <ContentHeader>
                 <Toggle {...ToggleProps} />
                 <StyledTypographyTitle3 weight={theme.fontWeight.SemiBold} isValiable={formValues.parkingIsAvailable}>건물내 주차가 가능한가요?</StyledTypographyTitle3>
-
             </ContentHeader>
             {
                 formValues.parkingIsAvailable === "true" && (
                     <>
                         <ContentMain>
-                            <InputWrapper>
-                                <label>주차비는</label>
-                                <Select {...inputs.paymentType} value={formValues.parkingPaymentType} onChange={handlerOnChange}>
-                                    <option value="clock">시간제</option>
-                                    <option value="fixed">정액제</option>
-                                    <option value="free">무료</option>
-                                </Select>
-                                <label>에요</label>
-                            </InputWrapper>
+                            <Typography.Large weight={theme.fontWeight.SemiBold}>주차비 유형</Typography.Large>
+                            <ContentWrap>
+                                <div>
+                                    <Input id="free" value="free" {...inputElements.parkingPaymentType} />
+                                    <Item htmlFor="free" onClick={handlerOnClick}>무료</Item>
+                                </div>
+                                <div>
+                                    <Input id="time" value="time" {...inputElements.parkingPaymentType} />
+                                    <Item htmlFor="time" onClick={handlerOnClick}>시간제</Item>
+                                </div>
+                                <div>
+                                    <Input id="paytopay" value="paytopay" {...inputElements.parkingPaymentType} />
+                                    <Item htmlFor="paytopay" onClick={handlerOnClick}>정액제</Item>
+                                </div>
+                            </ContentWrap>
                         </ContentMain>
                         <ContentFooter>
-                            <InputWrapper>
-                                <label>최초 시간</label>
-                                <input {...inputs.firstHour} value={formValues.parkingFirstTime} onChange={handlerOnChange} />
-                                <label>분</label>
-                                <input {...inputs.firstPayment} onChange={handlerOnChange} />
-                                <label>원</label>
-                            </InputWrapper>
-                            <InputWrapper>
-                                <label>추가 시간</label>
-                                <input {...inputs.additionHour} value={formValues.parkingAdditionTime} onChange={handlerOnChange} />
-                                <label>분</label>
-                                <input {...inputs.additionPayment} defaultValue={10000} value={formValues.parkingAdditionPayment} onChange={handlerOnChange} />
-                                <label>원</label>
-                            </InputWrapper>
-                            <InputWrapper>
-                                <label>하루종일</label>
-                                <input {...inputs.allDayPayment} value={formValues.parkingAllDayPayment} onChange={handlerOnChange} />
-                                <label>원</label>
-                            </InputWrapper>
-                            <InputWrapper>
-                                <label>한번만</label>
-                                <input {...inputs.oneTimePayment} value={formValues.parkingOneTimePayment} onChange={handlerOnChange} />
-                                <label>원</label>
-                            </InputWrapper>
+                            {PaymentTypeContainer()}
                         </ContentFooter>
                     </>
                 )
@@ -115,6 +150,13 @@ const ParkingLotForm: React.FC = () => {
         </Container>
     )
 }
+
+const ContentWrap = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 4.5vh;
+`
 
 const StyledTypographyTitle3 = styled(Typography.Title3) <{ isValiable: string }>`
     color: ${(props) => props.isValiable === "true" ? props.theme.color.main : props.theme.color.main_light};
@@ -133,14 +175,14 @@ const ContentHeader = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 3vh;
+    margin-top: 5.6vh;
     h3{
         margin-top: 0.3vh;
     }
 `
 const ContentMain = styled.div`
-    display: flex;
-    flex-direction: row;
+    margin-top: 3.6vh;
+    text-align: center;
 `
 
 const Select = styled.select`
@@ -154,23 +196,35 @@ const Select = styled.select`
     margin: 0px 20px;
 `
 
-const InputWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font-size: ${(props) => props.theme.fontSize.Title3};
-    margin: 10px;
-    font-weight: 400;
-    color: black;
-    /* input{
-        width: 200px;
-        color: #F84F39;
-        text-align: center;
-        font-size: ${(props) => props.theme.fontSize.Title2};
-        border: 0px;
-        border-bottom: 1px solid #c4c4c4;
-        margin: 0px 20px;
-    } */
+const InputWrap = styled.div`
+
 `
+
+
+const Input = styled.input`
+    visibility: hidden;
+    position: absolute;
+    left: -333px;
+    :checked+label{
+        border: 1px solid ${({ theme }) => theme.color.main_light};
+        background-color: ${({ theme }) => theme.color.hover};
+        color: ${({ theme }) => theme.color.main};
+    }
+`;
+
+const Item = styled.label`
+    text-align: center;
+    padding:20px 75px;
+    border: 1px solid ${({ theme }) => theme.color.border};
+    background-color: white;
+    border-radius: 20px;
+    font-size: ${({ theme }) => theme.fontSize.Regular};
+    font-weight: ${({ theme }) => theme.fontWeight.SemiBold};
+    cursor: pointer;
+    :hover{
+        border: 1px solid ${({ theme }) => theme.color.main_light};
+        color: ${({ theme }) => theme.color.main};
+    }
+`
+
 export default ParkingLotForm;

@@ -2,48 +2,38 @@ import { useStudioContext } from "hooks/useStudioCreateContext";
 import styled, { css } from "styled-components";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
+import BoxInput from "components/input/BoxInput";
+import ValidationUtils from "utils/validation.utils";
 
 const NameForm: React.FC = () => {
     const { formValues, inputElements, SetFormValue } = useStudioContext();
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        console.log(name + value + e.target);
-        SetFormValue(name, value);
+        inputElements.studioName = { ...inputElements.studioName, ...ValidationUtils.isNumberOfDigits(value, 30) };
+        if (inputElements.studioName.invalid) 
+            SetFormValue(name, value);
     }
 
     return (
         <>
             <InputWrapper>
                 <Typography.Large weight={theme.fontWeight.SemiBold}>이름 입력</Typography.Large>
-                <Typography.Small style={{ textAlign: "right" }}>{formValues.name ? formValues.name.length : 0}/30</Typography.Small>
-                <br />
-                <Input {...inputElements.studioName} onChange={handlerOnChange} value={formValues.name} />
+                <BoxInput {...inputElements.studioName} onChange={handlerOnChange} value={formValues.name} />
+                <StyledTypographySmall>{formValues.name ? formValues.name.length : 0}/30</StyledTypographySmall>
             </InputWrapper>
         </>
     )
 }
 
 const InputWrapper = styled.div`
-    /* position: relative; */
+    max-width: 600px;
+    width: 100%;
+    margin-top: 5.6vh;
 `
 
-const Input = styled.input`
-    width: 700px;
-    height: 50px;
-    border: 1px solid ${(props) => props.theme.color.border};
-    border-radius: 8px;
-    padding: 20px 20px;
-    font-size: ${(props) => props.theme.fontSize.Large};
-    :hover{
-        border: 2px solid #c4c4c4c4;
-    }
+const StyledTypographySmall = styled(Typography.Small)`
+    text-align: right;
+    margin-top: 1vh;
 `
-
-// const Img = styled.img`
-//     position: absolute;
-//     transform: translate(-50%, -50%);
-//     left: 40px;
-//     top: 50%;
-// `
 export default NameForm

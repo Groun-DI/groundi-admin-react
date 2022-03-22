@@ -32,7 +32,7 @@ export const CreateStduioProvider = (props: { children: React.ReactNode }) => {
     }, []);
 
     const Submit = async () => {
-
+        console.log(formValues);
     }
 
     const value = { formValues, inputElements, SetFormValue, Submit };

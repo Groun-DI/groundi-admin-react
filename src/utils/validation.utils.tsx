@@ -22,7 +22,7 @@ class ValidationUtils {
 
     static isNumberOfDigits(value: string, maxLength: number): Error {
         const valueLength: number = (typeof value === 'string' ? value.length : value);
-
+        console.log(valueLength);
         if (valueLength < 0) {
             this.error.errorMessage = '필수 입력 값입니다.';
             this.error.invalid = false;
@@ -35,7 +35,6 @@ class ValidationUtils {
             this.error.errorMessage = '';
             this.error.invalid = true;
             this.error.value = value;
-            console.log(this.error.value)
         }
         return this.error;
     }
