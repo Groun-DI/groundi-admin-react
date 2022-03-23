@@ -5,13 +5,12 @@ import { useStudioContext } from "hooks/useStudioCreateContext";
 import { useState } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import InputElementsUtils from "utils/inputs.utils";
-import TimeStampModal from "containers/TimeStampModal";
-
+import InitialSelect from "components/select/Initial";
+import parkingHours from "data/parkingHours.json";
+import parkingMinutes from "data/parkingMinutes.json";
+import Flex from "components/style/Flex";
 const ParkingLotForm: React.FC = () => {
     const { formValues, inputElements, SetFormValue } = useStudioContext();
-    const [stateTimeStampModal, setStateTimeStampModal] = useState<boolean>(false);
-    const inputs = InputElementsUtils.centerParkingLotCreate;
     const maxLengthType: [number, number] = [2, 4];
 
     // const handleOnChangeSelect = (value: string, type: string) => {
@@ -64,42 +63,36 @@ const ParkingLotForm: React.FC = () => {
                 return;
             case 'paytopay':
                 return (
-                    <InputWrap>
-                        <Typography.Large weight={theme.fontWeight.SemiBold}>1회 주차 시</Typography.Large>
-                        <input {...inputs.oneTimePayment} value={formValues.parkingOneTimePayment} onChange={handlerOnChange} />
-                        <label>원</label>
-                    </InputWrap>
+                    <BoxContainer>
+                        <InputWrap>
+                            <BoxInput {...inputElements.parkingOneTimePayment} value={formValues.parkingOneTimePayment} onChange={handlerOnChange} mark="원" />
+                        </InputWrap>
+                    </BoxContainer>
                 )
             case 'time':
                 return (
-                    <>
+                    <BoxContainer>
                         <InputWrap>
                             <Typography.Large weight={theme.fontWeight.SemiBold}>최초</Typography.Large>
-                            <button onClick={() => setStateTimeStampModal(true)}>
-                                {formValues.parkingFirstTime}
-                            </button>
-                            <TimeStampModal
-                                isOpen={stateTimeStampModal}
-                                isClose={(click: boolean) => setStateTimeStampModal(click)}
-                                getValue={(value: string) => SetFormValue(inputElements.parkingFirstTime.name, value)} />
-                            <BoxInput {...inputs.firstPayment} onChange={handlerOnChange} mark="원" />
+                            <Flex justify="flex-start" align="flex-start">
+                                <InitialSelect onChange={handlerOnChange} options={parkingHours} {...inputElements.parkingFirstHour} value={formValues.parkingFirstHour} />
+                                <InitialSelect onChange={handlerOnChange} options={parkingMinutes} {...inputElements.parkingFirstTime} value={formValues.parkingFirstTime} />
+                                <BoxInput {...inputElements.parkingFirstPayment} value={formValues.parkingAdditionPayment} onChange={handlerOnChange} mark="원" />
+                            </Flex>
                         </InputWrap>
                         <InputWrap>
                             <Typography.Large weight={theme.fontWeight.SemiBold}>추가 요금</Typography.Large>
-                            <button onClick={() => setStateTimeStampModal(true)}>
-                                {formValues.parkingAdditionTime}
-                            </button>
-                            <TimeStampModal
-                                isOpen={stateTimeStampModal}
-                                isClose={(click: boolean) => setStateTimeStampModal(click)}
-                                getValue={(value: string) => SetFormValue(inputElements.parkingAdditionTime.name, value)} />
-                            <BoxInput {...inputs.additionPayment} value={formValues.parkingAdditionPayment} onChange={handlerOnChange} mark="원" />
+                            <Flex justify="flex-start" align="flex-start">
+                                <InitialSelect onChange={handlerOnChange} options={parkingHours} {...inputElements.parkingAdditionHour} value={formValues.parkingAdditionHour} />
+                                <InitialSelect onChange={handlerOnChange} options={parkingMinutes} {...inputElements.parkingAdditionTime} value={formValues.parkingAdditionTime} />
+                                <BoxInput {...inputElements.parkingAdditionPayment} value={formValues.parkingAdditionPayment} onChange={handlerOnChange} mark="원" />
+                            </Flex>
                         </InputWrap>
                         <InputWrap>
                             <Typography.Large weight={theme.fontWeight.SemiBold}>최대</Typography.Large>
-                            <BoxInput {...inputs.allDayPayment} value={formValues.parkingAllDayPayment} onChange={handlerOnChange} mark="원" />
+                            <BoxInput {...inputElements.parkingAllDayPayment} value={formValues.parkingAllDayPayment} onChange={handlerOnChange} mark="원" />
                         </InputWrap>
-                    </>
+                    </BoxContainer>
                 )
         }
     }
@@ -150,6 +143,9 @@ const ParkingLotForm: React.FC = () => {
         </Container>
     )
 }
+const BoxContainer = styled.div`
+    margin-top: 6vh;
+`
 
 const ContentWrap = styled.div`
     display: grid;
@@ -197,7 +193,7 @@ const Select = styled.select`
 `
 
 const InputWrap = styled.div`
-
+    margin-top: 2.5vh;
 `
 
 

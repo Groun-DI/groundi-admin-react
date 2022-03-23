@@ -1,30 +1,33 @@
+import Typography from "components/style/Typography";
 import styled from "styled-components";
-import numberList from 'data/first-phoneNumber.json';
+import { theme } from "styles/theme";
 
 type Props = {
+    options: any[];
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    errorMessage: string,
+    value?: string | number | [],
 }
 
-const InitialSelect: React.FC<Props> = ({ onChange }) => {
+const InitialSelect: React.FC<Props> = ({ options, onChange, errorMessage, value, ...inputProps }) => {
 
     return (
-        <Content>
-            <Select defaultValue={numberList[0].number} onChange={onChange}>
+        <Wrapper>
+            <Select defaultValue={options[0]} onChange={onChange} value={value} {...inputProps}>
                 {
-                    numberList.map((item, key) => (
-                        <option value={item.number}>{item.number}</option>
+                    options.map((item, key) => (
+                        <option value={item}>{item}</option>
                     ))}
             </Select>
-        </Content>
+        </Wrapper>
     )
 }
 
 export default InitialSelect;
 
-const Content = styled.div`
+const Wrapper = styled.div`
 
 `
-
 const Select = styled.select`
     width: 125px;
     padding: 18px;
@@ -40,6 +43,7 @@ const Select = styled.select`
     background-size: 1em;
     margin-top:10px;
     margin-right: 8px;
+    line-height: 2rem;
     :focus{
         outline: 1px solid ${({ theme }) => theme.color.main_light};
         border: 1px solid ${({ theme }) => theme.color.main};

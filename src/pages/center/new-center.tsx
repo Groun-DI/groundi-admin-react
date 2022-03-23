@@ -13,9 +13,10 @@ import AddressModalInputButton from "components/input/AddressModalInputButton";
 import ValidationUtils from "utils/validation.utils";
 import InputElementsUtils from "utils/inputs.utils";
 import FormValuesUtils from "utils/formValue.utils";
-import PhoneNumberInput from "components/input/PhoneNumberInput";
 import FileUploadInput from "components/input/fileUpload.input";
 import GoPrevNavigation from "components/frame/GoPrevNavigation";
+import InitialSelect from "components/select/Initial";
+import numberList from 'data/first-phoneNumber.json';
 
 const MapStyle = {
     width: '100%',
@@ -102,7 +103,15 @@ const Page = () => {
                             <ContentMain>
                                 <Flex layout="column" gap={30}>
                                     <BoxInput {...inputs.centerName} onChange={handleChange} value={formValues.name} />
-                                    <PhoneNumberInput {...inputs.phoneNumber} onChange={handleChange} value={formValues.phoneNumber} />
+                                    <Flex justify="flex-start" align="flex-start" layout="column">
+                                        <Label>
+                                            <Typography.Regular weight={theme.fontWeight.SemiBold}>{inputs.frontPhoneNumber.label}</Typography.Regular>
+                                        </Label>
+                                        <Flex justify="flex-start" align="flex-start">
+                                            <InitialSelect onChange={handleChange} options={numberList} {...inputs.frontPhoneNumber} value={formValues.frontPhoneNumber} />
+                                            <BoxInput {...inputs.phoneNumber} onChange={handleChange} value={formValues.phoneNumber} />
+                                        </Flex>
+                                    </Flex>
                                     <AddressWrap>
                                         <AddressModalInputButton
                                             label="주소를 입력해주세요"
@@ -201,6 +210,36 @@ const StyleButton = styled(Button) <{ disabled: boolean }>`
     width: 50%;
     opacity: ${({ disabled }) => disabled ? 0.7 : 1};
     cursor: ${({ disabled }) => disabled ? 'auto' : 'pointer'};
+`
+
+const Input = styled.input`
+    width: 100%;
+    padding: 17px;
+    border: 1px solid ${({ theme }) => theme.color.border};
+    border-radius: 8px;
+    font-size: ${({ theme }) => theme.fontSize.Small};
+    margin-top: 10px;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 2%);
+    :hover{
+        border: 1px solid ${({ theme }) => theme.color.main};
+    }
+    :focus:invalid {
+        border: 1px solid red !important;
+    }
+    :focus:invalid ~ span {
+        display: block;
+    }
+`
+
+const Span = styled.span`
+    font-size: ${({ theme }) => theme.fontSize.Micro};
+    padding: 8px;
+    color: ${({ theme }) => theme.color.main};
+    //display: none;
+`
+
+const Label = styled.label`
+    text-align: left;
 `
 
 export default Page;

@@ -68,6 +68,7 @@ const Span = styled.span`
     font-size: ${({ theme }) => theme.fontSize.Micro};
     padding: 8px;
     color: ${({ theme }) => theme.color.main};
+    display: none;
 `
 const Label = styled.label`
     text-align: left;

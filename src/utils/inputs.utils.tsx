@@ -10,11 +10,20 @@ class InputElementsUtils {
             errorMessage: "",
             invalid: false
         },
+        frontPhoneNumber: {
+            name: "frontPhoneNumber",
+            type: "number",
+            placeholder: "",
+            label: "전화번호를 입력해주세요.",
+            required: true,
+            errorMessage: "",
+            invalid: false
+        },
         phoneNumber: {
             name: "phoneNumber",
             type: "number",
             placeholder: "- 없이 입력",
-            label: "전화번호를 입력해주세요.",
+            label: "",
             required: true,
             errorMessage: "",
             invalid: false
@@ -157,6 +166,15 @@ class InputElementsUtils {
             invalid: false,
             required: true
         },
+        parkingFirstHour: {
+            name: "parkingFirstHour",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
         parkingFirstTime: {
             name: "parkingFirstTime",
             type: "text",
@@ -168,6 +186,15 @@ class InputElementsUtils {
         },
         parkingFirstPayment: {
             name: "parkingFirstPayment",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        parkingAdditionHour: {
+            name: "parkingAdditionHour",
             type: "text",
             placeholder: "",
             errorMessage: "",
@@ -207,7 +234,7 @@ class InputElementsUtils {
             type: "text",
             placeholder: "",
             errorMessage: "",
-            label: "",
+            label: "1회 주차시",
             invalid: false,
             required: true
         },
