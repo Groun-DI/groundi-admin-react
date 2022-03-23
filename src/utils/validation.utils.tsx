@@ -20,7 +20,7 @@ class ValidationUtils {
         return this.error;
     }
 
-    static isNumberOfDigits(value: string, maxLength: number): Error {
+    static isStringOfDigits(value: string, maxLength: number): Error {
         const valueLength: number = (typeof value === 'string' ? value.length : value);
         console.log(valueLength);
         if (valueLength < 0) {
@@ -35,6 +35,23 @@ class ValidationUtils {
             this.error.errorMessage = '';
             this.error.invalid = true;
             this.error.value = value;
+        }
+        return this.error;
+    }
+
+    static isNumberOfDigits(value: number, minLength:number, maxLength: number): Error {
+        if (value <= minLength) {
+            this.error.errorMessage = '필수 입력 값입니다.';
+            this.error.invalid = false;
+            this.error.value = value.toString();
+        } else if (value >= maxLength) {
+            this.error.errorMessage = '설정값보다 큼니다.';
+            this.error.invalid = false;
+            this.error.value = (value - 1).toString();
+        } else {
+            this.error.errorMessage = '';
+            this.error.invalid = true;
+            this.error.value = value.toString();
         }
         return this.error;
     }

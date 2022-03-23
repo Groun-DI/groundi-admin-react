@@ -1,13 +1,13 @@
 import Typography from "components/style/Typography";
 import { RefundCode } from "dto/returnCode.entity";
-import { useStudioContext } from "hooks/useStudioCreateContext";
+import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import { useEffect, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 
 const RefundForm = () => {
-    const { SetFormValue, inputElements, Submit } = useStudioContext();
+    const { SetFormValue, inputElements, Submit } = useStudioCreateContext();
     const [items, setItems] = useState<RefundCode[]>([]);
 
     useEffect(() => {

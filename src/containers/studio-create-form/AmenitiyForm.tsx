@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
 import { theme } from "styles/theme";
-import { useStudioContext } from "hooks/useStudioCreateContext";
+import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 
 const AmenitiyForm: React.FC = () => {
-    const { SetFormValue } = useStudioContext();
+    const { SetFormValue } = useStudioCreateContext();
     const [items, setItems] = useState<Amenity[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
@@ -91,31 +91,25 @@ const Item = styled.label`
         color: ${({ theme }) => theme.color.TitleActive};
     }
     :hover{
-        border: 1px solid ${({ theme }) => theme.color.main_light};
+        border: 1px solid ${({ theme }) => theme.color.main} !important;
         h6{
             color: ${({ theme }) => theme.color.main};
         }
-    }
-    svg{
-        width: 40px;
+        img{
+            filter: ${({ theme }) => theme.svgColor.main};
+        }
     }
 
     @media ${({ theme }) => theme.device.tablet} {
         width: 155px;
         height: 130px;
         padding:30px;
-        svg{
-            width: 35px;
-        }
     }
 
     @media ${({ theme }) => theme.device.mobile} {
         width: 125px;
         height: 100px;
         padding: 20px;
-        svg{
-            width: 28px;
-        }
     }
 `
 
@@ -128,6 +122,9 @@ const Input = styled.input`
         background-color: ${({ theme }) => theme.color.hover};
         h6{
             color: ${({ theme }) => theme.color.main};
+        }
+        img{
+            filter: ${({ theme }) => theme.svgColor.main};
         }
     }
 `;

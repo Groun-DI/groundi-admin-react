@@ -20,6 +20,9 @@ declare module "styled-components" {
             TitleActive: string;
             hover:string;
         };
+        svgColor:{
+            main: string;
+        }
         fontSize: {
             Title1: string;
             Title2: string;

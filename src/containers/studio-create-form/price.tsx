@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { useStudioContext } from "hooks/useStudioCreateContext";
+import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 import CSS from 'csstype';
 import BoxInput from "components/input/BoxInput";
 
 const PriceForm: React.FC = () => {
-    const { formValues, inputElements, SetFormValue } = useStudioContext();
+    const { formValues, inputElements, SetFormValue } = useStudioCreateContext();
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

@@ -1,16 +1,16 @@
 import styled from "styled-components";
-import { useStudioContext } from "hooks/useStudioCreateContext";
+import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 import TextAreaInput from "components/input/TextAreaInput";
 import ValidationUtils from "utils/validation.utils";
 
 const ContentForm: React.FC = () => {
-    const { formValues, inputElements, SetFormValue } = useStudioContext();
+    const { formValues, inputElements, SetFormValue } = useStudioCreateContext();
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        inputElements.content = { ...inputElements.content, ...ValidationUtils.isNumberOfDigits(value, 400) };
+        inputElements.content = { ...inputElements.content, ...ValidationUtils.isStringOfDigits(value, 400) };
         if (inputElements.content.invalid) 
             SetFormValue(name, value);
     }

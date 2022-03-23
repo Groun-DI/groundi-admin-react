@@ -11,12 +11,12 @@ import RefundForm from "containers/studio-create-form/refund";
 import NameForm from "containers/studio-create-form/name";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
-import { CreateStduioProvider } from "hooks/useStudioCreateContext";
+import { CreateStduioProvider, useStudioCreateContext } from "hooks/useStudioCreateContext";
 import { useState } from "react";
 
 const StudioCreate = () => {
     const [step, setStep] = useState<number>(0);
-
+    const UseStudioCreateContext = useStudioCreateContext();
     const nextStep = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setStep(step + 1);
@@ -44,7 +44,7 @@ const StudioCreate = () => {
             component: <PrecautionForm />
         },
         {
-            title: "스튜디오의 주차정보를 알려주세요",
+            title: <>스튜디오의 <span>주차정보</span>를<br />추가해주세요.</>,
             component: <ParkingLotForm />
         },
         {
@@ -56,7 +56,7 @@ const StudioCreate = () => {
             component: <ContentForm />
         },
         {
-            title: "스튜디오를 돋보일 수 있는 사진을 올려주세요",
+            title: <>스튜디오를 돋보여줄<br /><span>사진</span>을 올려주세요.</>,
             component: <ImageForm />
         },
         {
@@ -70,13 +70,13 @@ const StudioCreate = () => {
     ]
 
     return (
-        <Wrapper>
-            <Header>
-                <img src="/logo.svg" alt="logo" width="130px" />
-                <h5>저장 및 나가기</h5>
-            </Header>
-            <Body>
-                <CreateStduioProvider>
+        <CreateStduioProvider>
+            <Wrapper>
+                <Header>
+                    <img src="/logo.svg" alt="logo" width="130px" />
+                    <h5>저장 및 나가기</h5>
+                </Header>
+                <Body>
                     <Section>
                         <StyledTypographyTitle2 weight={theme.fontWeight.SemiBold}>{Display[step].title}</StyledTypographyTitle2>
                         <Line />
@@ -84,13 +84,13 @@ const StudioCreate = () => {
                             {Display[step].component}
                         </Container>
                     </Section>
-                </CreateStduioProvider>
-            </Body>
-            <Footer>
-                <button onClick={goPrevios}>이전</button>
-                <button onClick={nextStep}>다음</button>
-            </Footer>
-        </Wrapper>
+                </Body>
+                <Footer>
+                    <button onClick={goPrevios}>이전</button>
+                    <button onClick={nextStep}>다음</button>
+                </Footer>
+            </Wrapper>
+        </CreateStduioProvider>
     )
 }
 

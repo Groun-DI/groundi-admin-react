@@ -19,7 +19,7 @@ const defaultValue: Value = {
 
 export const createStudioContext = createContext<Value>(defaultValue);
 
-export const useStudioContext = (): Value => {
+export const useStudioCreateContext = (): Value => {
     return useContext(createStudioContext);
 }
 
@@ -40,4 +40,4 @@ export const CreateStduioProvider = (props: { children: React.ReactNode }) => {
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { CreateStduioProvider, useStudioContext, createStudioContext };
+export default { CreateStduioProvider, useStudioCreateContext, createStudioContext };

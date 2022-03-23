@@ -2,13 +2,13 @@ import { Complimentary } from "dto/complimentary.entity";
 import { useEffect, useRef, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
-import { useStudioContext } from "hooks/useStudioCreateContext";
+import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 
 
 const ComplimentaryForm: React.FC = () => {
-    const { SetFormValue } = useStudioContext();
+    const { SetFormValue } = useStudioCreateContext();
     const [items, setItems] = useState<Complimentary[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [selectItems, setSelectItems] = useState<string[]>([]);

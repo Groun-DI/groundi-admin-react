@@ -1,7 +1,7 @@
 import BoxInput from "components/input/BoxInput";
 import Toggle from "components/input/Toggle";
 import Typography from "components/style/Typography";
-import { useStudioContext } from "hooks/useStudioCreateContext";
+import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import { useState } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
@@ -10,7 +10,7 @@ import parkingHours from "data/parkingHours.json";
 import parkingMinutes from "data/parkingMinutes.json";
 import Flex from "components/style/Flex";
 const ParkingLotForm: React.FC = () => {
-    const { formValues, inputElements, SetFormValue } = useStudioContext();
+    const { formValues, inputElements, SetFormValue } = useStudioCreateContext();
     const maxLengthType: [number, number] = [2, 4];
 
     // const handleOnChangeSelect = (value: string, type: string) => {

@@ -3,26 +3,29 @@ import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 
 type Props = {
-    onChange: (value: number) => void,
+    onChange: (value: number) => void
+    value: string | number,
+    invalid: boolean,
+    errorMessage: string
 }
 
-const IncrementStepper: React.FC<Props> = ({ onChange }) => {
+const IncrementStepper: React.FC<Props> = ({ onChange, value, invalid, errorMessage }) => {
     const [countNumber, setCountNumber] = useState<number>(1);
     const [incrementValid, setIncrementValid] = useState<boolean>(false);
     const [decrementValid, setDecrementValid] = useState<boolean>(true);
 
-    const OnValid = useCallback(() =>{
-        if (countNumber <= 1) {
+    const OnValid = useCallback(() => {
+        if (errorMessage === "필수 입력 값입니다.") {
             setDecrementValid(true);
             setIncrementValid(false);
-        } else if (100 >= countNumber) {
-            setDecrementValid(false);
-            setIncrementValid(false);
-        } else if (100 < countNumber) {
+        } else if (errorMessage === "설정값보다 큼니다.") {
             setDecrementValid(false);
             setIncrementValid(true);
+        } else if (errorMessage === "") {
+            setDecrementValid(false);
+            setIncrementValid(false);
         }
-    },[countNumber]);
+    }, [errorMessage]);
 
     const handlerPlus = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();

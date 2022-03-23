@@ -20,6 +20,9 @@ const theme: DefaultTheme = {
         TitleActive: "#343A40",
         hover: 'rgb(255, 250, 250)'
     },
+    svgColor:{
+        main: "invert(64%) sepia(57%) saturate(7142%) hue-rotate(337deg) brightness(96%) contrast(102%)"
+    },
     fontSize: {
         Title1: rem(4.8),
         Title2: rem(3.2),

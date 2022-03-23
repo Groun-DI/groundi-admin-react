@@ -73,7 +73,6 @@ const Page = () => {
                 break;
             case 'busniessCode':
                 inputs.busniessCode = { ...inputs.busniessCode, ...ValidationUtils.isBussniessCode(value) };
-                console.log(inputs);
                 setFormValues({ ...formValues, [name]: ValidationUtils.isBussniessCode(value).value });
                 break;
             default:

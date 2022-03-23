@@ -2,12 +2,12 @@ import { Precaution } from "dto/precaution.entity";
 import { useEffect, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
-import { useStudioContext } from "hooks/useStudioCreateContext";
+import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 
 const PrecautionForm: React.FC = () => {
-    const { inputElements, SetFormValue } = useStudioContext();
+    const { inputElements, SetFormValue } = useStudioCreateContext();
     const [items, setItems] = useState<Precaution[]>([]);
     const [otherPrecautions, setOtherPrecautions] = useState<String>();
     const [selectItems, setSelectItems] = useState<string[]>([]);
