@@ -4,8 +4,9 @@ import { theme } from "styles/theme";
 import Flex from "components/style/Flex";
 import IncrementStepper from 'components/input/IncrementStepper';
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import ValidationUtils from "utils/validation.utils";
+import { useParams } from "react-router";
 
 type Props = {
     stateValid: (state: boolean) => void;
@@ -13,6 +14,13 @@ type Props = {
 
 const OccupancyForm: React.FC<Props> = ({ stateValid }) => {
     const { inputElements, formValues, SetFormValue } = useStudioCreateContext();
+    const { centerId } = useParams();
+
+    useEffect(()=>{
+        if(centerId){
+            SetFormValue("centerId", centerId.toString());
+        }
+    },[SetFormValue, centerId])
 
     const basicOccupancyChange = useCallback((value: number) => {
         inputElements.basicOccupancy = { ...inputElements.basicOccupancy, ...ValidationUtils.isNumberOfDigits(value, 1, 100) }
@@ -25,6 +33,8 @@ const OccupancyForm: React.FC<Props> = ({ stateValid }) => {
         SetFormValue(inputElements.maximumOccupancy.name, value.toString());
         stateValid(!(inputElements.basicOccupancy.invalid === true && inputElements.maximumOccupancy.invalid === true));
     }, [SetFormValue, inputElements, stateValid]);
+
+    
 
     return (
         <>

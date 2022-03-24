@@ -210,8 +210,8 @@ class InputElementsUtils {
             invalid: true,
             required: true
         },
-        parkingFirstTime: {
-            name: "parkingFirstTime",
+        parkingFirstMinute: {
+            name: "parkingFirstMinute",
             type: "text",
             placeholder: "",
             errorMessage: "",
@@ -237,8 +237,8 @@ class InputElementsUtils {
             invalid: true,
             required: true
         },
-        parkingAdditionTime: {
-            name: "parkingAdditionTime",
+        parkingAdditionMinute: {
+            name: "parkingAdditionMinute",
             type: "text",
             placeholder: "",
             errorMessage: "",

@@ -25,7 +25,7 @@ const ParkingLotForm: React.FC<Props> = ({ stateValid }) => {
                     stateValid(false);
                     break;
                 case "time":
-                    stateValid(!(inputElements.parkingFirstHour.invalid === true && inputElements.parkingFirstTime.invalid === true && inputElements.parkingFirstPayment.invalid === true && inputElements.parkingAdditionHour.invalid === true && inputElements.parkingAdditionTime.invalid === true && inputElements.parkingAdditionPayment.invalid === true && inputElements.parkingAllDayPayment.invalid === true));
+                    stateValid(!(inputElements.parkingFirstHour.invalid === true && inputElements.parkingFirstMinute.invalid === true && inputElements.parkingFirstPayment.invalid === true && inputElements.parkingAdditionHour.invalid === true && inputElements.parkingAdditionMinute.invalid === true && inputElements.parkingAdditionPayment.invalid === true && inputElements.parkingAllDayPayment.invalid === true));
                     break;
                 case "paytopay":
                     stateValid(!inputElements.parkingOneTimePayment.invalid);
@@ -34,7 +34,7 @@ const ParkingLotForm: React.FC<Props> = ({ stateValid }) => {
         } else {
             stateValid(!(formValues.parkingIsAvailable === "true"))
         }
-    }, [formValues.parkingIsAvailable, formValues.parkingPaymentType, stateValid, inputElements.parkingFirstHour.invalid, inputElements.parkingFirstTime.invalid, inputElements.parkingFirstPayment.invalid, inputElements.parkingAdditionHour.invalid, inputElements.parkingAdditionTime.invalid, inputElements.parkingAdditionPayment.invalid, inputElements.parkingAllDayPayment.invalid, inputElements.parkingOneTimePayment.invalid])
+    }, [formValues.parkingIsAvailable, formValues.parkingPaymentType, stateValid, inputElements.parkingFirstHour.invalid, inputElements.parkingFirstMinute.invalid, inputElements.parkingFirstPayment.invalid, inputElements.parkingAdditionHour.invalid, inputElements.parkingAdditionMinute.invalid, inputElements.parkingAdditionPayment.invalid, inputElements.parkingAllDayPayment.invalid, inputElements.parkingOneTimePayment.invalid])
 
     useEffect(() => {
         setValidation();
@@ -55,8 +55,8 @@ const ParkingLotForm: React.FC<Props> = ({ stateValid }) => {
             case "parkingFirstHour":
                 inputElements.parkingFirstHour = { ...inputElements.parkingFirstHour, ...ValidationUtils.isRequired(value) }
                 break;
-            case "parkingFirstTime":
-                inputElements.parkingFirstTime = { ...inputElements.parkingFirstTime, ...ValidationUtils.isRequired(value) }
+            case "parkingFirstMinute":
+                inputElements.parkingFirstMinute = { ...inputElements.parkingFirstMinute, ...ValidationUtils.isRequired(value) }
                 break;
             case "parkingFirstPayment":
                 inputElements.parkingFirstPayment = { ...inputElements.parkingFirstPayment, ...ValidationUtils.isRequired(value) }
@@ -64,8 +64,8 @@ const ParkingLotForm: React.FC<Props> = ({ stateValid }) => {
             case "parkingAdditionHour":
                 inputElements.parkingAdditionHour = { ...inputElements.parkingAdditionHour, ...ValidationUtils.isRequired(value) }
                 break;
-            case "parkingAdditionTime":
-                inputElements.parkingAdditionTime = { ...inputElements.parkingAdditionTime, ...ValidationUtils.isRequired(value) }
+            case "parkingAdditionMinute":
+                inputElements.parkingAdditionMinute = { ...inputElements.parkingAdditionMinute, ...ValidationUtils.isRequired(value) }
                 break;
             case "parkingAdditionPayment":
                 inputElements.parkingAdditionPayment = { ...inputElements.parkingAdditionPayment, ...ValidationUtils.isRequired(value) }
@@ -100,7 +100,7 @@ const ParkingLotForm: React.FC<Props> = ({ stateValid }) => {
                             <Typography.Large weight={theme.fontWeight.SemiBold}>최초</Typography.Large>
                             <Flex justify="flex-start" align="flex-start">
                                 <InitialSelect onChange={handlerOnChange} options={parkingHours} {...inputElements.parkingFirstHour} value={formValues.parkingFirstHour} />
-                                <InitialSelect onChange={handlerOnChange} options={parkingMinutes} {...inputElements.parkingFirstTime} value={formValues.parkingFirstTime} />
+                                <InitialSelect onChange={handlerOnChange} options={parkingMinutes} {...inputElements.parkingFirstMinute} value={formValues.parkingFirstMinute} />
                                 <BoxInput {...inputElements.parkingFirstPayment} value={formValues.parkingFirstPayment} onChange={handlerOnChange} mark="원" />
                             </Flex>
                         </InputWrap>
@@ -108,7 +108,7 @@ const ParkingLotForm: React.FC<Props> = ({ stateValid }) => {
                             <Typography.Large weight={theme.fontWeight.SemiBold}>추가 요금</Typography.Large>
                             <Flex justify="flex-start" align="flex-start">
                                 <InitialSelect onChange={handlerOnChange} options={parkingHours} {...inputElements.parkingAdditionHour} value={formValues.parkingAdditionHour} />
-                                <InitialSelect onChange={handlerOnChange} options={parkingMinutes} {...inputElements.parkingAdditionTime} value={formValues.parkingAdditionTime} />
+                                <InitialSelect onChange={handlerOnChange} options={parkingMinutes} {...inputElements.parkingAdditionMinute} value={formValues.parkingAdditionMinute} />
                                 <BoxInput {...inputElements.parkingAdditionPayment} value={formValues.parkingAdditionPayment} onChange={handlerOnChange} mark="원" />
                             </Flex>
                         </InputWrap>

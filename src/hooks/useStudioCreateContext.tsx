@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react";
 import FormValuesUtils from "utils/formValue.utils";
 import InputElementsUtils from "utils/inputs.utils";
 import { useCallback } from "react";
+import client from "services/axios";
 
 interface Value {
     formValues: typeof FormValuesUtils.studioCreate,
@@ -33,6 +34,20 @@ export const CreateStduioProvider = (props: { children: React.ReactNode }) => {
 
     const Submit = async () => {
         console.log(formValues);
+        const res = await client.post(process.env.REACT_APP_API_URL + 'studio/create', { 
+            ...formValues, 
+            centerId: Number(formValues.centerId),
+            basicOccupancy: Number(formValues.basicOccupancy),
+            maximumOccupancy: Number(formValues.maximumOccupancy),
+            overCharge:Number(formValues.overCharge),
+            lowestPrice:Number(formValues.lowestPrice),
+            highestPrice:Number(formValues.highestPrice),
+            parkingFirstPayment:Number(formValues.parkingFirstPayment),
+            parkingAdditionPayment:Number(formValues.parkingAdditionPayment),
+            parkingAllDayPayment:Number(formValues.parkingAllDayPayment),
+            parkingOneTimePayment:Number(formValues.parkingOneTimePayment),
+            parkingIsAvailable: (formValues.parkingIsAvailable === "true") });
+        return res.data;
     }
 
     const value = { formValues, inputElements, SetFormValue, Submit };
