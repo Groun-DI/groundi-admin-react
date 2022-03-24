@@ -1,6 +1,4 @@
-import Typography from "components/style/Typography";
 import styled from "styled-components";
-import { theme } from "styles/theme";
 
 type Props = {
     options: any[];
@@ -16,7 +14,7 @@ const InitialSelect: React.FC<Props> = ({ options, onChange, errorMessage, value
             <Select defaultValue={options[0]} onChange={onChange} value={value} {...inputProps}>
                 {
                     options.map((item, key) => (
-                        <option value={item}>{item}</option>
+                        <option key={key} value={item}>{item}</option>
                     ))}
             </Select>
         </Wrapper>

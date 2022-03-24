@@ -5,8 +5,13 @@ import { useEffect, useState } from "react";
 import client from "services/axios";
 import styled from "styled-components";
 import { theme } from "styles/theme";
+import ValidationUtils from "utils/validation.utils";
 
-const RefundForm = () => {
+type Props = {
+    stateValid: (state: boolean) => void;
+}
+
+const RefundForm: React.FC<Props> = ({ stateValid }) => {
     const { SetFormValue, inputElements, Submit } = useStudioCreateContext();
     const [items, setItems] = useState<RefundCode[]>([]);
 
@@ -18,14 +23,20 @@ const RefundForm = () => {
 
     const handlerOnClick = (value: string) => {
         SetFormValue(inputElements.refundCode.name, value);
+        inputElements.refundCode = { ...inputElements.refundCode, ...ValidationUtils.isRequired(value) }
     }
+
+    useEffect(() => {
+        stateValid(!inputElements.refundCode.invalid);
+    }, [stateValid, inputElements.refundCode]);
+
 
     return (
         <>
             <Wrapper>
                 {
                     items.map((item, key) => (
-                        <BoxWrap>
+                        <BoxWrap key={key}>
                             <Input id={item.id} {...inputElements.refundCode} />
                             <label htmlFor={item.id} onClick={() => handlerOnClick(item.id)}>
                                 <ItemWrap>

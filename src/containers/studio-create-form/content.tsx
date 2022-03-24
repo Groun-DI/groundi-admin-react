@@ -4,21 +4,30 @@ import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 import TextAreaInput from "components/input/TextAreaInput";
 import ValidationUtils from "utils/validation.utils";
+import { useEffect } from "react";
 
-const ContentForm: React.FC = () => {
+type Props = {
+    stateValid: (state: boolean) => void;
+}
+
+const ContentForm: React.FC<Props> = ({ stateValid }) => {
     const { formValues, inputElements, SetFormValue } = useStudioCreateContext();
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        inputElements.content = { ...inputElements.content, ...ValidationUtils.isStringOfDigits(value, 400) };
-        if (inputElements.content.invalid) 
-            SetFormValue(name, value);
+        inputElements.content = { ...inputElements.content, ...ValidationUtils.isStringOfDigits(value, 401) };
+        SetFormValue(name, value);
     }
+
+
+    useEffect(() => {
+        stateValid(!(inputElements.content.invalid));
+    }, [inputElements.content, stateValid]);
 
     return (
         <ContentWrap>
             <Typography.Large weight={theme.fontWeight.SemiBold}>설명 입력</Typography.Large>
-            <TextAreaInput {...inputElements.content} onChange={handlerOnChange} height={250}/>
+            <TextAreaInput {...inputElements.content} onChange={handlerOnChange} height={250} />
             <StyledTypographySmall>{formValues.content ? formValues.content.length : 0}/400</StyledTypographySmall>
         </ContentWrap>
     )

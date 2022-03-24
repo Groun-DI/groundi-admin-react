@@ -2,16 +2,36 @@ import styled from "styled-components";
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
-import CSS from 'csstype';
 import BoxInput from "components/input/BoxInput";
+import ValidationUtils from "utils/validation.utils";
+import { useEffect } from "react";
 
-const PriceForm: React.FC = () => {
+type Props = {
+    stateValid: (state: boolean) => void;
+}
+
+const PriceForm: React.FC<Props> = ({ stateValid }) => {
     const { formValues, inputElements, SetFormValue } = useStudioCreateContext();
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+        switch (name) {
+            case "lowestPrice":
+                inputElements.lowestPrice = { ...inputElements.lowestPrice, ...ValidationUtils.isRequired(value) }
+                break;
+            case "highestPrice":
+                inputElements.highestPrice = { ...inputElements.highestPrice, ...ValidationUtils.isRequired(value) }
+                break;
+            case "overCharge":
+                inputElements.overCharge = { ...inputElements.overCharge, ...ValidationUtils.isRequired(value) }
+                break;
+        }
         SetFormValue(name, value);
     }
+
+    useEffect(() => {
+        stateValid(!(inputElements.lowestPrice.invalid === true && inputElements.highestPrice.invalid === true && inputElements.overCharge.invalid === true));
+    }, [inputElements.highestPrice, inputElements.lowestPrice, inputElements.overCharge, stateValid]);
 
     return (
         <>

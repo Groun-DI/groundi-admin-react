@@ -22,12 +22,11 @@ class ValidationUtils {
 
     static isStringOfDigits(value: string, maxLength: number): Error {
         const valueLength: number = (typeof value === 'string' ? value.length : value);
-        console.log(valueLength);
-        if (valueLength < 0) {
+        if (valueLength <= 0) {
             this.error.errorMessage = '필수 입력 값입니다.';
             this.error.invalid = false;
             this.error.value = value;
-        } else if (valueLength > maxLength) {
+        } else if (valueLength >= maxLength) {
             this.error.errorMessage = '설정값보다 큼니다';
             this.error.invalid = false;
             this.error.value = this.error.value.substr(0, maxLength);
@@ -58,7 +57,6 @@ class ValidationUtils {
 
     static isBussniessCode(value: string):Error{
         const maxLength = 10;
-
         if(value.length < maxLength){
             this.error.errorMessage = '사업자 등록번호는 필수 입력값으로 10자리 입니다';
             this.error.invalid = false;
@@ -73,7 +71,6 @@ class ValidationUtils {
             this.error.invalid = true;
             this.error.value = value;
         }
-        
         return this.error;
     }
 }

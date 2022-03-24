@@ -5,9 +5,14 @@ import client from "services/axios";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
+import ValidationUtils from "utils/validation.utils";
 
-const AmenitiyForm: React.FC = () => {
-    const { SetFormValue } = useStudioCreateContext();
+type Props = {
+    stateValid: (state: boolean) => void;
+}
+
+const AmenitiyForm: React.FC<Props> = ({ stateValid }) => {
+    const { SetFormValue, inputElements } = useStudioCreateContext();
     const [items, setItems] = useState<Amenity[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
@@ -19,7 +24,9 @@ const AmenitiyForm: React.FC = () => {
 
     useEffect(() => {
         SetFormValue('amenities', selectItems);
-    }, [selectItems, SetFormValue]);
+        inputElements.amenities = { ...inputElements.amenities, ...ValidationUtils.isNumberOfDigits(selectItems.length, 1, 20) }
+        stateValid(!(inputElements.amenities.invalid));
+    }, [selectItems, SetFormValue, inputElements, stateValid]);
 
     const handlerOnClick = (item: Amenity) => {
         const isInCludes = selectItems.includes(item.id);
@@ -29,8 +36,9 @@ const AmenitiyForm: React.FC = () => {
         } else {
             setSelectItems(oldArray => [...oldArray, item.id]);
         }
-    }
 
+        
+    }
 
     return (
         <>

@@ -96,7 +96,6 @@ class InputElementsUtils {
         content: {
             name: "content",
             type: "textarea",
-            maxLength:400,
             placeholder: "\"자신에 대한 간략한 소개면 좋아요!\"\n*무엇을 중요하게 생각해요. 무엇을 나누고 싶어요.",
             errorMessage: "",
             label: "",
@@ -148,6 +147,42 @@ class InputElementsUtils {
             invalid: false,
             required: true
         },
+        precautionContent: {
+            name: "precautionContent",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        amenities: {
+            name: "amenities",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        precautions: {
+            name: "precautions",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
+        complimentaries: {
+            name: "complimentaries",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "",
+            invalid: false,
+            required: true
+        },
         parkingIsAvailable: {
             name: "parkingIsAvailable",
             type: "text",
@@ -172,7 +207,7 @@ class InputElementsUtils {
             placeholder: "",
             errorMessage: "",
             label: "",
-            invalid: false,
+            invalid: true,
             required: true
         },
         parkingFirstTime: {
@@ -181,7 +216,7 @@ class InputElementsUtils {
             placeholder: "",
             errorMessage: "",
             label: "",
-            invalid: false,
+            invalid: true,
             required: true
         },
         parkingFirstPayment: {
@@ -199,7 +234,7 @@ class InputElementsUtils {
             placeholder: "",
             errorMessage: "",
             label: "",
-            invalid: false,
+            invalid: true,
             required: true
         },
         parkingAdditionTime: {
@@ -208,7 +243,7 @@ class InputElementsUtils {
             placeholder: "",
             errorMessage: "",
             label: "",
-            invalid: false,
+            invalid: true,
             required: true
         },
         parkingAdditionPayment: {

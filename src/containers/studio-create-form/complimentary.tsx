@@ -5,10 +5,14 @@ import styled from "styled-components";
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
+import ValidationUtils from "utils/validation.utils";
 
+type Props = {
+    stateValid: (state: boolean) => void;
+}
 
-const ComplimentaryForm: React.FC = () => {
-    const { SetFormValue } = useStudioCreateContext();
+const ComplimentaryForm: React.FC<Props> = ({stateValid}) => {
+    const { SetFormValue, inputElements } = useStudioCreateContext();
     const [items, setItems] = useState<Complimentary[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [selectItems, setSelectItems] = useState<string[]>([]);
@@ -27,7 +31,9 @@ const ComplimentaryForm: React.FC = () => {
 
     useEffect(() => {
         SetFormValue('complimentaries', selectItems);
-    }, [selectItems, SetFormValue]);
+        inputElements.complimentaries = { ...inputElements.complimentaries, ...ValidationUtils.isNumberOfDigits(selectItems.length, 1, 20) }
+        stateValid(!(inputElements.complimentaries.invalid));
+    }, [selectItems, SetFormValue, stateValid, inputElements]);
 
 
     const handleOurSideClickEvent = (e: MouseEvent) => {

@@ -5,23 +5,33 @@ import styled from "styled-components";
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
+import ValidationUtils from "utils/validation.utils";
 
-const PrecautionForm: React.FC = () => {
-    const { inputElements, SetFormValue } = useStudioCreateContext();
+type Props = {
+    stateValid: (state: boolean) => void;
+}
+
+const PrecautionForm: React.FC<Props> = ({ stateValid }) => {
+    const { inputElements, SetFormValue, formValues } = useStudioCreateContext();
     const [items, setItems] = useState<Precaution[]>([]);
-    const [otherPrecautions, setOtherPrecautions] = useState<String>();
     const [selectItems, setSelectItems] = useState<string[]>([]);
 
     useEffect(() => {
         client.get<Precaution[]>('precaution').then(res => {
             res.data.push({ id: "2", content: "너구리" })
+            res.data.push({ id: "3", content: "너구리" })
+            res.data.push({ id: "4", content: "너구리" })
             setItems(res.data);
         });
     }, []);
 
     useEffect(() => {
-        SetFormValue('precautions', selectItems);
-    }, [SetFormValue, selectItems])
+        SetFormValue(inputElements.precautions.name, selectItems);
+        console.log(selectItems);
+        inputElements.precautions = { ...inputElements.precautions, ...ValidationUtils.isNumberOfDigits(selectItems.length, 1, 4) }
+        console.log(inputElements.precautions);
+        stateValid(!(inputElements.precautions.invalid));
+    }, [SetFormValue, inputElements, selectItems, stateValid])
 
     const handlerOnClick = (item: Precaution) => {
         const isInCludes = selectItems.includes(item.id);
@@ -34,7 +44,8 @@ const PrecautionForm: React.FC = () => {
     }
 
     const handelerOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setOtherPrecautions(e.target.value);
+        const { name, value } = e.target;
+        SetFormValue(name, value);
     }
 
     return (
@@ -57,8 +68,8 @@ const PrecautionForm: React.FC = () => {
             </ContentHeader>
             <ContentMain>
                 <Typography.Large weight={theme.fontWeight.SemiBold}>다른 주의사항이 있다면 적어주세요.</Typography.Large>
-                <Typography.Small style={{ textAlign: "right" }}>{otherPrecautions ? otherPrecautions.length : 0}/400</Typography.Small>
-                <TextArea onChange={handelerOnChange} {...inputElements.content} />
+                <Typography.Small style={{ textAlign: "right" }}>{formValues.precautionContent ? formValues.precautionContent.length : 0}/400</Typography.Small>
+                <TextArea onChange={handelerOnChange} {...inputElements.precautionContent} value={formValues.precautionContent}/>
             </ContentMain>
         </Wrapper>
     )

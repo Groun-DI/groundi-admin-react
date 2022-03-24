@@ -7,10 +7,11 @@ type Props = {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     label: string;
     value?: string | number | [],
-    mark?: string
+    mark?: string,
+    invalid: boolean;
 }
 
-const BoxInput: React.FC<Props> = ({ value, label, errorMessage, mark, onChange, ...inputProps }) => {
+const BoxInput: React.FC<Props> = ({ value, label, errorMessage, mark, onChange, invalid, ...inputProps }) => {
     return (
         <Wrapper>
             {
@@ -58,7 +59,7 @@ const Input = styled.input`
         border: 1px solid ${({ theme }) => theme.color.main};
     }
     :focus:invalid {
-        border: 1px solid red !important;
+        border: 1px solid ${({ theme }) => theme.color.main};
     }
     :focus:invalid ~ span {
         display: block;

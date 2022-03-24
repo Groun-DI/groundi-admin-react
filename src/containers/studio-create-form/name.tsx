@@ -1,19 +1,29 @@
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 import BoxInput from "components/input/BoxInput";
 import ValidationUtils from "utils/validation.utils";
+import { useEffect } from "react";
 
-const NameForm: React.FC = () => {
+type Props = {
+    stateValid: (state: boolean) => void;
+}
+
+const NameForm: React.FC<Props> = ({ stateValid }) => {
     const { formValues, inputElements, SetFormValue } = useStudioCreateContext();
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        inputElements.studioName = { ...inputElements.studioName, ...ValidationUtils.isStringOfDigits(value, 30) };
-        if (inputElements.studioName.invalid) 
-            SetFormValue(name, value);
+        inputElements.studioName = { ...inputElements.studioName, ...ValidationUtils.isStringOfDigits(value, 31) };
+        SetFormValue(name, value);
+        stateValid(!inputElements.studioName.invalid);
     }
+
+    useEffect(() => {
+        stateValid(!inputElements.studioName.invalid);
+    }, [inputElements.studioName, stateValid]);
+
 
     return (
         <>

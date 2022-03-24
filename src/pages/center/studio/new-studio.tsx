@@ -11,12 +11,12 @@ import RefundForm from "containers/studio-create-form/refund";
 import NameForm from "containers/studio-create-form/name";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
-import { CreateStduioProvider, useStudioCreateContext } from "hooks/useStudioCreateContext";
-import { useState } from "react";
+import { CreateStduioProvider } from "hooks/useStudioCreateContext";
+import { useCallback, useState } from "react";
 
 const StudioCreate = () => {
     const [step, setStep] = useState<number>(0);
-    const UseStudioCreateContext = useStudioCreateContext();
+    const [disable, setDisable] = useState<boolean>(true);
     const nextStep = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setStep(step + 1);
@@ -26,46 +26,50 @@ const StudioCreate = () => {
         setStep(step - 1);
     }
 
+    const SetDisable = useCallback((state: boolean) => {
+        setDisable(state);
+    }, []);
+
     const Display = [
         {
             title: <>스튜디오를 사용할 수 있는<br /><span>인원 수를</span> 알려주세요.</>,
-            component: <OccupancyForm />
+            component: <OccupancyForm stateValid={SetDisable} />
         },
         {
             title: <>스튜디오 <span>편의시설</span><br />정보를 추가해 주세요.</>,
-            component: <AmenitiyForm />
+            component: <AmenitiyForm stateValid={SetDisable}/>
         },
         {
             title: <>스튜디오에 준비된 <span>수련물품</span>을<br />검색하여 추가해주세요.</>,
-            component: <ComplimentaryForm />
+            component: <ComplimentaryForm stateValid={SetDisable}/>
         },
         {
             title: <>스튜디오에 이용시 관련<br /><span>주의사항</span>이 있다면 추가해주세요.</>,
-            component: <PrecautionForm />
+            component: <PrecautionForm stateValid={SetDisable}/>
         },
         {
             title: <>스튜디오의 <span>주차정보</span>를<br />추가해주세요.</>,
-            component: <ParkingLotForm />
+            component: <ParkingLotForm stateValid={SetDisable}/>
         },
         {
             title: <>스튜디오의 <span>이름</span>을<br />만들어주세요</>,
-            component: <NameForm />
+            component: <NameForm stateValid={SetDisable}/>
         },
         {
             title: <>스튜디오를 <br /><span>설명</span>해주세요</>,
-            component: <ContentForm />
+            component: <ContentForm stateValid={SetDisable}/>
         },
         {
             title: <>스튜디오를 돋보여줄<br /><span>사진</span>을 올려주세요.</>,
-            component: <ImageForm />
+            component: <ImageForm/>
         },
         {
             title: <>스튜디오의 <span>대여가격</span>을<br />설정해주세요</>,
-            component: <PriceForm />
+            component: <PriceForm stateValid={SetDisable}/>
         },
         {
             title: "스튜디오의 환불정보를 설정해주세요",
-            component: <RefundForm />
+            component: <RefundForm stateValid={SetDisable}/>
         }
     ]
 
@@ -87,7 +91,7 @@ const StudioCreate = () => {
                 </Body>
                 <Footer>
                     <button onClick={goPrevios}>이전</button>
-                    <button onClick={nextStep}>다음</button>
+                    <button onClick={nextStep} disabled={disable}>다음</button>
                 </Footer>
             </Wrapper>
         </CreateStduioProvider>

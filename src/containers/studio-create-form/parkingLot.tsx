@@ -2,28 +2,43 @@ import BoxInput from "components/input/BoxInput";
 import Toggle from "components/input/Toggle";
 import Typography from "components/style/Typography";
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
-import { useState } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import InitialSelect from "components/select/Initial";
 import parkingHours from "data/parkingHours.json";
 import parkingMinutes from "data/parkingMinutes.json";
 import Flex from "components/style/Flex";
-const ParkingLotForm: React.FC = () => {
-    const { formValues, inputElements, SetFormValue } = useStudioCreateContext();
-    const maxLengthType: [number, number] = [2, 4];
+import { useCallback, useEffect } from "react";
+import ValidationUtils from "utils/validation.utils";
 
-    // const handleOnChangeSelect = (value: string, type: string) => {
-    //     switch (type) {
-    //         case Type[0]:
-    //             if (value === 'true') setValue("isAvailable", true);
-    //             else if (value === 'false') setValue("isAvailable", false)
-    //             break;
-    //         case Type[1]:
-    //             setValue("paymentType", value)
-    //             break;
-    //     }
-    // }
+type Props = {
+    stateValid: (state: boolean) => void;
+}
+
+const ParkingLotForm: React.FC<Props> = ({ stateValid }) => {
+    const { formValues, inputElements, SetFormValue } = useStudioCreateContext();
+
+    const setValidation = useCallback(() => {
+        if (formValues.parkingIsAvailable === "true") {
+            switch (formValues.parkingPaymentType) {
+                case "free":
+                    stateValid(false);
+                    break;
+                case "time":
+                    stateValid(!(inputElements.parkingFirstHour.invalid === true && inputElements.parkingFirstTime.invalid === true && inputElements.parkingFirstPayment.invalid === true && inputElements.parkingAdditionHour.invalid === true && inputElements.parkingAdditionTime.invalid === true && inputElements.parkingAdditionPayment.invalid === true && inputElements.parkingAllDayPayment.invalid === true));
+                    break;
+                case "paytopay":
+                    stateValid(!inputElements.parkingOneTimePayment.invalid);
+                    break;
+            }
+        } else {
+            stateValid(!(formValues.parkingIsAvailable === "true"))
+        }
+    }, [formValues.parkingIsAvailable, formValues.parkingPaymentType, stateValid, inputElements.parkingFirstHour.invalid, inputElements.parkingFirstTime.invalid, inputElements.parkingFirstPayment.invalid, inputElements.parkingAdditionHour.invalid, inputElements.parkingAdditionTime.invalid, inputElements.parkingAdditionPayment.invalid, inputElements.parkingAllDayPayment.invalid, inputElements.parkingOneTimePayment.invalid])
+
+    useEffect(() => {
+        setValidation();
+    }, [inputElements, setValidation, formValues]);
 
     const handlerToggle = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         SetFormValue(inputElements.parkingIsAvailable.name, (formValues.parkingIsAvailable === "true" ? "false" : "true"));
@@ -34,27 +49,36 @@ const ParkingLotForm: React.FC = () => {
         SetFormValue(inputElements.parkingPaymentType.name, value);
     }
 
-
     const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        SetFormValue(name, value);
-    }
-
-    const handleOnInput = (e: React.ChangeEvent<HTMLInputElement>, maxLength: number) => {
-        switch (maxLength) {
-            case maxLengthType[0]:
-                if (e.target.value.length > maxLengthType[0]) {
-                    e.target.value = e.target.value.substr(0, maxLengthType[0]);
-                    console.log(e.target.value);
-                }
+        switch (name) {
+            case "parkingFirstHour":
+                inputElements.parkingFirstHour = { ...inputElements.parkingFirstHour, ...ValidationUtils.isRequired(value) }
                 break;
-            case maxLengthType[1]:
-                if (e.target.value.length > maxLengthType[1]) {
-                    e.target.value = e.target.value.substr(0, maxLengthType[0]);
-                    console.log(e.target.value);
-                }
+            case "parkingFirstTime":
+                inputElements.parkingFirstTime = { ...inputElements.parkingFirstTime, ...ValidationUtils.isRequired(value) }
                 break;
+            case "parkingFirstPayment":
+                inputElements.parkingFirstPayment = { ...inputElements.parkingFirstPayment, ...ValidationUtils.isRequired(value) }
+                break;
+            case "parkingAdditionHour":
+                inputElements.parkingAdditionHour = { ...inputElements.parkingAdditionHour, ...ValidationUtils.isRequired(value) }
+                break;
+            case "parkingAdditionTime":
+                inputElements.parkingAdditionTime = { ...inputElements.parkingAdditionTime, ...ValidationUtils.isRequired(value) }
+                break;
+            case "parkingAdditionPayment":
+                inputElements.parkingAdditionPayment = { ...inputElements.parkingAdditionPayment, ...ValidationUtils.isRequired(value) }
+                break;
+            case "parkingAllDayPayment":
+                inputElements.parkingAllDayPayment = { ...inputElements.parkingAllDayPayment, ...ValidationUtils.isRequired(value) }
+                break;
+            case "parkingOneTimePayment":
+                inputElements.parkingOneTimePayment = { ...inputElements.parkingOneTimePayment, ...ValidationUtils.isRequired(value) }
+                break;
+            default: break;
         }
+        SetFormValue(name, value);
     }
 
     const PaymentTypeContainer = () => {
@@ -77,7 +101,7 @@ const ParkingLotForm: React.FC = () => {
                             <Flex justify="flex-start" align="flex-start">
                                 <InitialSelect onChange={handlerOnChange} options={parkingHours} {...inputElements.parkingFirstHour} value={formValues.parkingFirstHour} />
                                 <InitialSelect onChange={handlerOnChange} options={parkingMinutes} {...inputElements.parkingFirstTime} value={formValues.parkingFirstTime} />
-                                <BoxInput {...inputElements.parkingFirstPayment} value={formValues.parkingAdditionPayment} onChange={handlerOnChange} mark="원" />
+                                <BoxInput {...inputElements.parkingFirstPayment} value={formValues.parkingFirstPayment} onChange={handlerOnChange} mark="원" />
                             </Flex>
                         </InputWrap>
                         <InputWrap>
@@ -121,15 +145,15 @@ const ParkingLotForm: React.FC = () => {
                             <Typography.Large weight={theme.fontWeight.SemiBold}>주차비 유형</Typography.Large>
                             <ContentWrap>
                                 <div>
-                                    <Input id="free" value="free" {...inputElements.parkingPaymentType} />
+                                    <Input id="free" value="free" {...inputElements.parkingPaymentType} defaultChecked={formValues.parkingPaymentType === "free" ? true : false} />
                                     <Item htmlFor="free" onClick={handlerOnClick}>무료</Item>
                                 </div>
                                 <div>
-                                    <Input id="time" value="time" {...inputElements.parkingPaymentType} />
+                                    <Input id="time" value="time" {...inputElements.parkingPaymentType} defaultChecked={formValues.parkingPaymentType === "time" ? true : false} />
                                     <Item htmlFor="time" onClick={handlerOnClick}>시간제</Item>
                                 </div>
                                 <div>
-                                    <Input id="paytopay" value="paytopay" {...inputElements.parkingPaymentType} />
+                                    <Input id="paytopay" value="paytopay" {...inputElements.parkingPaymentType} defaultChecked={formValues.parkingPaymentType === "paytopay" ? true : false} />
                                     <Item htmlFor="paytopay" onClick={handlerOnClick}>정액제</Item>
                                 </div>
                             </ContentWrap>
@@ -181,19 +205,12 @@ const ContentMain = styled.div`
     text-align: center;
 `
 
-const Select = styled.select`
-    border: 0px;
-    font-size: ${(props) => props.theme.fontSize.Title3};
-    color: #F84F39;
-    text-align: center;
-    font-size: ${(props) => props.theme.fontSize.Title2};
-    border: 0px;
-    border-bottom: 1px solid #c4c4c4;
-    margin: 0px 20px;
-`
-
 const InputWrap = styled.div`
     margin-top: 2.5vh;
+    input{
+        text-align: right;
+        padding-right: 40px;
+    }
 `
 
 

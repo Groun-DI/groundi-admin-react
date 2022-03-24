@@ -4,25 +4,28 @@ import { theme } from "styles/theme";
 import Flex from "components/style/Flex";
 import IncrementStepper from 'components/input/IncrementStepper';
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import ValidationUtils from "utils/validation.utils";
 
-const OccupancyForm: React.FC = () => {
+type Props = {
+    stateValid: (state: boolean) => void;
+}
+
+const OccupancyForm: React.FC<Props> = ({ stateValid }) => {
     const { inputElements, formValues, SetFormValue } = useStudioCreateContext();
 
     const basicOccupancyChange = useCallback((value: number) => {
-        inputElements.basicOccupancy = {...inputElements.basicOccupancy, ...ValidationUtils.isNumberOfDigits(value, 1, 100)}
+        inputElements.basicOccupancy = { ...inputElements.basicOccupancy, ...ValidationUtils.isNumberOfDigits(value, 1, 100) }
         SetFormValue(inputElements.basicOccupancy.name, value.toString());
-
-    }, [SetFormValue, inputElements]);
+        stateValid(!(inputElements.basicOccupancy.invalid === true && inputElements.maximumOccupancy.invalid === true));
+    }, [SetFormValue, inputElements, stateValid]);
 
     const maximumOccupancyChange = useCallback((value: number) => {
-        inputElements.maximumOccupancy = {...inputElements.maximumOccupancy, ...ValidationUtils.isNumberOfDigits(value, 1, 100)}
+        inputElements.maximumOccupancy = { ...inputElements.maximumOccupancy, ...ValidationUtils.isNumberOfDigits(value, 1, 100) }
         SetFormValue(inputElements.maximumOccupancy.name, value.toString());
+        stateValid(!(inputElements.basicOccupancy.invalid === true && inputElements.maximumOccupancy.invalid === true));
+    }, [SetFormValue, inputElements, stateValid]);
 
-    }, [SetFormValue, inputElements]);
-
-   
     return (
         <>
             <Wrapper>
@@ -35,7 +38,7 @@ const OccupancyForm: React.FC = () => {
                 <Content>
                     <Typography.Title3 weight={theme.fontWeight.SemiBold}>{inputElements.maximumOccupancy.label}</Typography.Title3>
                     <InputWrap>
-                        <IncrementStepper onChange={maximumOccupancyChange} value={formValues.maximumOccupancy} {...inputElements.maximumOccupancy}/>
+                        <IncrementStepper onChange={maximumOccupancyChange} value={formValues.maximumOccupancy} {...inputElements.maximumOccupancy} />
                     </InputWrap>
                 </Content>
             </Wrapper>
