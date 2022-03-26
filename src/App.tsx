@@ -1,5 +1,5 @@
 import {
-    SignIn, SignUp, HomePage, CenterPage, CenterCreatePage, ReservationPage, StudioPage, StudioCreatePage, CalendarPage, StuidoReservationPage, StudioCalendarPage
+    SignIn, SignUp, HomePage, CenterPage, CenterCreatePage, ReservationPage, StudioPage, StudioCreatePage, CalendarPage
 } from 'pages';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -12,11 +12,9 @@ const App = () => {
                 <Route path="/auth/signup" element={<SignUp />} />
                 <Route path="/new-center" element={<CenterCreatePage />} />
                 <Route path="/center/:centerId" element={<CenterPage />}>
-                    <Route path="reservation" element={<ReservationPage />}>
-                        <Route path=":studioId" element={<StuidoReservationPage />} />
-                    </Route>
+                    <Route path="reservation/:studioId" element={<ReservationPage />} />
                     <Route path="calendar" element={<CalendarPage />}>
-                        <Route path=":studioId" element={<StudioCalendarPage />} />
+                        <Route path=":studioId" element={<CalendarPage />} />
                     </Route>
                     <Route path="studio" element={<StudioPage />} />
                 </Route>
