@@ -11,5 +11,8 @@ export { default as CenterPage } from './center';
 
 export { default as StudioCreatePage } from './center/studio/new-studio';
 export { default as StudioPage } from './center/studio';
-export { default as CalendarPage } from './center/calendar/week';
+
+export { default as Calendars } from './center/calendar';
+export { default as WeekCalendar } from './center/calendar/week';
+export { default as MonthCalendar } from './center/calendar/month';
 export { default as StudioCalendarPage } from './center/earnings';

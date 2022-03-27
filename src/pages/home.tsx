@@ -31,7 +31,7 @@ const Page = () => {
                     <ContentMain>
                         {
                             centers.map((item, k) => (
-                                <MyCenterCard key={k} item={item} />
+                                <MyCenterCard key={k} center={item} />
                             ))
                         }
                     </ContentMain>

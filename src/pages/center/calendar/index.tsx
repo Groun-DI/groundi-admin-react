@@ -1,13 +1,13 @@
 import Typography from "components/style/Typography";
-import Wrapper from "components/style/Wrapper";
 import { useEffect, useState } from "react";
 import { Outlet, useParams } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router";
-import client from "services/axios";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Flex from "components/style/Flex";
 import { theme } from "styles/theme";
+import { StudioService } from "api/studio.service";
+import FullWidthSidebar from "components/style/FullWidthSidebar";
 
 const Page = () => {
     const { centerId } = useParams();
@@ -16,20 +16,20 @@ const Page = () => {
     const navigation = useNavigate();
 
     useEffect(() => {
-        client.get('studio/' + centerId).then((res) => {
-            if (res.data.length === 0) {
+        const getStudioId = async () => {
+            const studioId = await StudioService.findOne(Number(centerId));
+            if (studioId.length === 0) {
                 setIsLoading(false);
-                return;
+            } else {
+                setIsLoading(true);
+                return navigation(`/${centerId}/calendar/${studioId}/week`);
             }
-            setIsLoading(true);
-            if(pathname.split('/').pop() === "calendar"){
-                navigation(pathname + '/' + res.data[0].id);
-            }
-        });
+        }
+        getStudioId();
     }, [centerId, navigation, pathname]);
 
     return (
-        <Wrapper>
+        <FullWidthSidebar>
             {
                 !isLoading ? (
                     <Container>
@@ -39,11 +39,11 @@ const Page = () => {
                             <Typography.Regular weight={theme.fontWeight.SemiBold}>지금 만들려구요</Typography.Regular>
                         </Link>
                     </Container>
-                ):(
-                    <Outlet />
-                 )
+                ) : (
+                        <Outlet />
+                    )
             }
-        </Wrapper>
+        </FullWidthSidebar>
     )
 }
 

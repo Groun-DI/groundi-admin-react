@@ -8,25 +8,26 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Flex from "components/style/Flex";
 import { theme } from "styles/theme";
+import { StudioService } from "api/studio.service";
 
 const ReservationLayoutPage = () => {
     const { centerId } = useParams();
-    const { pathname } = useLocation();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigation = useNavigate();
 
     useEffect(() => {
-        client.get('studio/' + centerId).then((res) => {
-            if (res.data.length === 0) {
+        const getStudioId = async () => {
+            const studioId = await StudioService.findOne(Number(centerId));
+            if (studioId.length === 0) {
                 setIsLoading(false);
-                return;
+            } else {
+                setIsLoading(true);
+                navigation(centerId + '/' + studioId + '/reservation');
             }
-            setIsLoading(true);
-            if(pathname.split('/').pop() === "reservation"){
-                navigation(pathname + '/' + res.data[0].id);
-            }
-        });
-    }, [centerId, navigation, pathname]);
+        }
+
+        getStudioId();
+    }, [centerId, navigation]);
 
     return (
         <Wrapper>
@@ -39,9 +40,9 @@ const ReservationLayoutPage = () => {
                             <Typography.Regular weight={theme.fontWeight.SemiBold}>지금 만들려구요</Typography.Regular>
                         </Link>
                     </Container>
-                ):(
-                    <Outlet />
-                 )
+                ) : (
+                        <Outlet />
+                    )
             }
         </Wrapper>
     )

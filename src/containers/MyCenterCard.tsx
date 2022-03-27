@@ -1,19 +1,30 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Typography from "components/style/Typography";
+import { useEffect, useState } from "react";
+import { StudioService } from "api/studio.service";
 
 type Props = {
-    item: any
+    center: any
 }
-const MyCenterCard: React.FC<Props> = ({ item }) => {
+const MyCenterCard: React.FC<Props> = ({ center }) => {
+    const [studioId, setStudioId] = useState<string>('');
+
+    useEffect(() => {
+        const getStudioId = async () => {
+            setStudioId(await StudioService.findOne(center.id));
+        }
+        getStudioId();
+    });
+
     return (
         <BoxContainer>
             <BoxContentHeader>
                 <img src="/centerImage.png" alt="센터 대표 이미지" />
             </BoxContentHeader>
             <BoxContentMain>
-                <Link to={`/center/${item.id}/reservation`}>
-                    <Typography.Small>{item.name}</Typography.Small>
+                <Link to={`${center.id}/${studioId}/reservation`}>
+                    <Typography.Small>{center.name}</Typography.Small>
                 </Link>
             </BoxContentMain>
         </BoxContainer>

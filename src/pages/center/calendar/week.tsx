@@ -6,18 +6,18 @@ import styled from "styled-components";
 import Flex from "components/style/Flex";
 import { theme } from "styles/theme";
 import CalendarHeader from "containers/CalendarHeader";
-import moment from 'moment';
+import moment from 'moment-timezone';
 import Typography from "components/style/Typography";
 import FullWidthSidebar from "components/style/FullWidthSidebar";
+import { StudioRentalTimeService } from "api/studio-rental-time.service";
 
 const Page = () => {
     const [date, setDate] = useState<moment.Moment[]>([]);
     const [today, setToday] = useState<moment.Moment>();
-    const { centerId } = useParams();
+    const { centerId, studioId } = useParams();
     const { pathname } = useLocation();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [openTime, setOpenTime] = useState<string[]>([]);
-    const [closedTime, setClosedTime] = useState<number>(22);
+    const [operatingHours, setOperatingHours] = useState<string[]>([]);
     const navigation = useNavigate();
     const week = ["월", "화", "수", "목", "금", "토", "일"]
 
@@ -40,98 +40,132 @@ const Page = () => {
         setToday(data);
     }, []);
 
-    const handleSetClock = useCallback((openTime: number, closeTime: number) => {
-        for (let val = openTime; val < closeTime; val++) {
-            if (val > 12) {
-                setOpenTime(oldArray => [...oldArray, "오후" + (val - 12)]);
-            } else {
-                setOpenTime(oldArray => [...oldArray, "오전" + val]);
-            }
+    const handleSetClock = useCallback((openTime: string, closeTime: string) => {
+        const openMoment = moment(openTime).tz("Asia/Seoul").utc();
+        const closeMoment = moment(closeTime).tz("Asia/Seoul").utc();
+
+        for (let i = openMoment; i <= closeMoment; i.add(30, 'm')) {
+            setOperatingHours(oldArray => [...oldArray, i.format('hh:mm A')]);
         }
+
     }, []);
 
     useEffect(() => {
-        // client.get('studio-rentaltime/' + centerId).then((res) => {
-        //     setOpenTime(res.data.openTime);
-        //     setClosedTime(res.data.closedTime);
-        // });
+        const getStudioRentalTime = async () => {
+            if (studioId) {
+                const { openTime, closeTime } = await StudioRentalTimeService.findOne(studioId);
+                handleSetClock(openTime, closeTime);
+            }
+        }
+        getStudioRentalTime();
 
-        handleSetClock(9, 22);
-    }, [centerId]);
+    }, [studioId, handleSetClock]);
 
     return (
         <>
-            <FullWidthSidebar>
-                <Container>
-                    <CalendarHeader setToday={handleSetToday} onChange={handleDateChange} format="day" />
-                    <Content>
-                        <Calendar>
-                            <LeftWrap>
+            <Container>
+                <CalendarHeader setToday={handleSetToday} onChange={handleDateChange} format="day" />
+                <Content>
+                    <Calendar>
+                        {/* <LeftWrap>
+                            {
+                                operatingHours.map((data, key) => (
+                                    <ContentByTime>
+                                        <Typography.Micro>{data}</Typography.Micro>
+                                    </ContentByTime>
+
+                                ))
+                            }
+                        </LeftWrap> */}
+                        {/* {
+                                date.map((data, key) => (
+                                    <CalendarWrap key={key}>
+                                        <StyledTypographySmall state={data.format('D') === today?.format('D')}>{week[key]}({data.format('D')}일)</StyledTypographySmall>
+                                        <Wrap>
+                                            {
+                                                operatingHours.map((data, key) => (
+                                                    <ContentByTime key={key}></ContentByTime>
+                                                ))
+                                            }
+                                        </Wrap>
+                                    </CalendarWrap>
+                                ))
+                            } */}
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    {
+                                        date.map((data, key) => (
+                                            <th key={key}>
+                                                <StyledTypographySmall state={data.format('D') === today?.format('D')}>{week[key]}({data.format('D')}일)</StyledTypographySmall>
+                                            </th>
+                                        ))
+                                    }
+                                </tr>
+                            </thead>
+                            <TBody>
                                 {
-                                    openTime.map((data, key) => (
-                                        <ContentByTime>
-<Typography.Micro>{data}</Typography.Micro>
-                                        </ContentByTime>
-                                        
+                                    operatingHours.map((data, key) => (
+                                        <tr>
+                                            <th><StyledTypographyMicro>{data}</StyledTypographyMicro></th>
+                                            {
+                                                date.map((data, key) => (
+                                                    <BoxByTime key={key} />
+                                                ))
+                                            }
+                                        </tr>
                                     ))
                                 }
-                            </LeftWrap>
-                            <RightWrap>
-                                {
-                                    date.map((data, key) => (
-                                        <CalendarWrap key={key}>
-                                            <StyledTypographySmall state={data.format('D') === today?.format('D')}>{week[key]}({data.format('D')}일)</StyledTypographySmall>
-                                            <Wrap >
-                                                {
-                                                    Array(13).fill(1).map((n, i) => (
-                                                        <ContentByTime key={i}></ContentByTime>
-                                                    ))
-                                                }
-                                            </Wrap>
-                                        </CalendarWrap>
-                                    ))
-                                }
-                            </RightWrap>
-                        </Calendar>
-                    </Content>
-                </Container>
-            </FullWidthSidebar>
+                            </TBody>
+                        </Table>
+                    </Calendar>
+                </Content>
+            </Container>
         </>
     )
 }
 
-const LeftWrap = styled.div`
-
+const BoxByTime = styled.td`
+    width: calc(100%/7);
+    height: 40px;
+    border-top: 1px solid ${theme.color.border};
+    border-right: 1px solid ${theme.color.border};
+    border-bottom: 1px solid ${theme.color.border};
+    border-left: 1px solid ${theme.color.border};
 `
 
-const RightWrap = styled(Flex)`
-    width : 100%;
-    flex-direction: row;
+
+const StyledTypographyMicro = styled(Typography.Micro)`
+    width: 80px;
+`
+const Table = styled.table`
+    width:100%;
+    border-collapse:collapse;
+    border-spacing:0;
+    border-spacing: 0px;
+    border-style: none;
+    padding: 0px;
 `
 
 const StyledTypographySmall = styled(Typography.Small) <{ state: boolean }>`
     color: ${({ state, theme }) => state ? theme.color.main : theme.color.placeholder};
 `
 
-const ContentByTime = styled.div`
-    width: 100%;
-    height: 40px;
-    border-bottom: 1px solid ${theme.color.border};
-`
 
 
-const Wrap = styled.div`
+const TBody = styled.tbody`
     width: 100%;
-    margin-top: 1.2vh;
-    border-top: 2px solid ${theme.color.border};
-    border-right: 1px solid ${theme.color.border};
-    border-bottom: 2px solid ${theme.color.border};
-    border-left: 1px solid ${theme.color.border};
-`
-const CalendarWrap = styled.div`
-    width: 100%;
-    width: calc(100% / 7);
-    text-align: left;
+    tr:first-child{
+        ${BoxByTime}{
+            border-top: 2px solid ${theme.color.border};
+        }
+    } 
+    tr:last-child{
+        ${BoxByTime}{
+            border-bottom: 2px solid ${theme.color.border};
+        }
+    } 
 `
 
 const Calendar = styled(Flex)`
