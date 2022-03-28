@@ -85,10 +85,6 @@ const Page = () => {
         setNowFormStep(nowFormStep + 1);
     }
 
-    const goPrevios = () => {
-        setNowFormStep(nowFormStep - 1);
-    }
-
     switch (nowFormStep) {
         case 1:
             return (

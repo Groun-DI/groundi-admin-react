@@ -51,6 +51,12 @@ class FormValuesUtils {
         allDayPayment: '',
         oneTimePayment: '',
         content: '',
+    };
+
+    static studioBreakTimeCreate = {
+        date: '',
+        time: '',
+        reason: '',
     }
 }
 

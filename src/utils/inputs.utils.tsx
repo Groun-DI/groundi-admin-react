@@ -394,6 +394,36 @@ class InputElementsUtils {
             required: true
         },
     }
+
+    static studioBreakTimeCreate = {
+        date: {
+            name: "date",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "선택날짜",
+            invalid: false,
+            required: true
+        },
+        time:{
+            name: "time",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "대여 금지 시간",
+            invalid: false,
+            required: true
+        },
+        reason:{
+            name: "reason",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "사유",
+            invalid: false,
+            required: true
+        }
+    }
 }
 
 
