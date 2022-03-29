@@ -13,6 +13,14 @@ import BoxInput from "components/input/BoxInput";
 import InputElementsUtils from "utils/inputs.utils";
 import FormValuesUtils from "utils/formValue.utils";
 import { SelectDrag } from "components/select-drag";
+import { StudioBreakTimeService } from "api/StudioBreakTime.service";
+import { CreateDto } from "dto/breakTime.dto";
+
+type SelectDragTime = {
+    date: string;
+    startTime: string;
+    endTime: string;
+}
 
 const Page = () => {
     const [date, setDate] = useState<moment.Moment[]>([]);
@@ -27,7 +35,7 @@ const Page = () => {
     const [formValue, setFormValue] = useState(FormValuesUtils.studioBreakTimeCreate);
     const calendarRef = useRef<any>();
     const [enabel, setenabel] = useState(true);
-    const [selectItem, setSelectItem] = useState({ nowDate: null, startClock: null, endClock: null });
+    const [selectItem, setSelectItem] = useState<SelectDragTime>({ date: '', startTime: '', endTime: '' });
 
     const handlerMouseFocus = () => {
 
@@ -65,26 +73,42 @@ const Page = () => {
     }
 
     const handleSetClock = useCallback((openTime: string, closeTime: string) => {
+        let hours:string[] =[];
         const openMoment = moment(openTime).tz("Asia/Seoul").utc();
         const closeMoment = moment(closeTime).tz("Asia/Seoul").utc();
 
         for (let i = openMoment; i <= closeMoment; i.add(30, 'm')) {
-            setOperatingHours(oldArray => [...oldArray, i.format('hh:mm A')]);
+            hours.push(i.format(''));
         }
 
+        return hours;
     }, []);
 
+    const hanldeOnSubmit = async() => {
+        const res = await StudioBreakTimeService.create({
+            studioId: Number(studioId),
+            date: formValue.date,
+            time: formValue.startTime,
+            reason: formValue.reason
+        });
 
-    const SelectionItem = (value: any, date: any) => {
-
+        console.log(res);
     };
+
+
+    const SelectionItem = useCallback((value: string[], date: string) => {
+        const startTime = Number(value[0]);
+        const endTime = Number(value[value.length - 1]);
+        setSelectItem({ date: date, startTime: operatingHours[startTime], endTime: operatingHours[endTime] });
+        setFormValue({ ...formValue, date: date, startTime: operatingHours[startTime], endTime: operatingHours[endTime] });
+    }, [operatingHours]);
 
 
     useEffect(() => {
         const getStudioRentalTime = async () => {
             if (studioId) {
                 const { openTime, closeTime } = await StudioRentalTimeService.findOne(studioId);
-                handleSetClock(openTime, closeTime);
+                setOperatingHours(handleSetClock(openTime, closeTime));
             }
         }
         getStudioRentalTime();
@@ -116,11 +140,11 @@ const Page = () => {
                                             <SelectDrag
                                                 onSelectionChange={SelectionItem}
                                                 enabled={enabel}
-                                                date={data.format('D')}
+                                                date={data.format('')}
                                             >
                                                 {
                                                     operatingHours.map((data, key) => (
-                                                        <BoxByTime key={key}/>
+                                                        <BoxByTime key={key} />
                                                     ))
                                                 }
                                             </SelectDrag>
@@ -132,8 +156,10 @@ const Page = () => {
                     </ContentLeft>
                     <ContentRight>
                         <BoxInput onChange={handleOnChange} {...inputElment.date} value={formValue.date} />
-                        <BoxInput onChange={handleOnChange} {...inputElment.time} value={formValue.time} />
+                        <BoxInput onChange={handleOnChange} {...inputElment.startTime} value={formValue.startTime} />
+                        <BoxInput onChange={handleOnChange} {...inputElment.endTime} value={formValue.endTime} />
                         <BoxInput onChange={handleOnChange} {...inputElment.reason} value={formValue.reason} />
+                        <button onClick={hanldeOnSubmit}>저장하기</button>
                     </ContentRight>
                 </ContentMain>
             </Container>

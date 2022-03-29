@@ -55,7 +55,8 @@ class FormValuesUtils {
 
     static studioBreakTimeCreate = {
         date: '',
-        time: '',
+        startTime: '',
+        endTime: '',
         reason: '',
     }
 }

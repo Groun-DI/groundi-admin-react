@@ -405,8 +405,17 @@ class InputElementsUtils {
             invalid: false,
             required: true
         },
-        time:{
-            name: "time",
+        endTime:{
+            name: "endTime",
+            type: "text",
+            placeholder: "",
+            errorMessage: "",
+            label: "대여 금지 시간",
+            invalid: false,
+            required: true
+        },
+        startTime:{
+            name: "startTime",
             type: "text",
             placeholder: "",
             errorMessage: "",

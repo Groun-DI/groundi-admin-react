@@ -5,7 +5,7 @@ import { theme } from 'styles/theme';
 
 type Props = {
     enabled: boolean;
-    onSelectionChange: (value: any, date: any) => void;
+    onSelectionChange: (value: string[], date: string) => void;
     date: string;
     children: React.ReactNode;
 }
@@ -58,7 +58,7 @@ export const SelectDrag: React.FC<Props> = ({ onSelectionChange, enabled, date, 
 
     const clearSelection = useCallback(() => {
         setselectedChildren({});
-        onSelectionChange(null, null);
+        onSelectionChange([], '');
     }, [onSelectionChange]);
 
     const renderChildren = () => {
@@ -91,7 +91,6 @@ export const SelectDrag: React.FC<Props> = ({ onSelectionChange, enabled, date, 
                 };
                 if (_boxIntersects(selectionBox, tmpBox)) {
                     selectedChildren[key] = true;
-                    console.log(selectedChildren);
                 } else {
                     if (!appendMode) {
                         delete selectedChildren[key];
@@ -139,7 +138,6 @@ export const SelectDrag: React.FC<Props> = ({ onSelectionChange, enabled, date, 
 const Container = styled.td`
     position: relative;
 `
-
 
 const BoxByTime = styled.div<{ isSelected: boolean }>`
     height: 40px;
