@@ -1,10 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { isNonNullChain } from 'typescript';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import * as _ from 'lodash';
+import styled from 'styled-components';
+import { theme } from 'styles/theme';
 
 type Props = {
     enabled: boolean;
-    SelectionItem: (value: any, date: any) => Promise<any>;
+    onSelectionChange: (value: any, date: any) => void;
     date: string;
+    children: React.ReactNode;
 }
 
 type selectionBox = {
@@ -17,26 +20,17 @@ type Point = {
     x: number,
     y: number
 }
-export const SelectDrag: React.FC<Props> = ({ SelectionItem, enabled, date, ...children }) => {
+
+export const SelectDrag: React.FC<Props> = ({ onSelectionChange, enabled, date, children }) => {
     const [mouseDown, setmouseDown] = useState<boolean>(false);
     const [startPoint, setstartPoint] = useState<Point | null>(null);
     const [endPoint, setendPoint] = useState<Point | null>(null);
     const [selectionBox, setselectionBox] = useState<selectionBox | null>(null);
     const [appendMode, setappendMode] = useState<boolean>(false);
-    const [selectedChildren, setselectedChildren] = useState({});
+    const [selectedChildren, setselectedChildren] = useState<any>({});
     const selectionBoxRef = useRef<any>();
 
-    // useEffect(() => {
-    //     if (mouseDown && selectionBox != null) {
-    //         updateCollidingChildren(selectionBox);
-    //     }
-    // }, [selectionBox]);
-
-    // useEffect(() => {
-    //     clearSelection();
-    // }, [enabled]);
-
-    const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const _onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (e.button === 2 || e.nativeEvent.which === 2) {
             return;
         }
@@ -44,73 +38,71 @@ export const SelectDrag: React.FC<Props> = ({ SelectionItem, enabled, date, ...c
         setstartPoint({ x: e.pageX, y: e.pageY });
     };
 
-    // const onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    //     console.log("onMouseUp");
-    //     setmouseDown(false);
-    //     setstartPoint(null);
-    //     setendPoint(null);
-    //     setselectionBox(null);
-    //     setappendMode(false);
-    //     let value = _.keys(selectedChildren);
-    //     SelectionItem(value, date);
-    // };
+    const _onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        setmouseDown(false);
+        setstartPoint(null);
+        setendPoint(null);
+        setselectionBox(null);
+        setappendMode(false);
+        let value = _.keys(selectedChildren);
+        onSelectionChange(value, date);
+    };
 
-    const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const _onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
         if (mouseDown) {
             setendPoint({ x: e.pageX, y: e.pageY });
-            setselectionBox(calculateSelectionBox(startPoint, endPoint));
+            setselectionBox(_calculateSelectionBox(startPoint, endPoint));
         }
     };
 
-    // const clearSelection = () => {
-    //     setselectedChildren({});
-    //     SelectionItem(null, null);
-    // };
+    const clearSelection = useCallback(() => {
+        setselectedChildren({});
+        onSelectionChange(null, null);
+    }, [onSelectionChange]);
 
-    // const renderChildren = () => {
-    //     var index = 0;
-    //     return React.Children.map(children, key => {
-    //         const tmpKey = index++;
-    //         const isSelected = .has(selectedChildren, tmpKey);
-    //         return (
-    //         <div className={
-    //             'select-box ' + (
-    //                 isSelected ? 'selected' : ''
-    //             )}></div>);
-    //     });
-    // };
+    const renderChildren = () => {
+        var index = 0;
+        return React.Children.map(children, (child: any) => {
+            if (child !== undefined && child != null) {
+                const tmpKey = child.key != null ? index++ : child['key'];
+                const isSelected = _.has(selectedChildren, tmpKey);
+                return (<BoxByTime isSelected={isSelected}></BoxByTime>);
+            }
+        });
+    };
 
-    // const boxIntersects = (boxA, boxB) => {
-    //     if (boxA.left <= boxB.left + boxB.width && boxA.left + boxA.width >= boxB.left && boxA.top <= boxB.top + boxB.height && boxA.top + boxA.height >= boxB.top) {
-    //         return true;
-    //     }
-    //     return false;
-    // };
+    const _boxIntersects = (boxA: selectionBox, boxB: selectionBox) => {
+        if (boxA.left <= boxB.left + boxB.width && boxA.left + boxA.width >= boxB.left && boxA.top <= boxB.top + boxB.height && boxA.top + boxA.height >= boxB.top) {
+            return true;
+        }
+        return false;
+    };
 
-    // const updateCollidingChildren = (selectionBox) => {
-    //     var tmpBox = null;
-    //     each(selectionBoxRef.current.children, function (children, key) {
-    //         if (key !== 'selectionBox') {
-    //             tmpBox = {
-    //                 top: children.offsetTop,
-    //                 left: children.offsetLeft,
-    //                 width: children.clientWidth,
-    //                 height: children.clientHeight
-    //             };
-    //             if (boxIntersects(selectionBox, tmpBox)) {
-    //                 selectedChildren[key] = true;
-    //             } else {
-    //                 if (!appendMode) {
-    //                     delete selectedChildren[key];
-    //                 }
-    //             }
-    //         }
-    //     });
-    // };
+    const _updateCollidingChildren = useCallback((selectionBox) => {
+        var tmpBox = null;
+        _.each(selectionBoxRef.current.children, function (children, key) {
+            if (key !== 'selectionBox') {
+                tmpBox = {
+                    top: children.offsetTop,
+                    left: children.offsetLeft,
+                    width: children.clientWidth,
+                    height: children.clientHeight
+                };
+                if (_boxIntersects(selectionBox, tmpBox)) {
+                    selectedChildren[key] = true;
+                    console.log(selectedChildren);
+                } else {
+                    if (!appendMode) {
+                        delete selectedChildren[key];
+                    }
+                }
+            }
+        });
+    }, [appendMode, selectedChildren]);
 
-    const calculateSelectionBox = (startPoint: Point | null, endPoint: Point | null) => {
-        if (!mouseDown || endPoint == null || startPoint == null) {
+    const _calculateSelectionBox = (startPoint: Point | null, endPoint: Point | null) => {
+        if (!mouseDown || _.isNull(endPoint) || _.isNull(startPoint)) {
             return null;
         }
         var parentNode = selectionBoxRef.current;
@@ -121,18 +113,39 @@ export const SelectDrag: React.FC<Props> = ({ SelectionItem, enabled, date, ...c
         return { left: left, top: top, width: width, height: height };
     };
 
-    var className = 'selection ' + (
-        mouseDown ? 'dragging' : ''
-    );
+    useEffect(() => {
+        if (mouseDown && !_.isNull(selectionBox)) {
+            _updateCollidingChildren(selectionBox);
+        }
+    }, [_updateCollidingChildren, mouseDown, selectionBox]);
+
+    useEffect(() => {
+        clearSelection();
+    }, [clearSelection, enabled]);
 
     return (
-        <div className={className}
+        <Container
             ref={selectionBoxRef}
-            onMouseDown={onMouseDown}
-            onMouseMove={onMouseMove}
-            // onMouseUp={onMouseUp}
-            >
-            {/* {renderChildren()} */}
-        </div>
+            onMouseDown={_onMouseDown}
+            onMouseMove={_onMouseMove}
+            onMouseUp={_onMouseUp}>
+            {
+                renderChildren()
+            }
+        </Container>
     );
 };
+
+const Container = styled.td`
+    position: relative;
+`
+
+
+const BoxByTime = styled.div<{ isSelected: boolean }>`
+    height: 40px;
+    border-top: 1px solid ${theme.color.border};
+    border-right: 1px solid ${theme.color.border};
+    border-bottom: 1px solid ${theme.color.border};
+    border-left: 1px solid ${theme.color.border};
+    background:${({ isSelected }) => isSelected ? theme.color.main_light : "#fff"};
+`

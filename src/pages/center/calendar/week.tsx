@@ -12,6 +12,7 @@ import { StudioRentalTimeService } from "api/studio-rental-time.service";
 import BoxInput from "components/input/BoxInput";
 import InputElementsUtils from "utils/inputs.utils";
 import FormValuesUtils from "utils/formValue.utils";
+import { SelectDrag } from "components/select-drag";
 
 const Page = () => {
     const [date, setDate] = useState<moment.Moment[]>([]);
@@ -25,17 +26,19 @@ const Page = () => {
     const inputElment = InputElementsUtils.studioBreakTimeCreate;
     const [formValue, setFormValue] = useState(FormValuesUtils.studioBreakTimeCreate);
     const calendarRef = useRef<any>();
+    const [enabel, setenabel] = useState(true);
+    const [selectItem, setSelectItem] = useState({ nowDate: null, startClock: null, endClock: null });
 
-    const handlerMouseFocus = () =>{
-        
+    const handlerMouseFocus = () => {
+
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         window.addEventListener('mousedown', handlerMouseFocus);
         return () => {
             window.removeEventListener('mouseup', handlerMouseFocus);
         }
-    },[]);
+    }, []);
 
     useEffect(() => {
         client.get('studio/' + centerId).then((res) => {
@@ -58,74 +61,84 @@ const Page = () => {
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormValue({...formValue, [name]: value});
-}
-
-const handleSetClock = useCallback((openTime: string, closeTime: string) => {
-    const openMoment = moment(openTime).tz("Asia/Seoul").utc();
-    const closeMoment = moment(closeTime).tz("Asia/Seoul").utc();
-
-    for (let i = openMoment; i <= closeMoment; i.add(30, 'm')) {
-        setOperatingHours(oldArray => [...oldArray, i.format('hh:mm A')]);
+        setFormValue({ ...formValue, [name]: value });
     }
 
-}, []);
+    const handleSetClock = useCallback((openTime: string, closeTime: string) => {
+        const openMoment = moment(openTime).tz("Asia/Seoul").utc();
+        const closeMoment = moment(closeTime).tz("Asia/Seoul").utc();
 
-useEffect(() => {
-    const getStudioRentalTime = async () => {
-        if (studioId) {
-            const { openTime, closeTime } = await StudioRentalTimeService.findOne(studioId);
-            handleSetClock(openTime, closeTime);
+        for (let i = openMoment; i <= closeMoment; i.add(30, 'm')) {
+            setOperatingHours(oldArray => [...oldArray, i.format('hh:mm A')]);
         }
-    }
-    getStudioRentalTime();
 
-}, [studioId, handleSetClock]);
+    }, []);
 
-return (
-    <>
-        <Container>
-            <ContentMain>
-                <ContentLeft>
-                    <CalendarHeader setToday={handleSetToday} onChange={handleDateChange} format="day" />
-                    <CalendarTable>
-                        <thead>
-                            <tr>
-                                <th></th>
+
+    const SelectionItem = (value: any, date: any) => {
+
+    };
+
+
+    useEffect(() => {
+        const getStudioRentalTime = async () => {
+            if (studioId) {
+                const { openTime, closeTime } = await StudioRentalTimeService.findOne(studioId);
+                handleSetClock(openTime, closeTime);
+            }
+        }
+        getStudioRentalTime();
+
+    }, [studioId, handleSetClock]);
+
+    return (
+        <>
+            <Container>
+                <ContentMain>
+                    <ContentLeft>
+                        <CalendarHeader setToday={handleSetToday} onChange={handleDateChange} format="day" />
+                        <CalendarTable>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    {
+                                        operatingHours.map((data, key) => (
+                                            <th key={key}><StyledTypographyMicro>{data}</StyledTypographyMicro></th>
+                                        ))
+                                    }
+                                </tr>
+                            </thead>
+                            <TBody ref={calendarRef}>
                                 {
                                     date.map((data, key) => (
-                                        <th key={key}>
-                                            <StyledTypographySmall state={data.format('D') === today?.format('D')}>{week[key]}({data.format('D')}일)</StyledTypographySmall>
-                                        </th>
+                                        <tr key={key}>
+                                            <th><StyledTypographySmall state={data.format('D') === today?.format('D')}>{week[key]}({data.format('D')}일)</StyledTypographySmall></th>
+                                            <SelectDrag
+                                                onSelectionChange={SelectionItem}
+                                                enabled={enabel}
+                                                date={data.format('D')}
+                                            >
+                                                {
+                                                    operatingHours.map((data, key) => (
+                                                        <BoxByTime key={key}/>
+                                                    ))
+                                                }
+                                            </SelectDrag>
+                                        </tr>
                                     ))
                                 }
-                            </tr>
-                        </thead>
-                        <TBody ref={calendarRef}>
-                            {
-                                operatingHours.map((data, key) => (
-                                    <tr>
-                                        <th><StyledTypographyMicro>{data}</StyledTypographyMicro></th>
-                                        {
-                                            date.map((data, key) => (
-                                                <BoxByTime key={key} />
-                                            ))
-                                        }
-                                    </tr>
-                                ))
-                            }
-                        </TBody>
-                    </CalendarTable>
-                </ContentLeft>
-                <ContentRight>
-                    <BoxInput onChange={handleOnChange} {...inputElment.date} value={formValue.date} />
-                    <BoxInput onChange={handleOnChange} {...inputElment.time} value={formValue.time} />
-                    <BoxInput onChange={handleOnChange} {...inputElment.reason} value={formValue.reason} />
-                </ContentRight>
-            </ContentMain>
-        </Container>
-    </>
-)
+                            </TBody>
+                        </CalendarTable>
+                    </ContentLeft>
+                    <ContentRight>
+                        <BoxInput onChange={handleOnChange} {...inputElment.date} value={formValue.date} />
+                        <BoxInput onChange={handleOnChange} {...inputElment.time} value={formValue.time} />
+                        <BoxInput onChange={handleOnChange} {...inputElment.reason} value={formValue.reason} />
+                    </ContentRight>
+                </ContentMain>
+            </Container>
+        </>
+    )
 }
 
 const ContentLeft = styled.div`
@@ -139,7 +152,6 @@ const ContentRight = styled.div`
     border-left: 1px solid ${theme.color.border};
 `
 const BoxByTime = styled.td`
-    width: calc(100%/7);
     height: 40px;
     border-top: 1px solid ${theme.color.border};
     border-right: 1px solid ${theme.color.border};
@@ -151,6 +163,9 @@ const StyledTypographyMicro = styled(Typography.Micro)`
     color: ${theme.color.placeholder};
 `
 const CalendarTable = styled.table`
+    display:flex;
+    overflow-x: auto;
+    overflow-y: hidden;
     width:100%;
     border-collapse:collapse;
     border-spacing:0;
@@ -158,6 +173,13 @@ const CalendarTable = styled.table`
     border-style: none;
     padding: 0px;
     margin-top: 5vh;
+
+    tr{
+        width: calc(100%/7);
+    }
+    th, td{
+        display:block
+    }
 `
 const StyledTypographySmall = styled(Typography.Small) <{ state: boolean }>`
     color: ${({ state, theme }) => state ? theme.color.main : theme.color.TitleActive};
@@ -165,6 +187,7 @@ const StyledTypographySmall = styled(Typography.Small) <{ state: boolean }>`
     text-align: left;
 `
 const TBody = styled.tbody`
+    display:flex;
     width: 100%;
     tr:first-child{
         ${BoxByTime}{
