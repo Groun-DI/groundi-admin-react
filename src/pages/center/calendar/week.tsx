@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useLocation, useNavigate } from "react-router";
 import client from "services/axios";
@@ -14,7 +14,7 @@ import InputElementsUtils from "utils/inputs.utils";
 import FormValuesUtils from "utils/formValue.utils";
 import { SelectDrag } from "components/select-drag";
 import { StudioBreakTimeService } from "api/StudioBreakTime.service";
-import { CreateDto } from "dto/breakTime.dto";
+import week from "data/week.json";
 
 type SelectDragTime = {
     date: string;
@@ -23,45 +23,28 @@ type SelectDragTime = {
 }
 
 const Page = () => {
-    const [date, setDate] = useState<moment.Moment[]>([]);
+    const hours = moment("9:00:00 PM", "hh:mm:ss A").tz("Asia/Seoul").utc();
+    const [weekDays, setDate] = useState<moment.Moment[]>([]);
     const [today, setToday] = useState<moment.Moment>();
     const { centerId, studioId } = useParams();
     const { pathname } = useLocation();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [breakTimes, setBreakTimes] = useState<any[]>([]);
     const [operatingHours, setOperatingHours] = useState<string[]>([]);
     const navigation = useNavigate();
-    const week = ["월", "화", "수", "목", "금", "토", "일"]
     const inputElment = InputElementsUtils.studioBreakTimeCreate;
     const [formValue, setFormValue] = useState(FormValuesUtils.studioBreakTimeCreate);
-    const calendarRef = useRef<any>();
     const [enabel, setenabel] = useState(true);
     const [selectItem, setSelectItem] = useState<SelectDragTime>({ date: '', startTime: '', endTime: '' });
 
-    const handlerMouseFocus = () => {
-
-    }
-
-    useEffect(() => {
-        window.addEventListener('mousedown', handlerMouseFocus);
-        return () => {
-            window.removeEventListener('mouseup', handlerMouseFocus);
-        }
-    }, []);
-
-    useEffect(() => {
-        client.get('studio/' + centerId).then((res) => {
-            if (res.data.length === 0) {
-                setIsLoading(false);
-                return;
-            }
-
-            setIsLoading(true);
-        });
-    }, [centerId, navigation, pathname]);
-
-    const handleDateChange = useCallback((data: moment.Moment[]) => {
+    const handleDateChange = useCallback(async (data: moment.Moment[]) => {
         setDate(data);
-    }, []);
+
+        for (let i = 0; data.length > i; i++) {
+            setBreakTimes((await client.get(`studio-breaktime/${Number(studioId)}/date/${data[i].format('YYYY-MM-DD')}T00:00:00.000Z`)).data);
+        }
+
+    }, [studioId]);
 
     const handleSetToday = useCallback((data: moment.Moment) => {
         setToday(data);
@@ -73,7 +56,7 @@ const Page = () => {
     }
 
     const handleSetClock = useCallback((openTime: string, closeTime: string) => {
-        let hours:string[] =[];
+        let hours: string[] = [];
         const openMoment = moment(openTime).tz("Asia/Seoul").utc();
         const closeMoment = moment(closeTime).tz("Asia/Seoul").utc();
 
@@ -82,9 +65,10 @@ const Page = () => {
         }
 
         return hours;
+
     }, []);
 
-    const hanldeOnSubmit = async() => {
+    const hanldeOnSubmit = async () => {
         const res = await StudioBreakTimeService.create({
             studioId: Number(studioId),
             date: formValue.date,
@@ -111,9 +95,46 @@ const Page = () => {
                 setOperatingHours(handleSetClock(openTime, closeTime));
             }
         }
-        getStudioRentalTime();
 
+        getStudioRentalTime();
     }, [studioId, handleSetClock]);
+
+    useEffect(() => {
+        client.get('studio/' + centerId).then((res) => {
+            if (res.data.length === 0) {
+                setIsLoading(false);
+                return;
+            }
+
+            setIsLoading(true);
+        });
+    }, [centerId, navigation, pathname]);
+
+    const SelectBox = (day: moment.Moment) => {
+        let top: number = 0;
+        let height: number = 0;
+
+        console.log(breakTimes);
+
+
+        // if (breakTims.length > 0) {
+        //     console.log(breakTims)
+        //     for (let i = 0; breakTims.length > i; i++) {
+        //         height = handleSetClock(breakTims[i].openTims, breakTims[i].closeTime).length * 50;
+        //     }
+
+        //     console.log(height);
+
+        // }
+
+        return (
+            <BreakTimeBox
+                top={0}
+                height={80}
+            />
+        )
+
+    }
 
     return (
         <>
@@ -121,38 +142,49 @@ const Page = () => {
                 <ContentMain>
                     <ContentLeft>
                         <CalendarHeader setToday={handleSetToday} onChange={handleDateChange} format="day" />
-                        <CalendarTable>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    {
-                                        operatingHours.map((data, key) => (
-                                            <th key={key}><StyledTypographyMicro>{data}</StyledTypographyMicro></th>
-                                        ))
-                                    }
-                                </tr>
-                            </thead>
-                            <TBody ref={calendarRef}>
-                                {
-                                    date.map((data, key) => (
-                                        <tr key={key}>
-                                            <th><StyledTypographySmall state={data.format('D') === today?.format('D')}>{week[key]}({data.format('D')}일)</StyledTypographySmall></th>
-                                            <SelectDrag
-                                                onSelectionChange={SelectionItem}
-                                                enabled={enabel}
-                                                date={data.format('')}
-                                            >
-                                                {
-                                                    operatingHours.map((data, key) => (
-                                                        <BoxByTime key={key} />
-                                                    ))
-                                                }
-                                            </SelectDrag>
-                                        </tr>
-                                    ))
-                                }
-                            </TBody>
-                        </CalendarTable>
+                        <CalendarMain>
+                            <Calendar>
+                                <LeftContent>
+                                    <LeftContentMain>
+                                        {
+                                            Array(24).fill(1).map((data, key) => {
+                                                hours.add(60, 'm');
+                                                return <HourBox key={key}>{hours.format('h A')}</HourBox>
+                                            })
+                                        }
+                                    </LeftContentMain>
+                                </LeftContent>
+                                <RightContent>
+                                    <RightContentHeader>
+                                        {
+                                            weekDays.map((day, key) => (
+                                                <WeekBox key={key}>{week[key]}({day.format('D')}일)</WeekBox>
+                                            ))
+                                        }
+                                    </RightContentHeader>
+                                    <RightContentMain>
+                                        <div>
+                                            {
+                                                Array(24).fill(1).map((data, key) => (
+                                                    <LineBox key={key} />
+                                                ))
+                                            }
+                                        </div>
+                                        <SelectDragWrap>
+                                            {
+                                                weekDays.map((day, key) => (
+                                                    <SelectDragContainer>
+                                                        {
+                                                            SelectBox(day)
+                                                        }
+                                                    </SelectDragContainer>
+                                                ))
+                                            }
+                                        </SelectDragWrap>
+                                    </RightContentMain>
+                                </RightContent>
+                            </Calendar>
+                        </CalendarMain>
                     </ContentLeft>
                     <ContentRight>
                         <BoxInput onChange={handleOnChange} {...inputElment.date} value={formValue.date} />
@@ -166,6 +198,31 @@ const Page = () => {
         </>
     )
 }
+
+const BreakTimeBox = styled.div<{ top: number, height: number }>`
+    position: absolute;
+    width: 100%;
+    top: ${({ top }) => top}px;
+    left: 0px;
+    height: ${({ height }) => height}px;
+    background-color: ${theme.color.main_light};
+`
+const SelectDragWrap = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+`
+
+const SelectDragContainer = styled.div`
+    position: relative;
+    width: calc(100% /7);
+    height: 100%;
+    border-right: 1px solid ${theme.color.border};
+`
 
 const ContentLeft = styled.div`
     width: 80%;
@@ -184,50 +241,53 @@ const BoxByTime = styled.td`
     border-bottom: 1px solid ${theme.color.border};
     border-left: 1px solid ${theme.color.border};
 `
-const StyledTypographyMicro = styled(Typography.Micro)`
-    width: 80px;
-    color: ${theme.color.placeholder};
+const WeekBox = styled.div`
+    width: calc(100% / 7);
 `
-const CalendarTable = styled.table`
-    display:flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width:100%;
-    border-collapse:collapse;
-    border-spacing:0;
-    border-spacing: 0px;
-    border-style: none;
-    padding: 0px;
-    margin-top: 5vh;
 
-    tr{
-        width: calc(100%/7);
-    }
-    th, td{
-        display:block
-    }
+const HourBox = styled.div`
+    height: 80px;
 `
-const StyledTypographySmall = styled(Typography.Small) <{ state: boolean }>`
-    color: ${({ state, theme }) => state ? theme.color.main : theme.color.TitleActive};
-    margin-bottom: 1.2vh;
-    text-align: left;
+
+const LineBox = styled.div`
+    height: 80px;
+    border-bottom: 1px solid ${theme.color.border};
 `
-const TBody = styled.tbody`
-    display:flex;
+
+const RightContentMain = styled.div`
+    position: relative;
+`
+
+const RightContentHeader = styled.div`
+    display: flex;
+    border-bottom: 2px solid ${theme.color.border};
+`
+
+const LeftContentMain = styled.div`
+    margin-top: 85px;
+`
+
+const RightContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+`
+
+const LeftContent = styled.div`
+    width: 100px;
+`
+
+const Calendar = styled.div`
+    display: flex;
+    flex-direction: row;
     width: 100%;
-    tr:first-child{
-        ${BoxByTime}{
-            border-top: 2px solid ${theme.color.border};
-        }
-    } 
-    tr:last-child{
-        ${BoxByTime}{
-            border-bottom: 2px solid ${theme.color.border};
-        }
-    } 
+    height: 100%;
 `
-const ContentFooter = styled.div`
+
+const CalendarMain = styled.div`
+    width: 100%;
 `
+
 const ContentMain = styled(Flex)`
     align-items: flex-start;
 `

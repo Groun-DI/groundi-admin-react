@@ -135,15 +135,15 @@ export const SelectDrag: React.FC<Props> = ({ onSelectionChange, enabled, date, 
     );
 };
 
-const Container = styled.td`
+const Container = styled.div`
     position: relative;
 `
 
 const BoxByTime = styled.div<{ isSelected: boolean }>`
     height: 40px;
-    border-top: 1px solid ${theme.color.border};
+    /* border-top: 1px solid ${theme.color.border};
     border-right: 1px solid ${theme.color.border};
     border-bottom: 1px solid ${theme.color.border};
-    border-left: 1px solid ${theme.color.border};
+    border-left: 1px solid ${theme.color.border}; */
     background:${({ isSelected }) => isSelected ? theme.color.main_light : "#fff"};
 `
