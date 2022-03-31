@@ -4,20 +4,12 @@ import styled from "styled-components";
 import Typography from 'components/style/Typography';
 import { theme } from 'styles/theme';
 import Flex from 'components/style/Flex';
+import { useCalendarContext } from 'hooks/useCalendarContext';
 
 
-type Props = {
-    setToday: (date: moment.Moment) => void;
-    onChange: (date: moment.Moment[]) => void;
-    format: 'year' | 'month' | 'day';
-}
-
-const CalendarHeader: React.FC<Props> = ({ setToday, onChange, format }) => {
+const CalendarHeader = () => {
+    const { SetWeekDays, format } = useCalendarContext();
     const [date, setdate] = useState<moment.Moment>(() => moment());
-
-    useEffect(()=>{
-        setToday(moment());
-    },[setToday]);
 
     const TodayDate = () => {
         setdate(moment());
@@ -83,14 +75,14 @@ const CalendarHeader: React.FC<Props> = ({ setToday, onChange, format }) => {
     useEffect(() => {
         switch (format) {
             case 'year':
-                return onChange(setMonthCalendar());
+                return SetWeekDays(setMonthCalendar());
             case 'month':
-                return onChange(setMonthCalendar());
+                return SetWeekDays(setMonthCalendar());
             case 'day':
-                return onChange(setWeekCalendar());
-            default: return onChange(setWeekCalendar());
+                return SetWeekDays(setWeekCalendar());
+            default: return SetWeekDays(setWeekCalendar());
         }
-    }, [date, format, onChange, setMonthCalendar, setWeekCalendar])
+    }, [date, format, SetWeekDays, setMonthCalendar, setWeekCalendar])
 
     return (
         <Container>

@@ -9,6 +9,7 @@ import CalendarHeader from "containers/CalendarHeader";
 import moment from 'moment';
 import Typography from "components/style/Typography";
 import FullWidthSidebar from "components/style/FullWidthSidebar";
+import { CalendarProvider } from "hooks/useCalendarContext";
 
 const Page = () => {
     const [date, setDate] = useState<moment.Moment[]>([]);
@@ -40,30 +41,34 @@ const Page = () => {
 
     return (
         <>
-            <FullWidthSidebar>
-                <Container>
-                    <CalendarHeader setToday={handleSetToday} onChange={handleDateChange} format="day" />
-                    <Content>
-                        <Calendar>
-                            {
-                                date.map((data, key) => (
-                                    <CalendarWrap>
-                                        <Typography.Small color={theme.color.placeholder}>{week[key]}</Typography.Small>
-                                        <StyledTypographyLarge color={theme.color.dep_gray}>{data.format('D')}</StyledTypographyLarge>
-                                        <Wrap key={key}>
+            <CalendarProvider>
+
+
+                <FullWidthSidebar>
+                    <Container>
+                        <CalendarHeader />
+                        <Content>
+                            <Calendar>
+                                {
+                                    date.map((data, key) => (
+                                        <CalendarWrap>
+                                            <Typography.Small color={theme.color.placeholder}>{week[key]}</Typography.Small>
+                                            <StyledTypographyLarge color={theme.color.dep_gray}>{data.format('D')}</StyledTypographyLarge>
+                                            <Wrap key={key}>
                                                 {
                                                     Array(13).fill(1).map((n, i) => (
                                                         <ContentByTime key={i}></ContentByTime>
                                                     ))
                                                 }
-                                        </Wrap>
-                                    </CalendarWrap>
-                                ))
-                            }
-                        </Calendar>
-                    </Content>
-                </Container>
-            </FullWidthSidebar>
+                                            </Wrap>
+                                        </CalendarWrap>
+                                    ))
+                                }
+                            </Calendar>
+                        </Content>
+                    </Container>
+                </FullWidthSidebar>
+            </CalendarProvider>
         </>
     )
 }
