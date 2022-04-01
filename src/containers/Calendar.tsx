@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import week from "data/week.json";
 import moment from 'moment-timezone';
-import client from "services/axios";
+import BreakTimeBlock from "components/BreakTimeBlock";
 
 type Props = {
     studioId: number;
@@ -12,32 +12,6 @@ type Props = {
 const Calendar: React.FC<Props> = ({ studioId }) => {
     const { weekDays } = useCalendarContext();
     const hours = moment("9:00:00 PM", "hh:mm:ss A").tz("Asia/Seoul").utc();
-
-    const SelectBox = (day: moment.Moment) => {
-        let top: number = 0;
-        let height: number = 0;
-
-
-        const dates = client.get(`studio-breaktime/${Number(studioId)}/date/${day.format('YYYY-MM-DD')}T00:00:00.000Z`);
-
-        console.log(dates);
-
-        // for (let i = 0; breakTimes.length > i; i++) {
-
-        // }
-        // if (breakTims.length > 0) {
-        //         height = handleSetClock(breakTims[i].openTims, breakTims[i].closeTime).length * 50;
-        // }
-
-        return (
-            <BreakTimeBox
-                top={0}
-                height={80}
-            />
-        )
-
-    }
-
     return (
         <Container>
             <LeftContent>
@@ -69,10 +43,8 @@ const Calendar: React.FC<Props> = ({ studioId }) => {
                     <SelectDragWrap>
                         {
                             weekDays.map((day, key) => (
-                                <SelectDragContainer>
-                                    {
-                                        SelectBox(day)
-                                    }
+                                <SelectDragContainer key={key}>
+                                    <BreakTimeBlock studioId={studioId} day={day}/>
                                 </SelectDragContainer>
                             ))
                         }
