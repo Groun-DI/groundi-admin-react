@@ -18,7 +18,7 @@ const BasicNavigation = () => {
                     <div>
                         <button onClick={async () => {
                             LoginOut();
-                            navigator('/signin')}}>로그아웃</button>
+                            navigator('/auth/signin')}}>로그아웃</button>
                         마이페이지
                     </div>
                 </Container>

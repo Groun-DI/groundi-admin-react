@@ -4,51 +4,92 @@ import { theme } from "styles/theme";
 import week from "data/week.json";
 import moment from 'moment-timezone';
 import BreakTimeBlock from "components/BreakTimeBlock";
+import StudioRentalTimeModal from "entities/StudioRentalTime.entity";
+import HolidayBlock from "components/HolidayBlock";
 
 type Props = {
     studioId: number;
+    rentalTime: StudioRentalTimeModal;
 }
 
-const Calendar: React.FC<Props> = ({ studioId }) => {
+const Calendar: React.FC<Props> = ({ studioId, rentalTime }) => {
     const { weekDays } = useCalendarContext();
-    const hours = moment("9:00:00 PM", "hh:mm:ss A").tz("Asia/Seoul").utc();
+
+    const handleShowClock = () => {
+        let hours: string[] = [];
+        let openMoment = moment(rentalTime.openTime).tz("Asia/Seoul").utc();
+        const closeMoment = moment(rentalTime.closeTime).tz("Asia/Seoul").utc();
+
+        for (let i = openMoment; i <= closeMoment; i.add(30, 'm')) {
+            hours.push(i.format('h:mm A'));
+        }
+
+        return hours.map((hour, key) => (
+            <HourBox key={key}>{hour}</HourBox>
+        ))
+
+    };
+
+
+    const handleShowWeek = () => {
+        return weekDays.map((day, key) => (
+            <WeekBox key={key}>{week[key]}({day.format('D')}일)</WeekBox>
+        ))
+    };
+
+    const handleShowLine = () => {
+        let hours: string[] = [];
+        let openMoment = moment(rentalTime.openTime).tz("Asia/Seoul").utc();
+        const closeMoment = moment(rentalTime.closeTime).tz("Asia/Seoul").utc();
+
+        for (let i = openMoment; i <= closeMoment; i.add(30, 'm')) {
+            hours.push(i.format('h:mm A'));
+        }
+
+        return hours.map((hour, key) => (
+            <LineBox key={key} />
+        ))
+    };
+
     return (
         <Container>
             <LeftContent>
                 <LeftContentMain>
                     {
-                        Array(24).fill(1).map((data, key) => {
-                            hours.add(60, 'm');
-                            return <HourBox key={key}>{hours.format('h A')}</HourBox>
-                        })
+                        handleShowClock()
                     }
                 </LeftContentMain>
             </LeftContent>
             <RightContent>
                 <RightContentHeader>
                     {
-                        weekDays.map((day, key) => (
-                            <WeekBox key={key}>{week[key]}({day.format('D')}일)</WeekBox>
-                        ))
+                        handleShowWeek()
                     }
                 </RightContentHeader>
                 <RightContentMain>
-                    <div>
-                        {
-                            Array(24).fill(1).map((data, key) => (
-                                <LineBox key={key} />
-                            ))
-                        }
-                    </div>
-                    <SelectDragWrap>
+                    <BlockLayered1>
                         {
                             weekDays.map((day, key) => (
-                                <SelectDragContainer key={key}>
-                                    <BreakTimeBlock studioId={studioId} day={day}/>
-                                </SelectDragContainer>
+                                <BlockContainer key={key}>
+                                    <HolidayBlock day={day} studioId={studioId}/>
+                                </BlockContainer>
                             ))
                         }
-                    </SelectDragWrap>
+                    </BlockLayered1>
+                    <BlockLayered2>
+                        {
+                            weekDays.map((day, key) => (
+                                <BlockContainer key={key}>
+                                    <BreakTimeBlock studioId={studioId}/>
+                                </BlockContainer>
+                            ))
+                        }
+                    </BlockLayered2>
+                    <BlockLayered3>
+                        {
+                            handleShowLine()
+                        }
+                    </BlockLayered3>
                 </RightContentMain>
             </RightContent>
         </Container>
@@ -57,16 +98,12 @@ const Calendar: React.FC<Props> = ({ studioId }) => {
 
 export default Calendar;
 
-const BreakTimeBox = styled.div<{ top: number, height: number }>`
-    position: absolute;
+const BlockLayered3 = styled.div`
     width: 100%;
-    top: ${({ top }) => top}px;
-    left: 0px;
-    height: ${({ height }) => height}px;
-    background-color: ${theme.color.main_light};
+    height: 100%;
+    z-index: 3;
 `
-
-const SelectDragWrap = styled.div`
+const BlockLayered2 = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
@@ -74,37 +111,44 @@ const SelectDragWrap = styled.div`
     left: 0;
     display: flex;
     flex-direction: row;
+    z-index: 2;
+`
+const BlockLayered1 = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    z-index: 1;
 `
 
-const SelectDragContainer = styled.div`
+const BlockContainer = styled.div`
     position: relative;
     width: calc(100% /7);
     height: 100%;
     border-right: 1px solid ${theme.color.border};
 `
 
-const BoxByTime = styled.td`
-    height: 40px;
-    border-top: 1px solid ${theme.color.border};
-    border-right: 1px solid ${theme.color.border};
-    border-bottom: 1px solid ${theme.color.border};
-    border-left: 1px solid ${theme.color.border};
-`
 const WeekBox = styled.div`
     width: calc(100% / 7);
+    height: 20px;
 `
 
 const HourBox = styled.div`
-    height: 80px;
+    height: 40px;
 `
 
 const LineBox = styled.div`
-    height: 80px;
+    height: 40px;
     border-bottom: 1px solid ${theme.color.border};
+    z-index: 2;
 `
 
 const RightContentMain = styled.div`
     position: relative;
+    height: 100%;
 `
 
 const RightContentHeader = styled.div`
@@ -113,7 +157,7 @@ const RightContentHeader = styled.div`
 `
 
 const LeftContentMain = styled.div`
-    margin-top: 85px;
+    margin-top: 17px;
 `
 
 const RightContent = styled.div`

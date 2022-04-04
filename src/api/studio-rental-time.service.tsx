@@ -14,7 +14,7 @@ export class StudioRentalTimeService {
     //     return complimentaries;
     //   }
 
-    static async findOne(studioId: string): Promise<StudioRentalTimeModal> {
+    static async findOne(studioId: number): Promise<StudioRentalTimeModal> {
         const { data } = await client.get<StudioRentalTimeModal>('studio-rentaltime/' + studioId);
 
         return data

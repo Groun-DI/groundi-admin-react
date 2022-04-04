@@ -5,20 +5,19 @@ import client from "services/axios";
 import { theme } from "styles/theme";
 
 type Props = {
-    day: moment.Moment;
     studioId: number;
 }
 
-const BreakTimeBlock: React.FC<Props> = ({ day, studioId }) => {
+const BreakTimeBlock: React.FC<Props> = ({ studioId }) => {
     const [breakTimes, setBreakTimes] = useState<any[]>([]);
 
     const getBreakTime = useCallback(async() => {
-        const dates = await client.get(`studio-breaktime/${Number(studioId)}/date/${day.format('YYYY-MM-DD')}T00:00:00.000Z`);
+        const dates = await client.get(`studio-breaktime/${Number(studioId)}`);
         if(dates.data){
             setBreakTimes(dates.data);
         }
 
-    },[ day, studioId]);
+    },[studioId]);
 
 
     useEffect(() => {

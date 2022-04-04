@@ -108,9 +108,9 @@ const AuthSignInPage = () => {
                     </BoxContent>
                     <BoxFooter>
                         <Flex>
-                            <Link to="/signup">회원가입</Link>
-                            <Link to="/signin/find-email">이메일 찾기</Link>
-                            <Link to="/signin/find-password">비밀번호 찾기</Link>
+                            <Link to="/auth/signup">회원가입</Link>
+                            <Link to="/auth/signin/find-email">이메일 찾기</Link>
+                            <Link to="/auth/signin/find-password">비밀번호 찾기</Link>
                         </Flex>
                     </BoxFooter>
                 </BoxContainer>
