@@ -53,8 +53,20 @@ class FormValuesUtils {
         content: '',
     };
 
-    static studioBreakTimeCreate = {
+    static studioRentalTime = {
+        startTime: '',
+        endTime: '',
+        minimumReantalTime: '',
+        rentalTimeUnit: ''
+    }
+
+    static studioHoliday = {
         date: '',
+        reason: '',
+    }
+
+    static studioBreakTimeCreate = {
+        week: '',
         startTime: '',
         endTime: '',
         reason: '',

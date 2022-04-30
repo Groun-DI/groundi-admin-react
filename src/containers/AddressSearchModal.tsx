@@ -38,7 +38,7 @@ const AddressSearchModal: React.FC<Props> = ({ inputs, isOpen, isClose, formValu
         if (selectAddress) {
             formValue.latitude = selectAddress.y;
             formValue.longitude = selectAddress.x;
-            formValue.address = selectAddress.roadAddress;
+            formValue.address = selectAddress.roadAddr;
             isClose(false);
         } else {
             console.log("입력 값이 없습니다.");
@@ -102,12 +102,12 @@ const AddressSearchModal: React.FC<Props> = ({ inputs, isOpen, isClose, formValu
                                         {
                                             resAddress.map((item, k) => (
                                                 <li key={k}>
-                                                    <input type="radio" id={k.toString()} name="address" value={item.roadAddress} />
+                                                    <input type="radio" id={k.toString()} name="address" value={item.roadAddr} />
                                                     <label htmlFor={k.toString()} onClick={(e) => setSelectAddress(item)}>
                                                         <span>
                                                             <i className="fn-booking fn-booking-check2" aria-hidden="true" />
                                                         </span>
-                                                        <Typography.Regular spacing={-0.3}>{item.roadAddress}</Typography.Regular>
+                                                        <Typography.Regular spacing={-0.3}>{item.roadAddr}</Typography.Regular>
                                                         <SubTitleWrap>
                                                             <Typography.Micro>지번</Typography.Micro>
                                                             <Typography.Small color={theme.color.dep_gray} spacing={-0.3}>{item.jibunAddress} </Typography.Small>
@@ -130,7 +130,7 @@ const AddressSearchModal: React.FC<Props> = ({ inputs, isOpen, isClose, formValu
                     {
                         selectAddress && (
                             <ContentFooter>
-                                <Typography.Regular>{selectAddress.roadAddress}</Typography.Regular>
+                                <Typography.Regular>{selectAddress.roadAddr}</Typography.Regular>
                                 <BoxInput {...inputs.detailAddress} onChange={onChange} errorMessage="" />
                                 <Button type="button" onClick={handleSubmit}><Typography.Small spacing={-.43} color="#fff" weight={theme.fontWeight.SemiBold}>입력하기</Typography.Small></Button>
                             </ContentFooter>

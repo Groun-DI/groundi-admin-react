@@ -7,16 +7,10 @@ import Flex from "components/style/Flex";
 import { theme } from "styles/theme";
 import CalendarHeader from "containers/CalendarHeader";
 import { StudioRentalTimeService } from "api/studio-rental-time.service";
-import BoxInput from "components/input/BoxInput";
-import InputElementsUtils from "utils/inputs.utils";
-import FormValuesUtils from "utils/formValue.utils";
-import { StudioBreakTimeService } from "api/StudioBreakTime.service";
 import { CalendarProvider } from "hooks/useCalendarContext";
 import Calendar from "containers/Calendar";
 import StudioRentalTimeModal from "entities/StudioRentalTime.entity";
-import StudioHolidayModal from "entities/StudioHoliday.entity";
-import { StudioHolidayService } from "api/StudioHoliday.service";
-
+import CalendarSettings from 'containers/CalendarSettings';
 
 const Page = () => {
     const { centerId, studioId } = useParams();
@@ -24,24 +18,6 @@ const Page = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [rentalTimes, setRentalTimes] = useState<StudioRentalTimeModal>();
     const navigation = useNavigate();
-    const inputElment = InputElementsUtils.studioBreakTimeCreate;
-    const [formValue, setFormValue] = useState(FormValuesUtils.studioBreakTimeCreate);
-
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormValue({ ...formValue, [name]: value });
-    }
-
-    const hanldeOnSubmit = async () => {
-        const res = await StudioBreakTimeService.create({
-            studioId: Number(studioId),
-            date: formValue.date,
-            time: formValue.startTime,
-            reason: formValue.reason
-        });
-
-        console.log(res);
-    };
 
     useEffect(() => {
         client.get('studio/' + centerId).then((res) => {
@@ -54,40 +30,24 @@ const Page = () => {
         });
     }, [centerId, navigation, pathname]);
 
-
-    useEffect(() => {
-        const getStudioRentalTime = async () => {
-            if (studioId) {
-                setRentalTimes(await StudioRentalTimeService.findOne(Number(studioId)));
-            }
-        }
-
-        getStudioRentalTime();
-    }, [studioId]);
-
     return (
         <>
             <CalendarProvider>
                 <Container>
                     <ContentMain>
                         <ContentLeft>
-                            <CalendarHeader />
+                      1      <CalendarHeader />
                             <CalendarMain>
                                 {
-                                    studioId && rentalTimes && (
+                                    studioId && (
                                         <Calendar
-                                            studioId={Number(studioId)}
-                                            rentalTime={rentalTimes}/>
+                                            studioId={Number(studioId)}/>
                                     )
                                 }
                             </CalendarMain>
                         </ContentLeft>
                         <ContentRight>
-                            <BoxInput onChange={handleOnChange} {...inputElment.date} value={formValue.date} />
-                            <BoxInput onChange={handleOnChange} {...inputElment.startTime} value={formValue.startTime} />
-                            <BoxInput onChange={handleOnChange} {...inputElment.endTime} value={formValue.endTime} />
-                            <BoxInput onChange={handleOnChange} {...inputElment.reason} value={formValue.reason} />
-                            <button onClick={hanldeOnSubmit}>저장하기</button>
+                            <CalendarSettings />
                         </ContentRight>
                     </ContentMain>
                 </Container>

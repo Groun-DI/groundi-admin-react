@@ -1,5 +1,5 @@
 export type NgsResAddressBody = {
-    roadAddress: string;
+    roadAddr: string;
     jibunAddress: string;
     englishAddress: string;
     x: string;

@@ -33,7 +33,7 @@ const Page = () => {
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await client.post(process.env.REACT_APP_API_URL + 'center/create', {
+            const res = await client.post(process.env.REACT_APP_API_URL + 'center', {
                 ...formValues,
                 latitude: Number(formValues.latitude),
                 longitude: Number(formValues.longitude)
@@ -134,8 +134,10 @@ const Page = () => {
                                     <NaverMapService lat={Number(formValues.latitude)} lng={Number(formValues.longitude)} CustomStyle={MapStyle} />
                                 }
                                 <Flex>
-                                    <StyleButton onClick={nextStep}
-                                        disabled={!inputs.centerName.invalid || inputs.phoneNumber.invalid || !formValues.address ? true : false}>다음</StyleButton>
+                                    {/* <StyleButton onClick={nextStep}
+                                        disabled={!inputs.centerName.invalid || inputs.phoneNumber.invalid || !formValues.address ? true : false}>다음</StyleButton> */}
+                                        <StyleButton onClick={nextStep}
+                                        disabled={false}>다음</StyleButton>
                                 </Flex>
                             </ContentMain>
                         </Container>
@@ -163,8 +165,9 @@ const Page = () => {
                                     </InputWrap>
                                 </Flex>
                                 <Flex>
-                                    <StyleButton type="submit" onClick={onSubmit}
-                                        disabled={!inputs.ceoName.invalid || !inputs.busniessType.invalid || !inputs.busniessCode.invalid ? true : false}>개설 완료하기!</StyleButton>
+                                    {/* <StyleButton type="submit" onClick={onSubmit}
+                                        disabled={!inputs.ceoName.invalid || !inputs.busniessType.invalid || !inputs.busniessCode.invalid ? true : false}>개설 완료하기!</StyleButton> */}
+                                        <StyleButton type="submit" onClick={onSubmit} disabled={false}>개설 완료하기!</StyleButton>
                                 </Flex>
                             </ContentMain>
                         </Container>

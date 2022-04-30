@@ -11,7 +11,7 @@ const Page = () => {
     const [centers, setCenters] = useState<any[]>([]);
 
     useEffect(() => {
-        client.get("center").then((res) => {
+        client.get("centers").then((res) => {
             console.log(res);
             setCenters(res.data);
         });
