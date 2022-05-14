@@ -1,7 +1,9 @@
 import Typography from "components/style/Typography";
 import { RefundCode } from "dto/returnCode.entity";
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
+import { StudioCreate } from "../../utils/formValue.utils";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import client from "services/axios";
 import styled from "styled-components";
 import { theme } from "styles/theme";
@@ -12,18 +14,45 @@ type Props = {
 }
 
 const RefundForm: React.FC<Props> = ({ stateValid }) => {
-    const { SetFormValue, inputElements, Submit } = useStudioCreateContext();
+    const { centerId } = useParams();
+    const { SetFormValue, inputElements, Submit, formValues } = useStudioCreateContext(Number(centerId));
     const [items, setItems] = useState<RefundCode[]>([]);
+    const studioData = new StudioCreate();
 
-    useEffect(() => {
-        client.get<RefundCode[]>('refundCode').then(res => {
-            setItems(res.data);
+    // useEffect(() => {
+    //     client.get<RefundCode[]>('refundCode').then(res => {
+    //         setItems(res.data);
+    //     });
+    // }, []);
+
+    const handlerOnClick = async () => {
+        let formData = new FormData();
+
+        studioData.name = '스튜디오'
+        studioData.basicOccupancy = 0;
+        studioData.maximumOccupancy = 0;
+        studioData.extraPrice = 0;
+        studioData.description = '공기가 좋아요';
+        studioData.checkInNotice = '출입제한 없어요';
+        studioData.rentalTimeUnitCode = '002';
+        studioData.refundCode = '001';
+        studioData.amenities = ['출입제한 없어요'];
+        studioData.precautions = ['출입제한 없어요'];
+        studioData.complimentaries = ['출입제한 없어요'];
+
+        formData.append("data", JSON.stringify({
+            name: studioData.name,
+            basicOccupancy: studioData.basicOccupancy,
+            maximumOccupancy: studioData.maximumOccupancy
+        }));
+
+        const res = await client.post(process.env.REACT_APP_API_URL + `centers/${centerId}/studios`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data;',
+                'Accept': '*/*'
+            }
         });
-    }, []);
-
-    const handlerOnClick = (value: string) => {
-        SetFormValue(inputElements.refundCode.name, value);
-        inputElements.refundCode = { ...inputElements.refundCode, ...ValidationUtils.isRequired(value) }
+        console.log(res);
     }
 
     useEffect(() => {
@@ -38,15 +67,15 @@ const RefundForm: React.FC<Props> = ({ stateValid }) => {
                     items.map((item, key) => (
                         <BoxWrap key={key}>
                             <Input id={item.id} {...inputElements.refundCode} />
-                            <label htmlFor={item.id} onClick={() => handlerOnClick(item.id)}>
-                                <ItemWrap>
-                                    <StyledTypographyLarge weight={theme.fontWeight.SemiBold}>{item.name}</StyledTypographyLarge>
-                                    <StyledTypographyMicro color={theme.color.placeholder}>{item.content}</StyledTypographyMicro>
-                                </ItemWrap>
+                            <label htmlFor={item.id}>
+                                dfdf
                             </label>
                         </BoxWrap>
                     ))
                 }
+                <label onClick={() => handlerOnClick()}>
+                    dfdf
+             </label>
                 <Button onClick={Submit}>
                     <Typography.Large color="#fff" weight={theme.fontWeight.SemiBold}>제출완료</Typography.Large>
                 </Button>

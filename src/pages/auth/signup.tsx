@@ -104,7 +104,7 @@ const AuthSignUpPage = () => {
                     <BoxWrapper>
                         <BoxContainer>
                             <BoxHeader>
-                                <Flex layout="column">
+                                <Flex>
                                     <img src="/svg/logo.svg" alt="groundi logo" />
                                     <Typography.Title3 weight={700}>휴대폰 본인 확인</Typography.Title3>
                                 </Flex>
@@ -141,7 +141,7 @@ const AuthSignUpPage = () => {
                     <BoxWrapper>
                         <BoxContainer>
                             <BoxHeader>
-                                <Flex layout="column">
+                                <Flex>
                                     <img src="/svg/logo.svg" alt="groundi logo" />
                                     <Typography.Title3 weight={700}>로그인</Typography.Title3>
                                 </Flex>
@@ -186,7 +186,7 @@ const AuthSignUpPage = () => {
                     <BoxWrapper>
                         <BoxContainer>
                             <BoxHeader>
-                                <Flex layout="column">
+                                <Flex>
                                     <img src="/svg/logo.svg" alt="groundi logo" />
                                     <Typography.Title3 weight={700}>로그인</Typography.Title3>
                                 </Flex>

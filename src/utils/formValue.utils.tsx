@@ -3,22 +3,17 @@ class FormValuesUtils {
         name: '',
         address: '',
         detailAddress: '',
-        frontPhoneNumber: '',
         phoneNumber: '',
         latitude: '',
         longitude: '',
-        ceoName: '',
-        busniessType: '',
-        busniessCode: '',
+        busniessLicenseNumber: '',
         businessAttachment: '',
-        adminPhonenumber: '',
-        adminEmail: '',
-        firstPhoneNumber: ''
     };
     static studioCreate = {
         centerId: '',
-        name: '',
+        description: '',
         content: '',
+        checkInNotice: '',
         basicOccupancy: '2',
         maximumOccupancy: '4',
         overCharge: '',
@@ -29,17 +24,6 @@ class FormValuesUtils {
         amenities: [''],
         precautions: [''],
         complimentaries: [''],
-        parkingIsAvailable: 'true',
-        parkingPaymentType: 'free',
-        parkingFirstHour: '1 시간',
-        parkingFirstMinute: '0 분',
-        parkingFirstPayment: '',
-        parkingAdditionHour: '1 시간',
-        parkingAdditionMinute: '0 분',
-        parkingAdditionPayment: '',
-        parkingAllDayPayment: '',
-        parkingOneTimePayment: '',
-        parkingContent: '',
     };
     static centerParkingLotCreate = {
         isAvailable: '',
@@ -75,3 +59,18 @@ class FormValuesUtils {
 
 
 export default FormValuesUtils
+
+
+export class StudioCreate {
+    description: string;
+    name: string;
+    checkInNotice: string;
+    basicOccupancy: number;
+    maximumOccupancy: number;
+    extraPrice: number;
+    rentalTimeUnitCode: string;
+    refundCode: string;
+    amenities: string[];
+    precautions: string[];
+    complimentaries: string[];
+}

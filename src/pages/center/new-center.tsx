@@ -1,22 +1,24 @@
 import client from "services/axios";
 import styled from "styled-components";
-import Button from 'components/style/Button';
 import Typography from 'components/style/Typography';
-import BoxInput from 'components/input/BoxInput';
+import Input from 'components/input/Input';
 import { useState } from "react";
 import Wrapper from "components/style/Wrapper";
 import { theme } from "styles/theme";
 import Flex from "components/style/Flex";
 import NaverMapService from "services/naver.map.service";
-import AddressSearchModal from "containers/AddressSearchModal";
-import AddressModalInputButton from "components/input/AddressModalInputButton";
+import Modal from "containers/Modal";
 import ValidationUtils from "utils/validation.utils";
-import InputElementsUtils from "utils/inputs.utils";
-import FormValuesUtils from "utils/formValue.utils";
 import FileUploadInput from "components/input/fileUpload.input";
 import GoPrevNavigation from "components/frame/GoPrevNavigation";
 import InitialSelect from "components/select/Initial";
 import numberList from 'data/first-phoneNumber.json';
+import { name, areaUniqueNumber, phoneNumber, address, detailAddress, busniessLicenseFile, busniessLicenseNumber } from "utils/center-create.input";
+import Button from "components/input/Button";
+import StyleButton from "components/style/Button";
+import SearchInput from "components/input/SearchInput";
+import NaverGeocodingService from "services/naver.geocoding.service";
+import { NgsResAddressBody } from "dto/naver-geocoding.dto";
 
 const MapStyle = {
     width: '100%',
@@ -26,63 +28,57 @@ const MapStyle = {
 }
 
 const Page = () => {
-    const inputs = InputElementsUtils.centerCreate;
-    const [formValues, setFormValues] = useState(FormValuesUtils.centerCreate);
+    const [resAddress, setResAddress] = useState<NgsResAddressBody[]>();
+    const [selectAddress, setSelectAddress] = useState<NgsResAddressBody>();
     const [stateAddressSearchModal, setStateAddressSearchModal] = useState<boolean>(false);
     const [nowFormStep, setNowFormStep] = useState<number>(1);
-    const onSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            const res = await client.post(process.env.REACT_APP_API_URL + 'center', {
-                ...formValues,
-                latitude: Number(formValues.latitude),
-                longitude: Number(formValues.longitude)
-            });
-            console.log(res.data);
-        } catch (err: unknown) {
-            if (err instanceof Error) {
-                return {
-                    error: err.message,
-                }
-            } else {
-                return {
-                    error: "error"
-                }
-            }
-        }
-    };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
-        switch (name) {
-            case 'name':
-                inputs.centerName = { ...inputs.centerName, ...ValidationUtils.isRequired(value) };
-                break;
-            case 'phoneNumber':
-                inputs.phoneNumber = { ...inputs.phoneNumber, ...ValidationUtils.isRequired(value) };
-                break;
-            case 'ceoName':
-                inputs.ceoName = { ...inputs.ceoName, ...ValidationUtils.isRequired(value) };
-                break;
-            case 'busniessType':
-                inputs.busniessType = { ...inputs.busniessType, ...ValidationUtils.isRequired(value) };
-                break;
-            case 'businessAttachment':
-                inputs.businessAttachment = { ...inputs.businessAttachment, ...ValidationUtils.isRequired(value) };
-                break;
-            case 'busniessCode':
-                inputs.busniessCode = { ...inputs.busniessCode, ...ValidationUtils.isBussniessCode(value) };
-                setFormValues({ ...formValues, [name]: ValidationUtils.isBussniessCode(value).value });
-                break;
-            default:
-                break;
+    const onSubmit = async (e: React.FormEvent) => {
+        let formData = new FormData();
+        if (busniessLicenseFile.getValue() !== undefined) {
+            formData.set(busniessLicenseFile.elements.name, busniessLicenseFile.getValue());
         }
-    }
+
+        formData.append("data", JSON.stringify({
+            name: name.getValue(),
+            phoneNumber: phoneNumber.getValue(),
+            address: address.getValue(),
+            detailAddress: detailAddress.getValue(),
+            busniessLicenseNumber: busniessLicenseNumber.getValue(),
+            latitude: 0,
+            longitude: 0
+        }));
+
+        const res = await client.post(process.env.REACT_APP_API_URL + 'centers', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data;',
+                'Accept': '*/*'
+            }
+        });
+    };
 
     const nextStep = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setNowFormStep(nowFormStep + 1);
+    }
+
+    const handlerOnKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setResAddress(await NaverGeocodingService(address.getValue()));
+            return false;
+        };
+    }
+
+    const handlerOnClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setResAddress(await NaverGeocodingService(address.getValue()));
+        return false;
+    }
+
+    const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        address.setValue(e.target.value);
+        setResAddress(await NaverGeocodingService(e.target.value));
     }
 
     switch (nowFormStep) {
@@ -95,88 +91,135 @@ const Page = () => {
                             <ContentHeader>
                                 <Typography.Title3 weight={theme.fontWeight.ExtraBold}>개설할 센터의 정보를 입력해주세요</Typography.Title3>
                             </ContentHeader>
-                            <ContentMain>
-                                <Flex layout="column" gap={30}>
-                                    <BoxInput {...inputs.centerName} onChange={handleChange} value={formValues.name} />
-                                    <Flex justify="flex-start" align="flex-start" layout="column">
+                            <ContentBody>
+                                <Flex layout="c" gap={30}>
+                                    <Input {...name.elements} onChange={(e) => name.setValue(e.target.value)} value={name.getValue()} />
+                                    <Flex justify="start" align="start" layout="c">
                                         <Label>
-                                            <Typography.Regular weight={theme.fontWeight.SemiBold}>{inputs.frontPhoneNumber.label}</Typography.Regular>
+                                            <Typography.Regular weight={theme.fontWeight.SemiBold}>{areaUniqueNumber.elements.label}</Typography.Regular>
                                         </Label>
-                                        <Flex justify="flex-start" align="flex-start">
-                                            <InitialSelect onChange={handleChange} options={numberList} {...inputs.frontPhoneNumber} value={formValues.frontPhoneNumber} />
-                                            <BoxInput {...inputs.phoneNumber} onChange={handleChange} value={formValues.phoneNumber} />
+                                        <Flex justify="start" align="start">
+                                            <InitialSelect onChange={(e) => areaUniqueNumber.setValue(e.target.value)} options={numberList} {...areaUniqueNumber.elements} />
+                                            <Input {...phoneNumber.elements} value={phoneNumber.getValue()} onChange={(e) => phoneNumber.setValue(e.target.value)} />
                                         </Flex>
                                     </Flex>
-                                    <AddressWrap>
-                                        <AddressModalInputButton
+                                    <Wrap>
+                                        <Modal
+                                            title="주소 등록"
+                                            isOpen={stateAddressSearchModal}
+                                            isClose={(click: boolean) => setStateAddressSearchModal(click)}>
+                                            <div>
+                                                <ModalInputWrap>
+                                                    <SearchInput
+                                                        {...address.elements}
+                                                        value={address.getValue()}
+                                                        onChange={handleChange}
+                                                        onKeyPress={handlerOnKeyPress}
+                                                        onClick={handlerOnClick} />
+                                                </ModalInputWrap>
+                                                {
+                                                    resAddress ? (
+                                                        <SelectListBox>
+                                                            <ul>
+                                                                {
+                                                                    resAddress.map((item, k) => (
+                                                                        <li key={k}>
+                                                                            <input type="radio" id={k.toString()} name="address" value={item.roadAddr} />
+                                                                            <label htmlFor={k.toString()} onClick={(e) => setSelectAddress(item)}>
+                                                                                <span>
+                                                                                    <i className="fn-booking fn-booking-check2" aria-hidden="true" />
+                                                                                </span>
+                                                                                <Typography.Regular spacing={-0.3}>{item.roadAddr}</Typography.Regular>
+                                                                                <SubTitleWrap>
+                                                                                    <Typography.Micro>지번</Typography.Micro>
+                                                                                    <Typography.Small color={theme.color.dep_gray} spacing={-0.3}>{item.jibunAddress} </Typography.Small>
+                                                                                </SubTitleWrap>
+                                                                            </label>
+                                                                        </li>
+                                                                    ))
+                                                                }
+                                                            </ul>
+                                                        </SelectListBox>
+                                                    ) : (
+                                                            <TypographyWrap>
+                                                                <Typography.Small color={theme.color.dep_gray}>도로명이나 지역명을 이용해서 검색해보세요.<br />건물번호, 번지를 입력하시면 정확하게 검색됩니다.</Typography.Small>
+                                                            </TypographyWrap>
+                                                        )
+                                                }{
+                                                    selectAddress && (
+                                                        <ContentFooter>
+                                                            <Typography.Regular>{selectAddress?.roadAddr}</Typography.Regular>
+                                                            <Input {...detailAddress.elements} onChange={(e) => detailAddress.setValue(e.target.value)} errorMessage="" />
+                                                            <ModalButton onClick={() => setStateAddressSearchModal(false)}><Typography.Small spacing={-.43} color="#fff" weight={theme.fontWeight.SemiBold}>입력하기</Typography.Small></ModalButton>
+                                                        </ContentFooter>
+                                                    )
+                                                }
+                                            </div>
+                                        </Modal>
+                                        <Button
                                             label="주소를 입력해주세요"
-                                            value={formValues.address}
-                                            onClick={() => setStateAddressSearchModal(true)}
-                                        >동/리/도로명으로 검색해주세요.</AddressModalInputButton>
+                                            value={address.getValue()}
+                                            onClick={() => setStateAddressSearchModal(true)}>동/리/도로명으로 검색해주세요.</Button>
                                         {
-                                            formValues.address &&
-                                            <BoxInput
-                                                {...inputs.detailAddress}
-                                                value={formValues.detailAddress}
-                                                onChange={handleChange}
+                                            address.getValue() &&
+                                            <Input
+                                                {...detailAddress.elements}
+                                                value={detailAddress.getValue()}
+                                                onChange={(e) => detailAddress.setValue(e.target.value)}
                                             />
                                         }
-                                        <AddressSearchModal
-                                            isOpen={stateAddressSearchModal}
-                                            isClose={(click: boolean) => setStateAddressSearchModal(click)}
-                                            onChange={handleChange}
-                                            formValue={formValues}
-                                            inputs={inputs} />
-                                    </AddressWrap>
+                                    </Wrap>
                                 </Flex>
-                                {
+                                {/* {
                                     formValues.latitude && formValues.longitude &&
                                     <NaverMapService lat={Number(formValues.latitude)} lng={Number(formValues.longitude)} CustomStyle={MapStyle} />
-                                }
+                                } */}
                                 <Flex>
-                                    {/* <StyleButton onClick={nextStep}
-                                        disabled={!inputs.centerName.invalid || inputs.phoneNumber.invalid || !formValues.address ? true : false}>다음</StyleButton> */}
-                                        <StyleButton onClick={nextStep}
+                                    {/* { <StyleButton onClick={nextStep}
+                                        disabled={!name.inputElements.invalid || phoneNumber.inputElements.invalid || !address.getValue() ? true : false}>다음</StyleButton> } */}
+                                    <StyleButton onClick={nextStep}
                                         disabled={false}>다음</StyleButton>
                                 </Flex>
-                            </ContentMain>
+                                <GoPrevNavigation />
+                                <Wrapper>
+                                    <Container>
+                                        <ContentBody>
+                                            <Flex layout="c" gap={30}>
+                                                <InputWrap>
+                                                    <Input {...busniessLicenseNumber.elements} onChange={(e) => busniessLicenseNumber.setValue(Number(e.target.value))} value={busniessLicenseNumber.getValue()} />
+                                                    <FileUploadInput {...busniessLicenseFile.elements} onChange={(file: File) => busniessLicenseFile.setValue(file)} value={busniessLicenseFile.getValue()} />
+                                                    <Typography.Micro>
+                                                        • 5MB 이하의 jpg, jpeg, gif, png 파일형식만 가능합니다.<br />
+                                            • 주민등록번호 등 개인정보가 보이지 않도록 처리한 뒤 업로드 바랍니다.<br />
+                                            • 주민등록번호 등 개인정보가 표시된 경우, 해당 서류는 접수 즉시 파기되며 서비스 이용이 지연될 수 있습니다.
+                                        </Typography.Micro>
+                                                </InputWrap>
+                                            </Flex>
+                                            <Flex>
+                                                {/* <StyleButton type="submit" onClick={onSubmit}
+                                        disabled={!ceoName.invalid || !busniessType.invalid || !busniessCode.invalid ? true : false}>개설 완료하기!</StyleButton> */}
+                                                <CustomStyleButton type="submit" onClick={onSubmit} disabled={false}>개설 완료하기!</CustomStyleButton>
+                                            </Flex>
+                                        </ContentBody>
+                                    </Container>
+                                </Wrapper>
+                            </ContentBody>
                         </Container>
                     </Wrapper>
+                    <input type="button" id="test" value="Custom" />
+
                 </>
             )
         case 2:
             return (
                 <>
-                    <GoPrevNavigation />
-                    <Wrapper>
-                        <Container>
-                            <ContentMain>
-                                <Flex layout="column" gap={30}>
-                                    <BoxInput {...inputs.ceoName} onChange={handleChange} value={formValues.ceoName} />
-                                    <BoxInput {...inputs.busniessType} onChange={handleChange} value={formValues.busniessType} />
-                                    <InputWrap>
-                                        <BoxInput {...inputs.busniessCode} onChange={handleChange} value={formValues.busniessCode} />
-                                        <FileUploadInput {...inputs.businessAttachment} onChange={handleChange} value={formValues.businessAttachment} />
-                                        <Typography.Micro>
-                                            • 5MB 이하의 jpg, jpeg, gif, png 파일형식만 가능합니다.<br />
-                                            • 주민등록번호 등 개인정보가 보이지 않도록 처리한 뒤 업로드 바랍니다.<br />
-                                            • 주민등록번호 등 개인정보가 표시된 경우, 해당 서류는 접수 즉시 파기되며 서비스 이용이 지연될 수 있습니다.
-                                        </Typography.Micro>
-                                    </InputWrap>
-                                </Flex>
-                                <Flex>
-                                    {/* <StyleButton type="submit" onClick={onSubmit}
-                                        disabled={!inputs.ceoName.invalid || !inputs.busniessType.invalid || !inputs.busniessCode.invalid ? true : false}>개설 완료하기!</StyleButton> */}
-                                        <StyleButton type="submit" onClick={onSubmit} disabled={false}>개설 완료하기!</StyleButton>
-                                </Flex>
-                            </ContentMain>
-                        </Container>
-                    </Wrapper>
+
                 </>
             )
         default: return (<>오케이</>);
     }
 }
+
 const InputWrap = styled.div`
     width: 100%;
     p{
@@ -184,7 +227,7 @@ const InputWrap = styled.div`
     }
 `
 
-const AddressWrap = styled.div`
+const Wrap = styled.div`
     width: 100%;
 `
 
@@ -194,7 +237,7 @@ const Container = styled.div`
     margin: 0 auto;
 `
 
-const ContentMain = styled.div`
+const ContentBody = styled.div`
     margin-top: 70px;
 `
 
@@ -202,7 +245,7 @@ const ContentHeader = styled.div`
     margin-top: 10px;
 `
 
-const StyleButton = styled(Button) <{ disabled: boolean }>`
+const CustomStyleButton = styled(StyleButton) <{ disabled: boolean }>`
     margin: 0 auto;
     margin-top: 70px;
     width: 50%;
@@ -213,4 +256,103 @@ const Label = styled.label`
     text-align: left;
 `
 
+
+const ModalButton = styled.button`
+    width: 100%;
+    line-height: 3rem;
+    background-color: ${({ theme }) => theme.color.main};
+    border-radius: 12px;
+    border: 0px;
+    height: 54px;
+    margin-top: 23px;
+    line-height: 2rem;
+    cursor: pointer;
+`
+
+const ContentFooter = styled.div`
+    width: 100%;
+    height: auto;
+    position: absolute;
+    bottom: 0;
+    background-color: #fff;
+    padding: 24px 20px 20px;
+    box-shadow: 0 -2px 12px 0 rgb(0 0 0 / 9%);
+    border: 1px solid rgba(0,0,0,.05);
+    z-index: 12000;
+    input{
+        margin-top: 12px;
+    }
+`
+
+const ModalInputWrap = styled.div`
+    padding: 20px 20px 0;
+`
+
+const SelectListBox = styled.div`
+    ul{
+        height: calc(100% - 148px);
+        margin-top: 20px;
+        overflow-y: auto;
+        background-color: #fff;
+    }
+    li{
+        border-top: 1px solid #ecf0f2;
+    }
+    label{
+        position: relative;
+        display: block;
+        padding: 19px 20px 18px 60px;
+        cursor: pointer;
+    }
+    input{
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        border: 0;
+    }
+
+    input[type="radio"]:checked + label span{
+        background-color: ${({ theme }) => theme.color.main};
+    }
+    input[type="radio"] + label > span{
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 28px;
+        height: 28px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        border: 1px solid #e2e2e2;
+    }
+`
+const SubTitleWrap = styled.div`
+    position: relative;
+    margin-top: 7px;
+    padding-left: 34px;
+    line-height: 2.1rem;
+    color: #888;
+    p{
+        position: absolute;
+        top: 1px;
+        left: 0;
+        width: 30px;
+        margin-right: 8px;
+        border-radius: 4px;
+        border: 1px solid #888;
+        letter-spacing: -.31px;
+        color: #888;
+        text-align: center;
+        line-height: 1.8rem;
+    }
+`
+
+const TypographyWrap = styled.div`
+    padding: 16px 20px 0;
+    color: #8f8f8f;
+    line-height: 1.3;
+`
 export default Page;

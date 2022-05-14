@@ -8,7 +8,7 @@ type Props = {
 }
 
 
-const AddressSearchInput: React.FC<Props> = ({ value, onChange, onKeyPress, onClick, ...inputProps }) => {
+const SearchInput: React.FC<Props> = ({ value, onChange, onKeyPress, onClick, ...inputProps }) => {
     return (
         <Wrapper>
             <Form>
@@ -67,4 +67,4 @@ const Button = styled.button`
     cursor: pointer;
 `
 
-export default AddressSearchInput;
+export default SearchInput;

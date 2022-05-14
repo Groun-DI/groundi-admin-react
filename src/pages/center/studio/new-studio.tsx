@@ -1,14 +1,5 @@
 import styled from "styled-components";
-import ComplimentaryForm from "containers/studio-create-form/complimentary";
-import OccupancyForm from "containers/studio-create-form/occupancy";
-import AmenitiyForm from "containers/studio-create-form/AmenitiyForm";
-import PrecautionForm from "containers/studio-create-form/precaution";
-import ParkingLotForm from "containers/studio-create-form/parkingLot";
-import ContentForm from "containers/studio-create-form/content";
-import ImageForm from "containers/studio-create-form/image";
-import PriceForm from "containers/studio-create-form/price";
 import RefundForm from "containers/studio-create-form/refund";
-import NameForm from "containers/studio-create-form/name";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 import { CreateStduioProvider } from "hooks/useStudioCreateContext";
@@ -32,42 +23,42 @@ const StudioCreate = () => {
     }, []);
 
     const Display = [
-        {
-            title: <>스튜디오를 사용할 수 있는<br /><span>인원 수를</span> 알려주세요.</>,
-            component: <OccupancyForm stateValid={SetDisable} />
-        },
-        {
-            title: <>스튜디오 <span>편의시설</span><br />정보를 추가해 주세요.</>,
-            component: <AmenitiyForm stateValid={SetDisable} />
-        },
-        {
-            title: <>스튜디오에 준비된 <span>수련물품</span>을<br />검색하여 추가해주세요.</>,
-            component: <ComplimentaryForm stateValid={SetDisable} />
-        },
-        {
-            title: <>스튜디오에 이용시 관련<br /><span>주의사항</span>이 있다면 추가해주세요.</>,
-            component: <PrecautionForm stateValid={SetDisable} />
-        },
-        {
-            title: <>스튜디오의 <span>주차정보</span>를<br />추가해주세요.</>,
-            component: <ParkingLotForm stateValid={SetDisable} />
-        },
-        {
-            title: <>스튜디오의 <span>이름</span>을<br />만들어주세요</>,
-            component: <NameForm stateValid={SetDisable} />
-        },
-        {
-            title: <>스튜디오를 <br /><span>설명</span>해주세요</>,
-            component: <ContentForm stateValid={SetDisable} />
-        },
-        {
-            title: <>스튜디오를 돋보여줄<br /><span>사진</span>을 올려주세요.</>,
-            component: <ImageForm />
-        },
-        {
-            title: <>스튜디오의 <span>대여가격</span>을<br />설정해주세요</>,
-            component: <PriceForm stateValid={SetDisable} />
-        },
+        // {
+        //     title: <>스튜디오를 사용할 수 있는<br /><span>인원 수를</span> 알려주세요.</>,
+        //     component: <OccupancyForm stateValid={SetDisable} />
+        // },
+        // {
+        //     title: <>스튜디오 <span>편의시설</span><br />정보를 추가해 주세요.</>,
+        //     component: <AmenitiyForm stateValid={SetDisable} />
+        // },
+        // {
+        //     title: <>스튜디오에 준비된 <span>수련물품</span>을<br />검색하여 추가해주세요.</>,
+        //     component: <ComplimentaryForm stateValid={SetDisable} />
+        // },
+        // {
+        //     title: <>스튜디오에 이용시 관련<br /><span>주의사항</span>이 있다면 추가해주세요.</>,
+        //     component: <PrecautionForm stateValid={SetDisable} />
+        // },
+        // {
+        //     title: <>스튜디오의 <span>주차정보</span>를<br />추가해주세요.</>,
+        //     component: <ParkingLotForm stateValid={SetDisable} />
+        // },
+        // {
+        //     title: <>스튜디오의 <span>이름</span>을<br />만들어주세요</>,
+        //     component: <NameForm stateValid={SetDisable} />
+        // },
+        // {
+        //     title: <>스튜디오를 <br /><span>설명</span>해주세요</>,
+        //     component: <ContentForm stateValid={SetDisable} />
+        // },
+        // {
+        //     title: <>스튜디오를 돋보여줄<br /><span>사진</span>을 올려주세요.</>,
+        //     component: <ImageForm />
+        // },
+        // {
+        //     title: <>스튜디오의 <span>대여가격</span>을<br />설정해주세요</>,
+        //     component: <PriceForm stateValid={SetDisable} />
+        // },
         {
             title: "스튜디오의 환불정보를 설정해주세요",
             component: <RefundForm stateValid={SetDisable} />

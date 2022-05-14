@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+const StyleButton = styled.button`
     width: 400px;
     height: 64px;
     font-size: ${({ theme }) => theme.fontSize.Regular};
@@ -14,4 +14,4 @@ const Button = styled.button`
     }
 `
 
-export default Button;
+export default StyleButton;

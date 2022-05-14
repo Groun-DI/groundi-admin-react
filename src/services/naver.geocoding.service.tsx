@@ -3,12 +3,13 @@ import client from "./axios";
 
 const NaverGeocodingService = async (address: string): Promise<NgsResAddressBody[]> => {
     const addressInfo: NgsResAddressBody[] = await (
-        client.get(process.env.REACT_APP_API_URL + 'centers/search/address', {
+        client.get(process.env.REACT_APP_API_URL + 'centers/addresses', {
             params: {
-                address: address
+                keyword: address
             }
         }).then((res) => {
-            return res.data.results.juso;
+            console.log(res.data);
+            return res.data;
         })
     );
 

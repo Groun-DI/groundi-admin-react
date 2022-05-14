@@ -5,14 +5,15 @@ import { theme } from "styles/theme";
 import TextAreaInput from "components/input/TextAreaInput";
 import ValidationUtils from "utils/validation.utils";
 import { useEffect } from "react";
+import { useParams } from "react-router";
 
 type Props = {
     stateValid: (state: boolean) => void;
 }
 
 const ContentForm: React.FC<Props> = ({ stateValid }) => {
-    const { formValues, inputElements, SetFormValue } = useStudioCreateContext();
-
+    const { centerId } = useParams();
+    const { formValues, SetFormValue, inputElements } = useStudioCreateContext(Number(centerId));
     const handlerOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         inputElements.content = { ...inputElements.content, ...ValidationUtils.isStringOfDigits(value, 401) };
@@ -28,7 +29,7 @@ const ContentForm: React.FC<Props> = ({ stateValid }) => {
         <ContentWrap>
             <Typography.Large weight={theme.fontWeight.SemiBold}>설명 입력</Typography.Large>
             <TextAreaInput {...inputElements.content} onChange={handlerOnChange} height={250} />
-            <StyledTypographySmall>{formValues.content ? formValues.content.length : 0}/400</StyledTypographySmall>
+            <StyledTypographySmall>{formValues.description ? formValues.description.length : 0}/400</StyledTypographySmall>
         </ContentWrap>
     )
 }

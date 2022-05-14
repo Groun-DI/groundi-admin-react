@@ -6,13 +6,15 @@ import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 import ValidationUtils from "utils/validation.utils";
+import { useParams } from "react-router";
 
 type Props = {
     stateValid: (state: boolean) => void;
 }
 
 const ComplimentaryForm: React.FC<Props> = ({stateValid}) => {
-    const { SetFormValue, inputElements } = useStudioCreateContext();
+    const { centerId } = useParams();
+    const { SetFormValue, inputElements } = useStudioCreateContext(Number(centerId));
     const [items, setItems] = useState<Complimentary[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [selectItems, setSelectItems] = useState<string[]>([]);

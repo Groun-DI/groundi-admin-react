@@ -6,12 +6,12 @@ type Props = {
     errorMessage: string,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     label: string;
-    value?: string | number | [],
+    value?: any,
     mark?: string,
     invalid: boolean;
 }
 
-const BoxInput: React.FC<Props> = ({ value, label, errorMessage, mark, onChange, invalid, ...inputProps }) => {
+const Input: React.FC<Props> = ({ value, label, errorMessage, mark, onChange, invalid, ...inputProps }) => {
     return (
         <Wrapper>
             {
@@ -22,7 +22,7 @@ const BoxInput: React.FC<Props> = ({ value, label, errorMessage, mark, onChange,
                     : null
             }
             <InputWrap>
-                <Input {...inputProps} onChange={onChange} value={value} autoComplete="off" />
+                <StyleInput {...inputProps} onChange={onChange} value={value} autoComplete="off" />
                 {
                     mark && <Typography.Regular><Mark>{mark}</Mark></Typography.Regular>
                 }
@@ -47,7 +47,7 @@ const Mark = styled.span`
     right: 15px;
     transform: translate(0, -50%);
 `
-const Input = styled.input`
+const StyleInput = styled.input`
     position: relative;
     width: 100%;
     padding: 18px;
@@ -74,4 +74,4 @@ const Span = styled.span`
 const Label = styled.label`
     text-align: left;
 `
-export default BoxInput;
+export default Input;

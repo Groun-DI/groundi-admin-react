@@ -6,9 +6,9 @@ import { theme } from "styles/theme";
 
 type Props = {
     errorMessage: string,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: File) => void;
     label: string;
-    value?: string | number | []
+    value?: any
 };
 
 const FileUploadInput: React.FC<Props> = ({ value, label, errorMessage, onChange }) => {
@@ -18,6 +18,7 @@ const FileUploadInput: React.FC<Props> = ({ value, label, errorMessage, onChange
         const { value } = e.target;
         const fileName = value.split("\\").pop();
         setMyImage(fileName);
+        onChange(e.target.files[0])
     };
 
     const removeFile = (e: any) => {

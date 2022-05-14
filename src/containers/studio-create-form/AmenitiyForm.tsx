@@ -6,13 +6,15 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import ValidationUtils from "utils/validation.utils";
+import { useParams } from "react-router-dom";
 
 type Props = {
     stateValid: (state: boolean) => void;
 }
 
 const AmenitiyForm: React.FC<Props> = ({ stateValid }) => {
-    const { SetFormValue, inputElements } = useStudioCreateContext();
+    const { centerId } = useParams();
+    const { SetFormValue, inputElements } = useStudioCreateContext(Number(centerId));
     const [items, setItems] = useState<Amenity[]>([]);
     const [selectItems, setSelectItems] = useState<string[]>([]);
 

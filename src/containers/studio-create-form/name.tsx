@@ -2,16 +2,18 @@ import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import styled from "styled-components";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
-import BoxInput from "components/input/BoxInput";
+import Input from "components/input/Input";
 import ValidationUtils from "utils/validation.utils";
 import { useEffect } from "react";
+import { useParams } from "react-router";
 
 type Props = {
     stateValid: (state: boolean) => void;
 }
 
 const NameForm: React.FC<Props> = ({ stateValid }) => {
-    const { formValues, inputElements, SetFormValue } = useStudioCreateContext();
+    const { centerId } = useParams();
+    const { inputElements, formValues, SetFormValue } = useStudioCreateContext(Number(centerId));
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -29,7 +31,7 @@ const NameForm: React.FC<Props> = ({ stateValid }) => {
         <>
             <InputWrapper>
                 <Typography.Large weight={theme.fontWeight.SemiBold}>이름 입력</Typography.Large>
-                <BoxInput {...inputElements.studioName} onChange={handlerOnChange} value={formValues.name} />
+                <Input {...inputElements.studioName} onChange={handlerOnChange} value={formValues.name} />
                 <StyledTypographySmall>{formValues.name ? formValues.name.length : 0}/30</StyledTypographySmall>
             </InputWrapper>
         </>

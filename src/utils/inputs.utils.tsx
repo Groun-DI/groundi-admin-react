@@ -3,6 +3,7 @@ class InputElementsUtils {
     static centerCreate = {
         centerName: {
             name: "name",
+            value: '',
             type: "text",
             placeholder: "운영중인 센터명을 입력해주세요",
             label: "업체명을 입력해주세요.",
@@ -10,17 +11,9 @@ class InputElementsUtils {
             errorMessage: "",
             invalid: false
         },
-        frontPhoneNumber: {
-            name: "frontPhoneNumber",
-            type: "number",
-            placeholder: "",
-            label: "전화번호를 입력해주세요.",
-            required: true,
-            errorMessage: "",
-            invalid: false
-        },
         phoneNumber: {
             name: "phoneNumber",
+            value: undefined,
             type: "number",
             placeholder: "- 없이 입력",
             label: "",
@@ -45,24 +38,6 @@ class InputElementsUtils {
             errorMessage: "",
             invalid: true
         },
-        ceoName: {
-            name: "ceoName",
-            type: "text",
-            placeholder: "홍길동",
-            label: "대표자명을 입력해주세요.",
-            required: true,
-            errorMessage: "",
-            invalid: false
-        },
-        busniessType: {
-            name: "busniessType",
-            type: "text",
-            placeholder: "사업자 등록증에 있는 기입된 업종명을 그대로 입력해주세요.",
-            label: "업종을 입력해주세요.",
-            required: true,
-            errorMessage: "",
-            invalid: false
-        },
         businessAttachment: {
             name: "businessAttachment",
             type: "text",
@@ -72,8 +47,8 @@ class InputElementsUtils {
             errorMessage: "",
             invalid: false
         },
-        busniessCode: {
-            name: "busniessCode",
+        busniessLicenseNumber: {
+            name: "busniessLicenseNumber",
             type: "number",
             placeholder: "- 없이 입력",
             label: "사업자 번호를 입력해주세요.",
@@ -405,7 +380,7 @@ class InputElementsUtils {
             invalid: false,
             required: true
         },
-        endTime:{
+        endTime: {
             name: "endTime",
             type: "text",
             placeholder: "",
@@ -414,7 +389,7 @@ class InputElementsUtils {
             invalid: false,
             required: true
         },
-        startTime:{
+        startTime: {
             name: "startTime",
             type: "text",
             placeholder: "",
@@ -423,7 +398,7 @@ class InputElementsUtils {
             invalid: false,
             required: true
         },
-        reason:{
+        reason: {
             name: "reason",
             type: "text",
             placeholder: "",
@@ -435,6 +410,31 @@ class InputElementsUtils {
     }
 }
 
-
-
 export default InputElementsUtils;
+
+type InputElementDTO = {
+    name: string
+    type: string
+    placeholder: string
+    label: string
+    required: boolean
+    errorMessage: string
+    invalid: boolean
+}
+
+export class InputElement<T> {
+    private value: T;
+    public elements: InputElementDTO;
+
+    constructor(elements: InputElementDTO) {
+        this.elements = elements
+    }
+
+    setValue(value: T){
+        this.value = value;
+    }
+
+    getValue(){
+        return this.value;
+    }
+}

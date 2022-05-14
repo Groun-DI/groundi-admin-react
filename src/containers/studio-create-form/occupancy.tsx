@@ -13,14 +13,8 @@ type Props = {
 }
 
 const OccupancyForm: React.FC<Props> = ({ stateValid }) => {
-    const { inputElements, formValues, SetFormValue } = useStudioCreateContext();
     const { centerId } = useParams();
-
-    useEffect(()=>{
-        if(centerId){
-            SetFormValue("centerId", centerId.toString());
-        }
-    },[SetFormValue, centerId])
+    const { inputElements, formValues, SetFormValue } = useStudioCreateContext(Number(centerId));
 
     const basicOccupancyChange = useCallback((value: number) => {
         inputElements.basicOccupancy = { ...inputElements.basicOccupancy, ...ValidationUtils.isNumberOfDigits(value, 1, 100) }
@@ -33,8 +27,6 @@ const OccupancyForm: React.FC<Props> = ({ stateValid }) => {
         SetFormValue(inputElements.maximumOccupancy.name, value.toString());
         stateValid(!(inputElements.basicOccupancy.invalid === true && inputElements.maximumOccupancy.invalid === true));
     }, [SetFormValue, inputElements, stateValid]);
-
-    
 
     return (
         <>

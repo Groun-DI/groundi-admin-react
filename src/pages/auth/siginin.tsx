@@ -72,7 +72,7 @@ const AuthSignInPage = () => {
             <BoxWrapper>
                 <BoxContainer>
                     <BoxHeader>
-                        <Flex layout="column">
+                        <Flex layout="c">
                             <img src="/svg/logo.svg" alt="groundi logo" />
                             <Typography.Title3 weight={700}>로그인</Typography.Title3>
                         </Flex>

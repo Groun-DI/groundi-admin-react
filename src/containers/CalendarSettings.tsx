@@ -1,5 +1,5 @@
 import { StudioBreakTimeService } from "api/StudioBreakTime.service";
-import BoxInput from "components/input/BoxInput";
+import Input from "components/input/Input";
 import { useState } from "react";
 import FormValuesUtils from "utils/formValue.utils";
 import InputElementsUtils from "utils/inputs.utils";
@@ -26,10 +26,10 @@ const CalendarSettings = () => {
 
     return (
         <div>
-            <BoxInput onChange={handleOnChange} {...inputElment.date} value={formValue.week} />
-            <BoxInput onChange={handleOnChange} {...inputElment.startTime} value={formValue.startTime} />
-            <BoxInput onChange={handleOnChange} {...inputElment.endTime} value={formValue.endTime} />
-            <BoxInput onChange={handleOnChange} {...inputElment.reason} value={formValue.reason} />
+            <Input onChange={handleOnChange} {...inputElment.date} value={formValue.week} />
+            <Input onChange={handleOnChange} {...inputElment.startTime} value={formValue.startTime} />
+            <Input onChange={handleOnChange} {...inputElment.endTime} value={formValue.endTime} />
+            <Input onChange={handleOnChange} {...inputElment.reason} value={formValue.reason} />
             <button onClick={hanldeOnSubmit}>저장하기</button>
         </div>
     )

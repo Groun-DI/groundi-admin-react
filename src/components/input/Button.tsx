@@ -5,11 +5,11 @@ import { ReactComponent as Cookie } from 'images/svg/forward.svg';
 
 type Props = {
     label: string;
-    value: string;
+    value: any;
     onClick: () => void;
 }
 
-const AddressModalInputButton: React.FC<Props> = ({ label, value, onClick }) => {
+const Button: React.FC<Props> = ({ label, value, onClick }) => {
     return (
         <Wrapper>
             {/* <Img src={icon} alt="plus-icon" /> */}
@@ -20,11 +20,11 @@ const AddressModalInputButton: React.FC<Props> = ({ label, value, onClick }) => 
                     </Label>
                     : null
             }
-            <Button onClick={onClick}>{
+            <StyleButton onClick={onClick}>{
                 value ? <Typography.Small>{value}</Typography.Small>
                     : <p>동/리/도로명으로 검색해주세요.</p>}
                 <Cookie stroke={theme.color.placeholder} stroke-width="1" />
-            </Button>
+            </StyleButton>
 
         </Wrapper>
     )
@@ -33,7 +33,7 @@ const Wrapper = styled.div`
     width: 100%;
 `
 
-const Button = styled.button`
+const StyleButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -58,4 +58,4 @@ const Button = styled.button`
 const Label = styled.label`
     text-align: left;
 `
-export default AddressModalInputButton;
+export default Button;

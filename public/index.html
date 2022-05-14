@@ -12,6 +12,44 @@
     <title>React App</title>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=j8jk0dm6e7"></script>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=giap9ur9rw&submodules=geocoder"></script>
+    <script>
+      try {
+        Kakao.init('카카오 홈페이지에서 발급받은 Javascript key입력')
+        Kakao.Link.createDefaultButton({
+          container: '#test',
+          objectType: 'feed',
+            content: {
+              title: '디저트 사진',
+              description: '아메리카노, 빵, 케익',
+            imageUrl:'http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
+            link: {
+                mobileWebUrl: 'https://developers.kakao.com',
+                androidExecParams: 'test',
+            },
+          },
+          social: {
+            likeCount: 10,
+            commentCount: 20,
+            sharedCount: 30,
+          },
+          buttons: [
+            {
+              title: '웹으로 이동',
+              link: {
+                mobileWebUrl: 'https://developers.kakao.com',
+              },
+            },
+            {
+              title: '앱으로 이동',
+              link: {
+                mobileWebUrl: 'https://developers.kakao.com',
+              },
+            },
+          ]
+        });
+      ; window.kakaoDemoCallback && window.kakaoDemoCallback() }
+      catch(e) { window.kakaoDemoException && window.kakaoDemoException(e) }
+      </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
