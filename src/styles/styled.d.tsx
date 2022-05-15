@@ -8,7 +8,7 @@ declare module "styled-components" {
             main_light: string;
             sub: string;
             sub_light: string;
-            sub_dark:string;
+            sub_dark: string;
             disabled_main: string;
             dep_gray: string;
             disabled: string;
@@ -18,9 +18,9 @@ declare module "styled-components" {
             b_font: string;
             border: string;
             TitleActive: string;
-            hover:string;
+            hover: string;
         };
-        svgColor:{
+        svgColor: {
             main: string;
         }
         fontSize: {
@@ -43,6 +43,20 @@ declare module "styled-components" {
         device: {
             mobile: string,
             tablet: string,
+        },
+        fontAlign: {
+            l: string,
+            c: string,
+            r: string
+        }
+        itemAlign: {
+            s: string,
+            c: string,
+            e: string
+        },
+        layout: {
+            r: string,
+            c: string
         }
     }
 }

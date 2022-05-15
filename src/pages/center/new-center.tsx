@@ -1,7 +1,6 @@
 import client from "services/axios";
 import styled from "styled-components";
 import Typography from 'components/style/Typography';
-import Input from 'components/input/Input';
 import { useState } from "react";
 import Wrapper from "components/style/Wrapper";
 import { theme } from "styles/theme";
@@ -11,14 +10,15 @@ import Modal from "containers/Modal";
 import ValidationUtils from "utils/validation.utils";
 import FileUploadInput from "components/input/fileUpload.input";
 import GoPrevNavigation from "components/frame/GoPrevNavigation";
-import InitialSelect from "components/select/Initial";
+import Select from "components/select";
 import numberList from 'data/first-phoneNumber.json';
-import { name, areaUniqueNumber, phoneNumber, address, detailAddress, busniessLicenseFile, busniessLicenseNumber } from "utils/center-create.input";
+import { name, areaNumber, phoneNumber, address, detailAddress, busniessLicenseFile, busniessLicenseNumber } from "utils/center-create.input";
 import Button from "components/input/Button";
 import StyleButton from "components/style/Button";
 import SearchInput from "components/input/SearchInput";
 import NaverGeocodingService from "services/naver.geocoding.service";
 import { NgsResAddressBody } from "dto/naver-geocoding.dto";
+import { Input, Group } from "components/input";
 
 const MapStyle = {
     width: '100%',
@@ -30,6 +30,8 @@ const MapStyle = {
 const Page = () => {
     const [resAddress, setResAddress] = useState<NgsResAddressBody[]>();
     const [selectAddress, setSelectAddress] = useState<NgsResAddressBody>();
+    const [latitude, setLatitude] = useState<number>();
+    const [longitude, setLongitude] = useState<number>();
     const [stateAddressSearchModal, setStateAddressSearchModal] = useState<boolean>(false);
     const [nowFormStep, setNowFormStep] = useState<number>(1);
 
@@ -55,6 +57,8 @@ const Page = () => {
                 'Accept': '*/*'
             }
         });
+
+        console.log(res);
     };
 
     const nextStep = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -78,7 +82,64 @@ const Page = () => {
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         address.setValue(e.target.value);
-        setResAddress(await NaverGeocodingService(e.target.value));
+        //  setResAddress(await NaverGeocodingService(e.target.value));
+    }
+
+    const showModal = () => {
+        return (
+            <Modal
+                title="주소 등록"
+                isOpen={stateAddressSearchModal}
+                isClose={(click: boolean) => setStateAddressSearchModal(click)}>
+                <div>
+                    <ModalInputWrap>
+                        <SearchInput
+                            {...address.elements}
+                            value={address.getValue()}
+                            onChange={handleChange}
+                            onKeyPress={handlerOnKeyPress}
+                            onClick={handlerOnClick} />
+                    </ModalInputWrap>
+                    {
+                        resAddress ? (
+                            <SelectListBox>
+                                <ul>
+                                    {
+                                        resAddress.map((item, k) => (
+                                            <li key={k}>
+                                                <input type="radio" id={k.toString()} name="address" value={item.roadAddr} />
+                                                <label htmlFor={k.toString()} onClick={(e) => setSelectAddress(item)}>
+                                                    <span>
+                                                        <i className="fn-booking fn-booking-check2" aria-hidden="true" />
+                                                    </span>
+                                                    <Typography.Regular spacing={-0.3}>{item.roadAddr}</Typography.Regular>
+                                                    <SubTitleWrap>
+                                                        <Typography.Micro>지번</Typography.Micro>
+                                                        <Typography.Small color={theme.color.dep_gray} spacing={-0.3}>{item.jibunAddress} </Typography.Small>
+                                                    </SubTitleWrap>
+                                                </label>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                            </SelectListBox>
+                        ) : (
+                                <TypographyWrap>
+                                    <Typography.Small color={theme.color.dep_gray}>도로명이나 지역명을 이용해서 검색해보세요.<br />건물번호, 번지를 입력하시면 정확하게 검색됩니다.</Typography.Small>
+                                </TypographyWrap>
+                            )
+                    }{
+                        selectAddress && (
+                            <ContentFooter>
+                                <Typography.Regular>{selectAddress?.roadAddr}</Typography.Regular>
+                                <Input {...detailAddress.elements} onChange={(e) => detailAddress.setValue(e.target.value)} errorMessage="" />
+                                <ModalButton onClick={() => setStateAddressSearchModal(false)}><Typography.Small spacing={-.43} color="#fff" weight={theme.fontWeight.SemiBold}>입력하기</Typography.Small></ModalButton>
+                            </ContentFooter>
+                        )
+                    }
+                </div>
+            </Modal>
+        )
     }
 
     switch (nowFormStep) {
@@ -92,128 +153,56 @@ const Page = () => {
                                 <Typography.Title3 weight={theme.fontWeight.ExtraBold}>개설할 센터의 정보를 입력해주세요</Typography.Title3>
                             </ContentHeader>
                             <ContentBody>
-                                <Flex layout="c" gap={30}>
+                                <Flex gap={30}>
                                     <Input {...name.elements} onChange={(e) => name.setValue(e.target.value)} value={name.getValue()} />
-                                    <Flex justify="start" align="start" layout="c">
-                                        <Label>
-                                            <Typography.Regular weight={theme.fontWeight.SemiBold}>{areaUniqueNumber.elements.label}</Typography.Regular>
-                                        </Label>
-                                        <Flex justify="start" align="start">
-                                            <InitialSelect onChange={(e) => areaUniqueNumber.setValue(e.target.value)} options={numberList} {...areaUniqueNumber.elements} />
-                                            <Input {...phoneNumber.elements} value={phoneNumber.getValue()} onChange={(e) => phoneNumber.setValue(e.target.value)} />
-                                        </Flex>
-                                    </Flex>
-                                    <Wrap>
-                                        <Modal
-                                            title="주소 등록"
-                                            isOpen={stateAddressSearchModal}
-                                            isClose={(click: boolean) => setStateAddressSearchModal(click)}>
-                                            <div>
-                                                <ModalInputWrap>
-                                                    <SearchInput
-                                                        {...address.elements}
-                                                        value={address.getValue()}
-                                                        onChange={handleChange}
-                                                        onKeyPress={handlerOnKeyPress}
-                                                        onClick={handlerOnClick} />
-                                                </ModalInputWrap>
-                                                {
-                                                    resAddress ? (
-                                                        <SelectListBox>
-                                                            <ul>
-                                                                {
-                                                                    resAddress.map((item, k) => (
-                                                                        <li key={k}>
-                                                                            <input type="radio" id={k.toString()} name="address" value={item.roadAddr} />
-                                                                            <label htmlFor={k.toString()} onClick={(e) => setSelectAddress(item)}>
-                                                                                <span>
-                                                                                    <i className="fn-booking fn-booking-check2" aria-hidden="true" />
-                                                                                </span>
-                                                                                <Typography.Regular spacing={-0.3}>{item.roadAddr}</Typography.Regular>
-                                                                                <SubTitleWrap>
-                                                                                    <Typography.Micro>지번</Typography.Micro>
-                                                                                    <Typography.Small color={theme.color.dep_gray} spacing={-0.3}>{item.jibunAddress} </Typography.Small>
-                                                                                </SubTitleWrap>
-                                                                            </label>
-                                                                        </li>
-                                                                    ))
-                                                                }
-                                                            </ul>
-                                                        </SelectListBox>
-                                                    ) : (
-                                                            <TypographyWrap>
-                                                                <Typography.Small color={theme.color.dep_gray}>도로명이나 지역명을 이용해서 검색해보세요.<br />건물번호, 번지를 입력하시면 정확하게 검색됩니다.</Typography.Small>
-                                                            </TypographyWrap>
-                                                        )
-                                                }{
-                                                    selectAddress && (
-                                                        <ContentFooter>
-                                                            <Typography.Regular>{selectAddress?.roadAddr}</Typography.Regular>
-                                                            <Input {...detailAddress.elements} onChange={(e) => detailAddress.setValue(e.target.value)} errorMessage="" />
-                                                            <ModalButton onClick={() => setStateAddressSearchModal(false)}><Typography.Small spacing={-.43} color="#fff" weight={theme.fontWeight.SemiBold}>입력하기</Typography.Small></ModalButton>
-                                                        </ContentFooter>
-                                                    )
-                                                }
-                                            </div>
-                                        </Modal>
-                                        <Button
-                                            label="주소를 입력해주세요"
-                                            value={address.getValue()}
-                                            onClick={() => setStateAddressSearchModal(true)}>동/리/도로명으로 검색해주세요.</Button>
-                                        {
-                                            address.getValue() &&
-                                            <Input
-                                                {...detailAddress.elements}
-                                                value={detailAddress.getValue()}
-                                                onChange={(e) => detailAddress.setValue(e.target.value)}
-                                            />
-                                        }
-                                    </Wrap>
+                                    <Group label={areaNumber.elements.label}>
+                                        <Select style={{ width: '20%' }}  {...areaNumber.elements} onChange={(e) => areaNumber.setValue(e.target.value)} options={numberList} />
+                                        <Input style={{ width: '80%' }}  {...phoneNumber.elements} value={phoneNumber.getValue()} onChange={(e) => phoneNumber.setValue(e.target.value)} />
+                                    </Group>
+                                    <Button
+                                        label="주소를 입력해주세요"
+                                        value={address.getValue()}
+                                        onClick={() => setStateAddressSearchModal(true)}>동/리/도로명으로 검색해주세요.</Button>
+                                    {address.getValue() && <Input {...detailAddress.elements} value={detailAddress.getValue()} onChange={(e) => detailAddress.setValue(e.target.value)} />}
+                                    {showModal()}
                                 </Flex>
-                                {/* {
-                                    formValues.latitude && formValues.longitude &&
-                                    <NaverMapService lat={Number(formValues.latitude)} lng={Number(formValues.longitude)} CustomStyle={MapStyle} />
-                                } */}
+                                {(latitude && longitude) && <NaverMapService lat={latitude} lng={longitude} CustomStyle={MapStyle} />}
                                 <Flex>
                                     {/* { <StyleButton onClick={nextStep}
                                         disabled={!name.inputElements.invalid || phoneNumber.inputElements.invalid || !address.getValue() ? true : false}>다음</StyleButton> } */}
-                                    <StyleButton onClick={nextStep}
-                                        disabled={false}>다음</StyleButton>
+                                    <StyleButton onClick={nextStep} disabled={false}>다음</StyleButton>
                                 </Flex>
-                                <GoPrevNavigation />
-                                <Wrapper>
-                                    <Container>
-                                        <ContentBody>
-                                            <Flex layout="c" gap={30}>
-                                                <InputWrap>
-                                                    <Input {...busniessLicenseNumber.elements} onChange={(e) => busniessLicenseNumber.setValue(Number(e.target.value))} value={busniessLicenseNumber.getValue()} />
-                                                    <FileUploadInput {...busniessLicenseFile.elements} onChange={(file: File) => busniessLicenseFile.setValue(file)} value={busniessLicenseFile.getValue()} />
-                                                    <Typography.Micro>
-                                                        • 5MB 이하의 jpg, jpeg, gif, png 파일형식만 가능합니다.<br />
-                                            • 주민등록번호 등 개인정보가 보이지 않도록 처리한 뒤 업로드 바랍니다.<br />
-                                            • 주민등록번호 등 개인정보가 표시된 경우, 해당 서류는 접수 즉시 파기되며 서비스 이용이 지연될 수 있습니다.
-                                        </Typography.Micro>
-                                                </InputWrap>
-                                            </Flex>
-                                            <Flex>
-                                                {/* <StyleButton type="submit" onClick={onSubmit}
-                                        disabled={!ceoName.invalid || !busniessType.invalid || !busniessCode.invalid ? true : false}>개설 완료하기!</StyleButton> */}
-                                                <CustomStyleButton type="submit" onClick={onSubmit} disabled={false}>개설 완료하기!</CustomStyleButton>
-                                            </Flex>
-                                        </ContentBody>
-                                    </Container>
-                                </Wrapper>
                             </ContentBody>
                         </Container>
                     </Wrapper>
-                    <input type="button" id="test" value="Custom" />
-
                 </>
             )
         case 2:
             return (
                 <>
-
+                    <GoPrevNavigation />
+                    <Wrapper>
+                        <Container>
+                            <ContentBody>
+                                <Flex gap={30}>
+                                    <InputWrap>
+                                        <Input {...busniessLicenseNumber.elements} onChange={(e) => busniessLicenseNumber.setValue(Number(e.target.value))} value={busniessLicenseNumber.getValue()} />
+                                        <FileUploadInput {...busniessLicenseFile.elements} onChange={(file: File) => busniessLicenseFile.setValue(file)} value={busniessLicenseFile.getValue()} />
+                                        <Typography.Micro>
+                                            • 5MB 이하의 jpg, jpeg, gif, png 파일형식만 가능합니다.<br />
+                                            • 주민등록번호 등 개인정보가 보이지 않도록 처리한 뒤 업로드 바랍니다.<br />
+                                            • 주민등록번호 등 개인정보가 표시된 경우, 해당 서류는 접수 즉시 파기되며 서비스 이용이 지연될 수 있습니다.
+                                        </Typography.Micro>
+                                    </InputWrap>
+                                </Flex>
+                                <Flex>
+                                    {/* <StyleButton type="submit" onClick={onSubmit}
+                                        disabled={!ceoName.invalid || !busniessType.invalid || !busniessCode.invalid ? true : false}>개설 완료하기!</StyleButton> */}
+                                    <CustomStyleButton type="submit" onClick={onSubmit} disabled={false}>개설 완료하기!</CustomStyleButton>
+                                </Flex>
+                            </ContentBody>
+                        </Container>
+                    </Wrapper>
                 </>
             )
         default: return (<>오케이</>);
@@ -225,10 +214,6 @@ const InputWrap = styled.div`
     p{
         margin-top:10px;
     }
-`
-
-const Wrap = styled.div`
-    width: 100%;
 `
 
 const Container = styled.div`

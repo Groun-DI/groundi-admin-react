@@ -2,32 +2,33 @@ import styled from "styled-components";
 
 type Props = {
     options: any[];
+    style?: React.CSSProperties;
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
     errorMessage: string,
     value?: string | number | [],
 }
 
-const InitialSelect: React.FC<Props> = ({ options, onChange, errorMessage, value, ...inputProps }) => {
+const Select: React.FC<Props> = ({ style, options, onChange, errorMessage, value, ...inputProps }) => {
 
     return (
-        <Wrapper>
-            <Select defaultValue={options[0]} onChange={onChange} value={value} {...inputProps}>
+        <Wrapper style={style}>
+            <StyleSelect defaultValue={options[0]} onChange={onChange} value={value} {...inputProps}>
                 {
                     options.map((item, key) => (
                         <option key={key} value={item}>{item}</option>
                     ))}
-            </Select>
+            </StyleSelect>
         </Wrapper>
     )
 }
 
-export default InitialSelect;
+export default Select;
 
 const Wrapper = styled.div`
-
+    width: 100%;
 `
-const Select = styled.select`
-    width: 125px;
+const StyleSelect = styled.select`
+    width: 100%;
     padding: 18px;
     border: 1px solid ${({ theme }) => theme.color.border};
     border-radius: 8px;

@@ -9,11 +9,11 @@ export const name = new InputElement<string>({
     errorMessage: "",
     invalid: false
 });
-export const areaUniqueNumber = new InputElement<string>({
-    name: "areaUniqueNumber",
+export const areaNumber = new InputElement<string>({
+    name: "areaNumber",
     type: "string",
     placeholder: "- 없이 입력",
-    label: "",
+    label: "대표 전화번호를 입력해주세요",
     required: true,
     errorMessage: "",
     invalid: false

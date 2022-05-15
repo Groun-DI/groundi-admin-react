@@ -13,13 +13,7 @@ const Button: React.FC<Props> = ({ label, value, onClick }) => {
     return (
         <Wrapper>
             {/* <Img src={icon} alt="plus-icon" /> */}
-            {
-                label ?
-                    <Label>
-                        <Typography.Regular weight={theme.fontWeight.SemiBold}>{label}</Typography.Regular>
-                    </Label>
-                    : null
-            }
+            { label && <Typography.Regular align={theme.fontAlign.l} weight={theme.fontWeight.SemiBold}>{label}</Typography.Regular>}
             <StyleButton onClick={onClick}>{
                 value ? <Typography.Small>{value}</Typography.Small>
                     : <p>동/리/도로명으로 검색해주세요.</p>}
@@ -55,7 +49,5 @@ const StyleButton = styled.button`
         color: ${({ theme }) => theme.color.placeholder};
     }
 `
-const Label = styled.label`
-    text-align: left;
-`
+
 export default Button;

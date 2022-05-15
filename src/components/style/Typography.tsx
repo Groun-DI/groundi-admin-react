@@ -4,6 +4,7 @@ type Props = {
     weight?: number,
     color?: string,
     spacing?: number
+    align?: string,
 }
 
 const Typography = {
@@ -12,6 +13,7 @@ const Typography = {
         font-weight: ${({ weight }) => weight || 400};
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
         color: ${({ theme, color }) => color || theme.color.b_font};
+        text-align: ${({ theme, align }) => align || theme.fontAlign.c};
     `,
     Title2: styled.h2<Props>`
         font-size: ${({ theme }) => theme.fontSize.Title2};
@@ -19,6 +21,7 @@ const Typography = {
         line-height: 1.3;
         color: ${({ theme, color }) => color || theme.color.b_font};
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
+        text-align: ${({ theme, align }) => align || theme.fontAlign.c};
     `,
     Title3: styled.h3<Props>`
         font-size: ${({ theme }) => theme.fontSize.Title3};
@@ -26,6 +29,7 @@ const Typography = {
         color: ${({ theme, color }) => color || theme.color.b_font};
         line-height: 1.5;
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
+        text-align: ${({ theme, align }) => align || theme.fontAlign.c};
     `,
     Large: styled.h4<Props>`
         font-size: ${({ theme }) => theme.fontSize.Large};
@@ -33,18 +37,21 @@ const Typography = {
         color: ${({ theme, color }) => color || theme.color.b_font};
         line-height: 1.5;
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
+        text-align: ${({ theme, align }) => align || theme.fontAlign.c};
     `,
     Regular: styled.h5<Props>`
         font-size: ${({ theme }) => theme.fontSize.Regular};
         font-weight: ${({ weight }) => weight || 400};
         color: ${({ theme, color }) => color || theme.color.b_font};
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
+        text-align: ${({ theme, align }) => align || theme.fontAlign.c};
     `,
     Small: styled.h6<Props>`
         font-size: ${({ theme }) => theme.fontSize.Small};
         font-weight: ${({ weight }) => weight || 400};
         color: ${({ theme, color }) => color || theme.color.b_font};
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
+        text-align: ${({ theme, align }) => align || theme.fontAlign.c};
     `,
     Micro: styled.p<Props>`
         font-size: ${({ theme }) => theme.fontSize.Micro};
@@ -52,6 +59,7 @@ const Typography = {
         color: ${({ theme, color }) => color || theme.color.b_font};
         letter-spacing: ${({ spacing }) => spacing + "px" || "1px"};
         line-height: 1.5;
+        text-align: ${({ theme, align }) => align || theme.fontAlign.c};
     `
 }
 

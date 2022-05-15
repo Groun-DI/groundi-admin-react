@@ -4,6 +4,7 @@ import { theme } from "styles/theme"
 
 type Props = {
     errorMessage: string,
+    style?: React.CSSProperties,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     label: string;
     value?: any,
@@ -11,24 +12,14 @@ type Props = {
     invalid: boolean;
 }
 
-const Input: React.FC<Props> = ({ value, label, errorMessage, mark, onChange, invalid, ...inputProps }) => {
+const Input: React.FC<Props> = ({ style, value, label, errorMessage, mark, onChange, invalid, ...inputProps }) => {
     return (
-        <Wrapper>
-            {
-                label ?
-                    <Label>
-                        <Typography.Regular weight={theme.fontWeight.SemiBold}>{label}</Typography.Regular>
-                    </Label>
-                    : null
-            }
+        <Wrapper style={style}>
+            { label && <Typography.Regular weight={theme.fontWeight.SemiBold} align={theme.fontAlign.l}>{label}</Typography.Regular>}
             <InputWrap>
                 <StyleInput {...inputProps} onChange={onChange} value={value} autoComplete="off" />
-                {
-                    mark && <Typography.Regular><Mark>{mark}</Mark></Typography.Regular>
-                }
-                {
-                    errorMessage && <Span>{errorMessage}</Span>
-                }
+                {mark && <Typography.Regular><Mark>{mark}</Mark></Typography.Regular>}
+                {errorMessage && <Span>{errorMessage}</Span>}
             </InputWrap>
         </Wrapper>
     )
@@ -70,8 +61,5 @@ const Span = styled.span`
     padding: 8px;
     color: ${({ theme }) => theme.color.main};
     display: none;
-`
-const Label = styled.label`
-    text-align: left;
 `
 export default Input;

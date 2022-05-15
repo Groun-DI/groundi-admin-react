@@ -20,7 +20,7 @@ const theme: DefaultTheme = {
         TitleActive: "#343A40",
         hover: 'rgb(255, 250, 250)'
     },
-    svgColor:{
+    svgColor: {
         main: "invert(64%) sepia(57%) saturate(7142%) hue-rotate(337deg) brightness(96%) contrast(102%)"
     },
     fontSize: {
@@ -43,6 +43,20 @@ const theme: DefaultTheme = {
     device: {
         mobile: `screen and (max-width: 600px)`,
         tablet: `screen and (max-width: 992px)`,
+    },
+    fontAlign: {
+        l: "left",
+        c: "center",
+        r: "right",
+    },
+    itemAlign: {
+        s: "start",
+        c: "center",
+        e: "end"
+    },
+    layout: {
+        r: "row",
+        c: "column"
     }
 };
 
