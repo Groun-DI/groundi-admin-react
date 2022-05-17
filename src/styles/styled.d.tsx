@@ -1,6 +1,6 @@
 import "styled-components";
 
-declare module "styled-components" {
+
     export interface DefaultTheme {
         basicWidth: string;
         color: {
@@ -59,4 +59,3 @@ declare module "styled-components" {
             c: string
         }
     }
-}

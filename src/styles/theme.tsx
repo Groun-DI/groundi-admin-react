@@ -1,4 +1,4 @@
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme } from "./styled.d";
 const rem = (value: number) => { return value + "rem" };
 
 const theme: DefaultTheme = {
