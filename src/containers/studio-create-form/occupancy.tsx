@@ -6,7 +6,7 @@ import IncrementStepper from 'components/input/IncrementStepper';
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import { useCallback, useEffect } from "react";
 import ValidationUtils from "utils/validation.utils";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 
 type Props = {
     stateValid: (state: boolean) => void;

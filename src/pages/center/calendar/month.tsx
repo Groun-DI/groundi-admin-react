@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { useLocation, useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import client from "services/axios";
 import styled from "styled-components";
 import Flex from "components/style/Flex";

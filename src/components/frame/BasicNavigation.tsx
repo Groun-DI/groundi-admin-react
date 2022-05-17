@@ -1,5 +1,5 @@
 import { useAuth } from 'hooks/useAuth';
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 

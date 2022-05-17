@@ -6,7 +6,7 @@ import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import Typography from "components/style/Typography";
 import { theme } from "styles/theme";
 import ValidationUtils from "utils/validation.utils";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 
 type Props = {
     stateValid: (state: boolean) => void;

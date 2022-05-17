@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import Flex from 'components/style/Flex';
 import Typography from 'components/style/Typography';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import ModalBasic from 'components/modal/basic';
 import client from 'services/axios';
 import { theme } from 'styles/theme';

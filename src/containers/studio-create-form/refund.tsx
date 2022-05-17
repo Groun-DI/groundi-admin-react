@@ -3,7 +3,7 @@ import { RefundCode } from "dto/returnCode.entity";
 import { useStudioCreateContext } from "hooks/useStudioCreateContext";
 import { StudioCreate } from "../../utils/formValue.utils";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import client from "services/axios";
 import styled from "styled-components";
 import { theme } from "styles/theme";

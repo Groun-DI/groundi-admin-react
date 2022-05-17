@@ -5,7 +5,7 @@ import { theme } from "styles/theme";
 import TextAreaInput from "components/input/TextAreaInput";
 import ValidationUtils from "utils/validation.utils";
 import { useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 
 type Props = {
     stateValid: (state: boolean) => void;
