@@ -18,6 +18,7 @@ import SearchInput from "components/input/SearchInput";
 import NaverGeocodingService from "services/naver.geocoding.service";
 import { NgsResAddressBody } from "dto/naver-geocoding.dto";
 import { Input, Group } from "components/input";
+import Input1 from "components/input/Input-1";
 
 const MapStyle = {
     width: '100%',
@@ -154,12 +155,10 @@ const Page = () => {
                     <Wrapper>
                         <Container>
                             <ContentHeader>
-                                <Typography.Title3 weight={theme.fontWeight.ExtraBold}>개설할 센터의 정보를 입력해주세요</Typography.Title3>
+                                <Typography.Title2 weight={theme.fontWeight.Bold}>개설할 센터의 정보를 입력해주세요</Typography.Title2>
                             </ContentHeader>
                             <ContentBody>
-                                <Flex gap={30}>
-                                    <Input {...name.elements} onChange={(e) => name.setValue(e.target.value)} value={name.getValue()} />
-                                </Flex>
+                                <Input1 {...name.elements} onChange={(e) => name.setValue(e.target.value)} value={name.getValue()}/>
                                 <Flex>
                                     {/* { <StyleButton onClick={nextStep}
                                         disabled={!name.inputElements.invalid || phoneNumber.inputElements.invalid || !address.getValue() ? true : false}>다음</StyleButton> } */}
