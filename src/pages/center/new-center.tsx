@@ -7,9 +7,8 @@ import { theme } from "styles/theme";
 import Flex from "components/style/Flex";
 import NaverMapService from "services/naver.map.service";
 import Modal from "containers/Modal";
-import ValidationUtils from "utils/validation.utils";
 import FileUploadInput from "components/input/fileUpload.input";
-import GoPrevNavigation from "components/frame/GoPrevNavigation";
+import LogoNavigation from "components/frame/LogoNavigation";
 import Select from "components/select";
 import numberList from 'data/first-phoneNumber.json';
 import { name, areaNumber, phoneNumber, address, detailAddress, busniessLicenseFile, busniessLicenseNumber } from "utils/center-create.input";
@@ -60,6 +59,11 @@ const Page = () => {
 
         console.log(res);
     };
+
+    const preStep = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setNowFormStep(nowFormStep - 1);
+    }
 
     const nextStep = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -146,7 +150,7 @@ const Page = () => {
         case 1:
             return (
                 <>
-                    <GoPrevNavigation />
+                    <LogoNavigation />
                     <Wrapper>
                         <Container>
                             <ContentHeader>
@@ -155,10 +159,56 @@ const Page = () => {
                             <ContentBody>
                                 <Flex gap={30}>
                                     <Input {...name.elements} onChange={(e) => name.setValue(e.target.value)} value={name.getValue()} />
+                                </Flex>
+                                <Flex>
+                                    {/* { <StyleButton onClick={nextStep}
+                                        disabled={!name.inputElements.invalid || phoneNumber.inputElements.invalid || !address.getValue() ? true : false}>다음</StyleButton> } */}
+                                    <StyleButton onClick={preStep} disabled={false}>이전</StyleButton>
+                                    <StyleButton onClick={nextStep} disabled={false}>다음</StyleButton>
+                                </Flex>
+                            </ContentBody>
+                        </Container>
+                    </Wrapper>
+                </>
+            )
+        case 2:
+            return (
+                <>
+                    <LogoNavigation />
+                    <Wrapper>
+                        <Container>
+                            <ContentHeader>
+                                <Typography.Title3 weight={theme.fontWeight.ExtraBold}>개설할 센터의 정보를 입력해주세요</Typography.Title3>
+                            </ContentHeader>
+                            <ContentBody>
+                                <Flex gap={30}>
                                     <Group label={areaNumber.elements.label}>
                                         <Select style={{ width: '20%' }}  {...areaNumber.elements} onChange={(e) => areaNumber.setValue(e.target.value)} options={numberList} />
                                         <Input style={{ width: '80%' }}  {...phoneNumber.elements} value={phoneNumber.getValue()} onChange={(e) => phoneNumber.setValue(e.target.value)} />
                                     </Group>
+                                </Flex>
+                                <Flex>
+                                    {/* { <StyleButton onClick={nextStep}
+                                        disabled={!name.inputElements.invalid || phoneNumber.inputElements.invalid || !address.getValue() ? true : false}>다음</StyleButton> } */}
+                                    <StyleButton onClick={preStep} disabled={false}>이전</StyleButton>
+                                    <StyleButton onClick={nextStep} disabled={false}>다음</StyleButton>
+                                </Flex>
+                            </ContentBody>
+                        </Container>
+                    </Wrapper>
+                </>
+            )
+        case 3:
+            return (
+                <>
+                    <LogoNavigation />
+                    <Wrapper>
+                        <Container>
+                            <ContentHeader>
+                                <Typography.Title3 weight={theme.fontWeight.ExtraBold}>개설할 센터의 정보를 입력해주세요</Typography.Title3>
+                            </ContentHeader>
+                            <ContentBody>
+                                <Flex gap={30}>
                                     <Button
                                         label="주소를 입력해주세요"
                                         value={address.getValue()}
@@ -170,6 +220,7 @@ const Page = () => {
                                 <Flex>
                                     {/* { <StyleButton onClick={nextStep}
                                         disabled={!name.inputElements.invalid || phoneNumber.inputElements.invalid || !address.getValue() ? true : false}>다음</StyleButton> } */}
+                                    <StyleButton onClick={preStep} disabled={false}>이전</StyleButton>
                                     <StyleButton onClick={nextStep} disabled={false}>다음</StyleButton>
                                 </Flex>
                             </ContentBody>
@@ -177,10 +228,10 @@ const Page = () => {
                     </Wrapper>
                 </>
             )
-        case 2:
+        case 4:
             return (
                 <>
-                    <GoPrevNavigation />
+                    <LogoNavigation />
                     <Wrapper>
                         <Container>
                             <ContentBody>
@@ -198,6 +249,7 @@ const Page = () => {
                                 <Flex>
                                     {/* <StyleButton type="submit" onClick={onSubmit}
                                         disabled={!ceoName.invalid || !busniessType.invalid || !busniessCode.invalid ? true : false}>개설 완료하기!</StyleButton> */}
+                                    <StyleButton onClick={preStep} disabled={false}>이전</StyleButton>
                                     <CustomStyleButton type="submit" onClick={onSubmit} disabled={false}>개설 완료하기!</CustomStyleButton>
                                 </Flex>
                             </ContentBody>
@@ -237,10 +289,6 @@ const CustomStyleButton = styled(StyleButton) <{ disabled: boolean }>`
     opacity: ${({ disabled }) => disabled ? 0.7 : 1};
     cursor: ${({ disabled }) => disabled ? 'auto' : 'pointer'};
 `
-const Label = styled.label`
-    text-align: left;
-`
-
 
 const ModalButton = styled.button`
     width: 100%;
