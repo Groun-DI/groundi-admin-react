@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import client from "services/axios";
 import styled from "styled-components";
 import { theme } from "styles/theme";
+import Flex from "components/style/Flex";
 const Page = () => {
     const [centers, setCenters] = useState<any[]>([]);
 
@@ -33,11 +34,13 @@ const Page = () => {
                     <Row>
                         <Col xs={1} md={2} lg={4}>
                             <ButtonBox>
-                                <Link to="/new-center">
-                                    <Typography.Regular weight={theme.fontWeight.Regular} color={theme.color.main}>
-                                        새로운 센터 등록 +
-                                    </Typography.Regular>
-                                </Link>
+                                <Flex justify={theme.justifyAlign.c} align={theme.itemAlign.c}>
+                                    <Link to="/new-center">
+                                        <Typography.Large weight={theme.fontWeight.SemiBold} >
+                                            새로운 센터 등록
+                                    </Typography.Large>
+                                    </Link>
+                                </Flex>
                             </ButtonBox>
                         </Col>
                         {
@@ -71,17 +74,21 @@ const ButtonBox = styled.div`
     border: 1px solid ${({ theme }) => theme.color.light_gray};
     border-radius: 25px;
     background-color: ${({ theme }) => theme.color.white};
+    margin: auto;
     cursor: pointer;
     ::before{
         content:'';
         position: absolute;
-        background: url('/icon/center.svg') no-repeat center;
+        background: url('/plus-red.svg') no-repeat center;
         background-size: cover;
-        width: 26px;
-        height: 26px;
-        top: 50%;
-        left: 20px;
-        transform: translate(0%, -50%);
+        width: 30px;
+        height: 30px;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    a{
+        margin-top: 60px;
     }
 `
 export default Page;
