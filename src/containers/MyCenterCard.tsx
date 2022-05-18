@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Typography from "components/style/Typography";
 import { useEffect, useState } from "react";
 import { StudioService } from "api/studio.service";
+import { theme } from "styles/theme";
 
 type Props = {
     center: any
@@ -20,13 +21,13 @@ const MyCenterCard: React.FC<Props> = ({ center }) => {
     return (
         <BoxContainer>
             <BoxContentHeader>
-                <img src="/centerImage.png" alt="센터 대표 이미지" />
+                <img src="/centerImage.png" alt="센터 대표 이미지" width="100%" height="100%"/>
             </BoxContentHeader>
-            <BoxContentMain>
+            <BoxContentBody>
                 <Link to={`${center.id}/reservation/${studioId}`}>
-                    <Typography.Small>{center.name}</Typography.Small>
+                    <Typography.Regular align={theme.fontAlign.l} weight={theme.fontWeight.Bold}>{center.name}</Typography.Regular>
                 </Link>
-            </BoxContentMain>
+            </BoxContentBody>
         </BoxContainer>
     )
 }
@@ -34,29 +35,22 @@ const MyCenterCard: React.FC<Props> = ({ center }) => {
 
 const BoxContainer = styled.div`
     display: inline-block;
-    border: 1px solid ${({ theme }) => theme.color.line};
-    border-radius: 10px;
-    background-color: ${({ theme }) => theme.color.offWhite};
+    border: 1px solid ${({ theme }) => theme.color.light_gray};
+    border-radius: 25px;
+    background-color: ${({ theme }) => theme.color.white};
+    width: calc(100% /4);
+    height: 250px;
 `
 const BoxContentHeader = styled.div`
     width: 100%;
-    height: 170px;
+    height: 75%;
 `
-const BoxContentMain = styled.div`
+const BoxContentBody = styled.div`
     position: relative;
-    padding: 20px 25px;
+    height: 25%;
+    line-height: 6rem;
+    padding: 0px 30px;
     cursor: pointer;
-    ::before{
-        content:'';
-        position: absolute;
-        background: url('/icon/arrow-right.svg') no-repeat center;
-        background-size: cover;
-        width: 16px;
-        height: 16px;
-        top: 50%;
-        right: 20px;
-        transform: translate(0%, -50%);
-    }
 `
 
 export default MyCenterCard;

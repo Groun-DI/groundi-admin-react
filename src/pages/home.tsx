@@ -1,6 +1,7 @@
 import BasicNavigation from "components/frame/BasicNavigation";
 import Typography from "components/style/Typography";
 import Wrapper from "components/style/Wrapper";
+import Container from "components/style/Container";
 import MyCenterCard from "containers/MyCenterCard";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -20,15 +21,17 @@ const Page = () => {
     return (
         <>
             <BasicNavigation />
+            <StyledWrapper bg={theme.color.light_gray}>
+                <Container>
+                    <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>내 센터</Typography.Title2>
+                </Container>
+            </StyledWrapper>
             <Wrapper>
                 <Container>
-                    <ContentHeader>
-                        <Typography.Large weight={theme.fontWeight.SemiBold}>내 센터</Typography.Large>
-                        <ButtonBox>
-                            <Link to="/new-center"><Typography.Regular weight={theme.fontWeight.SemiBold} color={theme.color.main}>새로운 센터 등록 +</Typography.Regular></Link>
-                        </ButtonBox>
-                    </ContentHeader>
                     <ContentMain>
+                        <ButtonBox>
+                            <Link to="/new-center"><Typography.Regular weight={theme.fontWeight.Regular} color={theme.color.main}>새로운 센터 등록 +</Typography.Regular></Link>
+                        </ButtonBox>
                         {
                             centers.map((item, k) => (
                                 <MyCenterCard key={k} center={item} />
@@ -41,35 +44,39 @@ const Page = () => {
     )
 }
 
-const Container = styled.div`
-
-`
-
-const ContentHeader = styled.div`
-    margin-top: 30px;
-    button{
-        margin-top: 30px;
+const StyledWrapper = styled(Wrapper)`
+    @media ${theme.device.pc}{
+        padding: 65px 0px;
+    }
+    @media ${theme.device.tablet}{
+        padding: 40px 0px;
+    }
+    @media ${theme.device.mobile}{
+        padding: 20px 0px;
     }
 `
 
 const ButtonBox = styled.button`
+    display: block;
+    float: left;
     position: relative;
-    border: 2px solid ${({theme})=>theme.color.main};
-    border-radius: 8px;
-    padding: 30px 80px 30px 60px;
-    background-color: white;
+    width: calc(100% /4);
+    height: 250px;
+    border: 1px solid ${({ theme }) => theme.color.light_gray};
+    border-radius: 25px;
+    background-color: ${({ theme }) => theme.color.white};
     cursor: pointer;
     ::before{
-            content:'';
-            position: absolute;
-            background: url('/icon/center.svg') no-repeat center;
-            background-size: cover;
-            width: 26px;
-            height: 26px;
-            top: 50%;
-            left: 20px;
-            transform: translate(0%, -50%);
-        }
+        content:'';
+        position: absolute;
+        background: url('/icon/center.svg') no-repeat center;
+        background-size: cover;
+        width: 26px;
+        height: 26px;
+        top: 50%;
+        left: 20px;
+        transform: translate(0%, -50%);
+    }
 `
 const ContentMain = styled.div`
     margin-top: 25px;

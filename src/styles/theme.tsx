@@ -18,7 +18,16 @@ const theme: DefaultTheme = {
         b_font: '#343A40',
         border: "#DBDBDB",
         TitleActive: "#343A40",
-        hover: 'rgb(255, 250, 250)'
+        hover: 'rgb(255, 250, 250)',
+
+        red: "#F84F39",
+        dep_beige: "#D7BEB9",
+        light_beige: "#FFF5EF",
+        white: "#ffffff",
+        light_gray: "#EEEEEE",
+        dark_black: "#0E0E0E",
+        dep_green: "#008B48",
+        light_green: "#0CFF8A"
     },
     svgColor: {
         main: "invert(64%) sepia(57%) saturate(7142%) hue-rotate(337deg) brightness(96%) contrast(102%)"
@@ -41,8 +50,9 @@ const theme: DefaultTheme = {
         Black: 900,
     },
     device: {
-        mobile: `screen and (max-width: 600px)`,
-        tablet: `screen and (max-width: 992px)`,
+        mobile: `screen and (max-width:767px)`,
+        tablet: `screen and (min-width:768px) and (max-width: 1023px)`,
+        pc: `screen and (min-width:1024px)`,
     },
     fontAlign: {
         l: "left",
@@ -52,7 +62,13 @@ const theme: DefaultTheme = {
     itemAlign: {
         s: "start",
         c: "center",
-        e: "end"
+        e: "end",
+    },
+    justifyAlign: {
+        s: "flex-start",
+        c: "center",
+        e: "flex-end",
+        sb: "space-between"
     },
     layout: {
         r: "row",

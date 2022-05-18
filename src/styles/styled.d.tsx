@@ -19,6 +19,15 @@ import "styled-components";
             border: string;
             TitleActive: string;
             hover: string;
+
+            red: string;
+            dep_beige: string;
+            light_beige: string;
+            white: string;
+            light_gray: string;
+            dark_black: string;
+            dep_green: string;
+            light_green: string;
         };
         svgColor: {
             main: string;
@@ -43,6 +52,7 @@ import "styled-components";
         device: {
             mobile: string,
             tablet: string,
+            pc: string,
         },
         fontAlign: {
             l: string,
@@ -53,6 +63,12 @@ import "styled-components";
             s: string,
             c: string,
             e: string
+        },
+        justifyAlign: {
+            s: string,
+            c: string,
+            e: string,
+            sb: string
         },
         layout: {
             r: string,

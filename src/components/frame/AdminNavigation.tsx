@@ -26,41 +26,47 @@ const AdminNavigation = () => {
         <>
             <Wrapper>
                 <Container>
-                    <ContentHeader>
-                        <Link to={`/`}>
-                            <img src="/logo.svg" alt="logo" width="130px" />
-                        </Link>
-                    </ContentHeader>
-                    <ContentBody>
-                        <Link to={`/${centerId}/reservation`}><Typography.Small className={pathname.includes('reservation') ? 'active' : 'disable'}>예약관리</Typography.Small></Link>
-                        <Link to={`/${centerId}/calendar`}><Typography.Small className={pathname.includes('calendar') ? 'active' : 'disable'}>캘린더</Typography.Small></Link>
-                        <Link to={`/${centerId}/studio`}><Typography.Small className={pathname.includes('studio') ? 'active' : 'disable'}>스튜디오</Typography.Small></Link>
-                    </ContentBody>
-                    <ContentFooter>
-                        <ContentWrap>
-                            <NotifyButton onClick={() => setIsNotifyModalOpen(!isNotifyModalOpen)} />
-                            <ModalWrap>
-                                <ModalBasic isOpen={isNotifyModalOpen} isClose={(value: boolean) => setIsNotifyModalOpen(value)}>
-                                    <ul>
-                                        <Link to={`/center/${centerId}/studio`}><li><Typography.Regular>계정정보</Typography.Regular></li></Link>
-                                    </ul>
-                                </ModalBasic>
-                            </ModalWrap>
-                        </ContentWrap>
-                        <ContentWrap>
-                            <ProfileButton onClick={() => setIsMyprofileModalOpen(!isMyprofileModalOpen)} url={userProfileImg} />
-                            <ModalWrap>
-                                <ModalBasic isOpen={isMyprofileModalOpen} isClose={(value: boolean) => setIsMyprofileModalOpen(value)}>
-                                    <ul>
-                                        <Link to={`/center/${centerId}/studio`}><li><Typography.Regular weight={theme.fontWeight.SemiBold}>계정정보</Typography.Regular></li></Link>
-                                        <Link to={`/center/${centerId}/studio`}><li><Typography.Regular weight={theme.fontWeight.SemiBold}>대금정보</Typography.Regular></li></Link>
-                                        <Link to={`/center/${centerId}/studio`}> <li><Typography.Regular weight={theme.fontWeight.SemiBold}>물어보기</Typography.Regular></li></Link>
-                                        <Link to={`/center/${centerId}/studio`}><li><Typography.Regular weight={theme.fontWeight.SemiBold}>로그아웃</Typography.Regular></li></Link>
-                                    </ul>
-                                </ModalBasic>
-                            </ModalWrap>
-                        </ContentWrap>
-                    </ContentFooter>
+                    <Flex layout={theme.layout.r} align={theme.itemAlign.c} justify={theme.justifyAlign.sb}>
+                        <ContentHeader>
+                            <Link to={`/`}>
+                                <img src="/logo-3.svg" alt="logo" width="150px" height="auto" />
+                            </Link>
+                        </ContentHeader>
+                        <ContentBody>
+                            <Flex layout={theme.layout.r}>
+                                <Link to={`/${centerId}/reservation`}><Typography.Small className={pathname.includes('reservation') ? 'active' : 'disable'}>예약관리</Typography.Small></Link>
+                                <Link to={`/${centerId}/calendar`}><Typography.Small className={pathname.includes('calendar') ? 'active' : 'disable'}>캘린더</Typography.Small></Link>
+                                <Link to={`/${centerId}/studio`}><Typography.Small className={pathname.includes('studio') ? 'active' : 'disable'}>스튜디오</Typography.Small></Link>
+                            </Flex>
+                        </ContentBody>
+                        <ContentFooter>
+                            <Flex layout={theme.layout.r} >
+                                <ContentWrap>
+                                    <NotifyButton onClick={() => setIsNotifyModalOpen(!isNotifyModalOpen)} />
+                                    <ModalWrap>
+                                        <ModalBasic isOpen={isNotifyModalOpen} isClose={(value: boolean) => setIsNotifyModalOpen(value)}>
+                                            <ul>
+                                                <Link to={`/center/${centerId}/studio`}><li><Typography.Regular>계정정보</Typography.Regular></li></Link>
+                                            </ul>
+                                        </ModalBasic>
+                                    </ModalWrap>
+                                </ContentWrap>
+                                <ContentWrap>
+                                    <ProfileButton onClick={() => setIsMyprofileModalOpen(!isMyprofileModalOpen)} url={userProfileImg} />
+                                    <ModalWrap>
+                                        <ModalBasic isOpen={isMyprofileModalOpen} isClose={(value: boolean) => setIsMyprofileModalOpen(value)}>
+                                            <ul>
+                                                <Link to={`/center/${centerId}/studio`}><li><Typography.Regular weight={theme.fontWeight.SemiBold}>계정정보</Typography.Regular></li></Link>
+                                                <Link to={`/center/${centerId}/studio`}><li><Typography.Regular weight={theme.fontWeight.SemiBold}>대금정보</Typography.Regular></li></Link>
+                                                <Link to={`/center/${centerId}/studio`}> <li><Typography.Regular weight={theme.fontWeight.SemiBold}>물어보기</Typography.Regular></li></Link>
+                                                <Link to={`/center/${centerId}/studio`}><li><Typography.Regular weight={theme.fontWeight.SemiBold}>로그아웃</Typography.Regular></li></Link>
+                                            </ul>
+                                        </ModalBasic>
+                                    </ModalWrap>
+                                </ContentWrap>
+                            </Flex>
+                        </ContentFooter>
+                    </Flex>
                 </Container>
             </Wrapper>
         </>
@@ -95,11 +101,11 @@ const Container = styled(Flex)`
     align-items: center;
 `
 
-const ContentHeader = styled(Flex)`
-    justify-content: flex-start;
+const ContentHeader = styled.div`
+    
 `
 
-const ContentBody = styled(Flex)`
+const ContentBody = styled.div`
     h6{
         position: relative;
         margin-left: 25px;
@@ -124,8 +130,7 @@ const ContentBody = styled(Flex)`
         }
     }
 `
-const ContentFooter = styled(Flex)`
-    justify-content: flex-end;
+const ContentFooter = styled.div`
 `
 
 const NotifyButton = styled.button`

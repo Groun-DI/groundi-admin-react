@@ -14,11 +14,12 @@ const BasicNavigation = () => {
         <>
             <Wrapper>
                 <Container>
-                    <img src="/logo.svg" alt="logo" width="130px" />
+                    <img src="/logo-3.svg" alt="logo" width="150px" height="auto" />
                     <div>
                         <button onClick={async () => {
                             LoginOut();
-                            navigator('/auth/signin')}}>로그아웃</button>
+                            navigator('/auth/signin')
+                        }}>로그아웃</button>
                         마이페이지
                     </div>
                 </Container>
