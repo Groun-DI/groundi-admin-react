@@ -4,6 +4,7 @@ import Typography from "components/style/Typography";
 import { useEffect, useState } from "react";
 import { StudioService } from "api/studio.service";
 import { theme } from "styles/theme";
+import Col from "components/style/Column";
 
 type Props = {
     center: any
@@ -19,26 +20,27 @@ const MyCenterCard: React.FC<Props> = ({ center }) => {
     });
 
     return (
-        <BoxContainer>
-            <BoxContentHeader>
-                <img src="/centerImage.png" alt="센터 대표 이미지" width="100%" height="100%"/>
-            </BoxContentHeader>
-            <BoxContentBody>
-                <Link to={`${center.id}/reservation/${studioId}`}>
-                    <Typography.Regular align={theme.fontAlign.l} weight={theme.fontWeight.Bold}>{center.name}</Typography.Regular>
-                </Link>
-            </BoxContentBody>
-        </BoxContainer>
+        <Col xs={1} md={2} lg={4}>
+            <BoxContainer>
+                <BoxContentHeader>
+                    <img src="/centerImage.png" alt="센터 대표 이미지" width="100%" height="100%" />
+                </BoxContentHeader>
+                <BoxContentBody>
+                    <Link to={`${center.id}/reservation/${studioId}`}>
+                        <Typography.Regular align={theme.fontAlign.l} weight={theme.fontWeight.Bold}>{center.name}</Typography.Regular>
+                    </Link>
+                </BoxContentBody>
+            </BoxContainer>
+        </Col>
     )
 }
 
 
 const BoxContainer = styled.div`
-    display: inline-block;
     border: 1px solid ${({ theme }) => theme.color.light_gray};
     border-radius: 25px;
     background-color: ${({ theme }) => theme.color.white};
-    width: calc(100% /4);
+    width: 100%;
     height: 250px;
 `
 const BoxContentHeader = styled.div`

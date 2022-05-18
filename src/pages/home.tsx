@@ -2,6 +2,8 @@ import BasicNavigation from "components/frame/BasicNavigation";
 import Typography from "components/style/Typography";
 import Wrapper from "components/style/Wrapper";
 import Container from "components/style/Container";
+import Col from "components/style/Column";
+import Row from "components/style/Row";
 import MyCenterCard from "containers/MyCenterCard";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -28,16 +30,22 @@ const Page = () => {
             </StyledWrapper>
             <Wrapper>
                 <Container>
-                    <ContentMain>
-                        <ButtonBox>
-                            <Link to="/new-center"><Typography.Regular weight={theme.fontWeight.Regular} color={theme.color.main}>새로운 센터 등록 +</Typography.Regular></Link>
-                        </ButtonBox>
+                    <Row>
+                        <Col xs={1} md={2} lg={4}>
+                            <ButtonBox>
+                                <Link to="/new-center">
+                                    <Typography.Regular weight={theme.fontWeight.Regular} color={theme.color.main}>
+                                        새로운 센터 등록 +
+                                    </Typography.Regular>
+                                </Link>
+                            </ButtonBox>
+                        </Col>
                         {
                             centers.map((item, k) => (
                                 <MyCenterCard key={k} center={item} />
                             ))
                         }
-                    </ContentMain>
+                    </Row>
                 </Container>
             </Wrapper>
         </>
@@ -56,11 +64,9 @@ const StyledWrapper = styled(Wrapper)`
     }
 `
 
-const ButtonBox = styled.button`
-    display: block;
-    float: left;
+const ButtonBox = styled.div`
     position: relative;
-    width: calc(100% /4);
+    width: 100%;
     height: 250px;
     border: 1px solid ${({ theme }) => theme.color.light_gray};
     border-radius: 25px;
@@ -78,8 +84,4 @@ const ButtonBox = styled.button`
         transform: translate(0%, -50%);
     }
 `
-const ContentMain = styled.div`
-    margin-top: 25px;
-`
-
 export default Page;
