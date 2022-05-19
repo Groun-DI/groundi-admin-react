@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "styles/theme";
 
 type Props = {
     options: any[];
@@ -30,7 +31,7 @@ const Wrapper = styled.div`
 const StyleSelect = styled.select`
     width: 100%;
     padding: 18px;
-    border: 1px solid ${({ theme }) => theme.color.border};
+    border: 1px solid ${theme.color.light_gray};
     border-radius: 8px;
     font-size: ${({ theme }) => theme.fontSize.Small};
     -webkit-appearance: none;
@@ -42,7 +43,7 @@ const StyleSelect = styled.select`
     background-size: 1em;
     margin-top:10px;
     margin-right: 8px;
-    line-height: 2rem;
+    line-height: 2.8rem;
     :focus{
         outline: 1px solid ${({ theme }) => theme.color.main_light};
         border: 1px solid ${({ theme }) => theme.color.main};

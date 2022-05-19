@@ -19,6 +19,7 @@ import NaverGeocodingService from "services/naver.geocoding.service";
 import { NgsResAddressBody } from "dto/naver-geocoding.dto";
 import { Input, Group } from "components/input";
 import Input1 from "components/input/Input-1";
+import Button1 from "components/Button1";
 
 const MapStyle = {
     width: '100%',
@@ -155,15 +156,15 @@ const Page = () => {
                     <Wrapper>
                         <Container>
                             <ContentHeader>
-                                <Typography.Title2 weight={theme.fontWeight.Bold}>개설할 센터의 정보를 입력해주세요</Typography.Title2>
+                                <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>개설할 센터의 정보를 입력해주세요</Typography.Title2>
                             </ContentHeader>
                             <ContentBody>
-                                <Input1 {...name.elements} onChange={(e) => name.setValue(e.target.value)} value={name.getValue()}/>
-                                <Flex>
+                                <Input1 {...name.elements} onChange={(e) => name.setValue(e.target.value)} value={name.getValue()} />
+                                <Flex layout={theme.layout.r} justify={theme.justifyAlign.e} gap={15} style={{ marginTop: "30px" }}>
                                     {/* { <StyleButton onClick={nextStep}
                                         disabled={!name.inputElements.invalid || phoneNumber.inputElements.invalid || !address.getValue() ? true : false}>다음</StyleButton> } */}
-                                    <StyleButton onClick={preStep} disabled={false}>이전</StyleButton>
-                                    <StyleButton onClick={nextStep} disabled={false}>다음</StyleButton>
+                                    <Button1 onClick={preStep} disabled={false} value="이전" />
+                                    <Button1 onClick={nextStep} disabled={false} value="다음" />
                                 </Flex>
                             </ContentBody>
                         </Container>
@@ -177,20 +178,17 @@ const Page = () => {
                     <Wrapper>
                         <Container>
                             <ContentHeader>
-                                <Typography.Title3 weight={theme.fontWeight.ExtraBold}>개설할 센터의 정보를 입력해주세요</Typography.Title3>
+                                <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>개설할 센터의 정보를 입력해주세요</Typography.Title2>
                             </ContentHeader>
                             <ContentBody>
-                                <Flex gap={30}>
-                                    <Group label={areaNumber.elements.label}>
+                                <Flex gap={10} layout={theme.layout.r} align="baseline" justify={theme.justifyAlign.c}>
                                         <Select style={{ width: '20%' }}  {...areaNumber.elements} onChange={(e) => areaNumber.setValue(e.target.value)} options={numberList} />
-                                        <Input style={{ width: '80%' }}  {...phoneNumber.elements} value={phoneNumber.getValue()} onChange={(e) => phoneNumber.setValue(e.target.value)} />
-                                    </Group>
+                                        <Input1 style={{ width: '80%' }}  {...phoneNumber.elements} value={phoneNumber.getValue()} onChange={(e) => phoneNumber.setValue(e.target.value)} />
+                                   
                                 </Flex>
-                                <Flex>
-                                    {/* { <StyleButton onClick={nextStep}
-                                        disabled={!name.inputElements.invalid || phoneNumber.inputElements.invalid || !address.getValue() ? true : false}>다음</StyleButton> } */}
-                                    <StyleButton onClick={preStep} disabled={false}>이전</StyleButton>
-                                    <StyleButton onClick={nextStep} disabled={false}>다음</StyleButton>
+                                <Flex layout={theme.layout.r} justify={theme.justifyAlign.e} gap={15} style={{ marginTop: "30px" }}>
+                                    <Button1 onClick={preStep} disabled={false} value="이전" />
+                                    <Button1 onClick={nextStep} disabled={false} value="다음" />
                                 </Flex>
                             </ContentBody>
                         </Container>
@@ -204,23 +202,20 @@ const Page = () => {
                     <Wrapper>
                         <Container>
                             <ContentHeader>
-                                <Typography.Title3 weight={theme.fontWeight.ExtraBold}>개설할 센터의 정보를 입력해주세요</Typography.Title3>
+                                <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>개설할 센터의 정보를 입력해주세요</Typography.Title2>
                             </ContentHeader>
                             <ContentBody>
                                 <Flex gap={30}>
                                     <Button
-                                        label="주소를 입력해주세요"
                                         value={address.getValue()}
                                         onClick={() => setStateAddressSearchModal(true)}>동/리/도로명으로 검색해주세요.</Button>
-                                    {address.getValue() && <Input {...detailAddress.elements} value={detailAddress.getValue()} onChange={(e) => detailAddress.setValue(e.target.value)} />}
+                                    {address.getValue() && <Input1 {...detailAddress.elements} value={detailAddress.getValue()} onChange={(e) => detailAddress.setValue(e.target.value)} />}
                                     {showModal()}
                                 </Flex>
                                 {(latitude && longitude) && <NaverMapService lat={latitude} lng={longitude} CustomStyle={MapStyle} />}
-                                <Flex>
-                                    {/* { <StyleButton onClick={nextStep}
-                                        disabled={!name.inputElements.invalid || phoneNumber.inputElements.invalid || !address.getValue() ? true : false}>다음</StyleButton> } */}
-                                    <StyleButton onClick={preStep} disabled={false}>이전</StyleButton>
-                                    <StyleButton onClick={nextStep} disabled={false}>다음</StyleButton>
+                                <Flex layout={theme.layout.r} justify={theme.justifyAlign.e} gap={15} style={{ marginTop: "30px" }}>
+                                    <Button1 onClick={preStep} disabled={false} value="이전" />
+                                    <Button1 onClick={nextStep} disabled={false} value="다음" />
                                 </Flex>
                             </ContentBody>
                         </Container>
@@ -233,23 +228,22 @@ const Page = () => {
                     <LogoNavigation />
                     <Wrapper>
                         <Container>
+                            <ContentHeader>
+                                <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>개설할 센터의 정보를 입력해주세요</Typography.Title2>
+                            </ContentHeader>
                             <ContentBody>
-                                <Flex gap={30}>
+                                <Flex>
                                     <InputWrap>
-                                        <Input {...busniessLicenseNumber.elements} onChange={(e) => busniessLicenseNumber.setValue(Number(e.target.value))} value={busniessLicenseNumber.getValue()} />
+                                        <Input1 {...busniessLicenseNumber.elements} onChange={(e) => busniessLicenseNumber.setValue(Number(e.target.value))} value={busniessLicenseNumber.getValue()} />
                                         <FileUploadInput {...busniessLicenseFile.elements} onChange={(file: File) => busniessLicenseFile.setValue(file)} value={busniessLicenseFile.getValue()} />
-                                        <Typography.Micro>
-                                            • 5MB 이하의 jpg, jpeg, gif, png 파일형식만 가능합니다.<br />
-                                            • 주민등록번호 등 개인정보가 보이지 않도록 처리한 뒤 업로드 바랍니다.<br />
+                                        <Typography.Micro align={theme.fontAlign.l}>
                                             • 주민등록번호 등 개인정보가 표시된 경우, 해당 서류는 접수 즉시 파기되며 서비스 이용이 지연될 수 있습니다.
                                         </Typography.Micro>
                                     </InputWrap>
                                 </Flex>
-                                <Flex>
-                                    {/* <StyleButton type="submit" onClick={onSubmit}
-                                        disabled={!ceoName.invalid || !busniessType.invalid || !busniessCode.invalid ? true : false}>개설 완료하기!</StyleButton> */}
-                                    <StyleButton onClick={preStep} disabled={false}>이전</StyleButton>
-                                    <CustomStyleButton type="submit" onClick={onSubmit} disabled={false}>개설 완료하기!</CustomStyleButton>
+                                <Flex layout={theme.layout.r} justify={theme.justifyAlign.e} gap={15} style={{ marginTop: "30px" }}>
+                                    <Button1 onClick={preStep} disabled={false} value="이전" />
+                                    <Button1 onClick={onSubmit} disabled={false} value="개설 완료" />
                                 </Flex>
                             </ContentBody>
                         </Container>
@@ -274,11 +268,11 @@ const Container = styled.div`
 `
 
 const ContentBody = styled.div`
-    margin-top: 70px;
+    margin-top: 15px;
 `
 
 const ContentHeader = styled.div`
-    margin-top: 10px;
+    margin-top: 140px;
 `
 
 const CustomStyleButton = styled(StyleButton) <{ disabled: boolean }>`

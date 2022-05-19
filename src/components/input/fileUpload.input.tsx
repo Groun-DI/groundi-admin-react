@@ -51,6 +51,7 @@ const Image = styled.img`
 
 const Container = styled(Flex)`
   display: flex;
+  flex-direction: row;
   width: 100%;
   border-radius: 10px;
   margin-top:10px;

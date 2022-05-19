@@ -1,6 +1,7 @@
 import Typography from "components/style/Typography"
 import { useState } from "react"
 import styled from "styled-components"
+import { theme } from "styles/theme"
 
 type Props = {
     errorMessage: string,
@@ -41,7 +42,7 @@ const Wrapper = styled.div`
 const Placeholder = styled.div<{ hasValue: boolean }>`
     font-size: 16px;
     position: absolute;
-    bottom: 17px;
+    top: 50%;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     color: #80868b;
@@ -52,25 +53,25 @@ const Placeholder = styled.div<{ hasValue: boolean }>`
     z-index: 1;
     text-align: left;
     width: 100%;
-    transform: ${({ hasValue }) => hasValue ? "scale(.75) translateY(-39px) translateX(-60px);" : "initial"};
-    -webkit-transform: ${({ hasValue }) => hasValue ? "scale(.75) translateY(-39px) translateX(-60px)" : "initial"};
-
+    transform: ${({ hasValue }) => hasValue ? "scale(.75) translateY(-52px) translateX(-80px);" : "translate(0%, -50%)"};
+    -webkit-transform: ${({ hasValue }) => hasValue ? "scale(.75) translateY(-52px) translateX(-80px)" : "translate(0%, -50%)"};
 `
 
 const Input = styled.input`
-    border: 1px solid #DADCE0;
+    border: 1px solid ${theme.color.light_gray};
     padding: 15px;
     border-radius: 4px;
     width: 100%;
+    line-height: 2.5;
     :focus{
-        border:1px solid #1A73E8;
+        border:1px solid ${theme.color.dark_black};
     }
 
     :not([disabled]):focus~ {
         ${Placeholder}{
-            color:#1A73E8;
-        -webkit-transform: scale(.75) translateY(-39px) translateX(-60px);
-        transform: scale(.75) translateY(-39px) translateX(-60px);
+            color:${theme.color.dark_black};
+            -webkit-transform: scale(.75) translateY(-52px) translateX(-80px);
+            transform: scale(.75) translateY(-52px) translateX(-80px);
         }
     }
 `
