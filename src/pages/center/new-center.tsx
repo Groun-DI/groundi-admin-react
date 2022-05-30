@@ -5,21 +5,20 @@ import { useState } from "react";
 import Wrapper from "components/style/Wrapper";
 import { theme } from "styles/theme";
 import Flex from "components/style/Flex";
-import NaverMapService from "services/naver.map.service";
 import Modal from "containers/Modal";
 import FileUploadInput from "components/input/fileUpload.input";
 import LogoNavigation from "components/frame/LogoNavigation";
 import Select from "components/select";
 import numberList from 'data/first-phoneNumber.json';
-import { name, areaNumber, phoneNumber, address, detailAddress, busniessLicenseFile, busniessLicenseNumber } from "utils/center-create.input";
+import CenterCreateInput from "utils/center-create.input";
 import Button from "components/input/Button";
-import StyleButton from "components/style/Button";
 import SearchInput from "components/input/SearchInput";
 import NaverGeocodingService from "services/naver.geocoding.service";
 import { NgsResAddressBody } from "dto/naver-geocoding.dto";
-import { Input, Group } from "components/input";
 import Input1 from "components/input/Input-1";
-import Button1 from "components/Button1";
+import StepForm from "containers/StepForm";
+import ResAddresList from "containers/ResAddresList";
+import CenterCreateInputElements from "../../utils/center-create.input";
 
 const MapStyle = {
     width: '100%',
@@ -31,23 +30,27 @@ const MapStyle = {
 const Page = () => {
     const [resAddress, setResAddress] = useState<NgsResAddressBody[]>();
     const [selectAddress, setSelectAddress] = useState<NgsResAddressBody>();
-    const [latitude, setLatitude] = useState<number>();
-    const [longitude, setLongitude] = useState<number>();
     const [stateAddressSearchModal, setStateAddressSearchModal] = useState<boolean>(false);
-    const [nowFormStep, setNowFormStep] = useState<number>(1);
+    const [name, setName] = useState<string>('');
+    const [areaNumber, setAreaNumber] = useState<string>('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
+    const [address, setAddress] = useState<string>('');
+    const [detailAddress, setDetailAddress] = useState<string>('');
+    const [busniessLicenseNumber, setBusniessLicenseNumber] = useState<string>('');
+    const [busniessLicenseFile, setBusniessLicenseFile] = useState<File | null>(null);
 
-    const onSubmit = async (e: React.FormEvent) => {
+    const onSubmit = async () => {
         let formData = new FormData();
-        if (busniessLicenseFile.getValue() !== undefined) {
-            formData.set(busniessLicenseFile.elements.name, busniessLicenseFile.getValue());
+        if (busniessLicenseFile) {
+            formData.set(busniessLicenseFile.name, busniessLicenseFile);
         }
 
         formData.append("data", JSON.stringify({
-            name: name.getValue(),
-            phoneNumber: phoneNumber.getValue(),
-            address: address.getValue(),
-            detailAddress: detailAddress.getValue(),
-            busniessLicenseNumber: busniessLicenseNumber.getValue(),
+            name: name,
+            phoneNumber: phoneNumber,
+            address: address,
+            detailAddress: detailAddress,
+            busniessLicenseNumber: busniessLicenseNumber,
             latitude: 0,
             longitude: 0
         }));
@@ -62,32 +65,22 @@ const Page = () => {
         console.log(res);
     };
 
-    const preStep = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setNowFormStep(nowFormStep - 1);
-    }
-
-    const nextStep = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setNowFormStep(nowFormStep + 1);
-    }
-
     const handlerOnKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            setResAddress(await NaverGeocodingService(address.getValue()));
+            setResAddress(await NaverGeocodingService(address));
             return false;
         };
     }
 
     const handlerOnClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        setResAddress(await NaverGeocodingService(address.getValue()));
+        setResAddress(await NaverGeocodingService(address));
         return false;
     }
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        address.setValue(e.target.value);
+        setAddress(e.target.value);
         //  setResAddress(await NaverGeocodingService(e.target.value));
     }
 
@@ -100,8 +93,8 @@ const Page = () => {
                 <div>
                     <ModalInputWrap>
                         <SearchInput
-                            {...address.elements}
-                            value={address.getValue()}
+                            {...CenterCreateInput.address}
+                            value={address}
                             onChange={handleChange}
                             onKeyPress={handlerOnKeyPress}
                             onClick={handlerOnClick} />
@@ -113,17 +106,7 @@ const Page = () => {
                                     {
                                         resAddress.map((item, k) => (
                                             <li key={k}>
-                                                <input type="radio" id={k.toString()} name="address" value={item.roadAddr} />
-                                                <label htmlFor={k.toString()} onClick={(e) => setSelectAddress(item)}>
-                                                    <span>
-                                                        <i className="fn-booking fn-booking-check2" aria-hidden="true" />
-                                                    </span>
-                                                    <Typography.Regular spacing={-0.3}>{item.roadAddr}</Typography.Regular>
-                                                    <SubTitleWrap>
-                                                        <Typography.Micro>지번</Typography.Micro>
-                                                        <Typography.Small color={theme.color.dep_gray} spacing={-0.3}>{item.jibunAddress} </Typography.Small>
-                                                    </SubTitleWrap>
-                                                </label>
+                                                <ResAddresList item={item} id={k.toString()} handlerOnClick={(item: NgsResAddressBody) => setSelectAddress(item)} />
                                             </li>
                                         ))
                                     }
@@ -138,7 +121,7 @@ const Page = () => {
                         selectAddress && (
                             <ContentFooter>
                                 <Typography.Regular>{selectAddress?.roadAddr}</Typography.Regular>
-                                <Input {...detailAddress.elements} onChange={(e) => detailAddress.setValue(e.target.value)} errorMessage="" />
+                                {/* <Input {...CenterCreateInput.detailAddress} onChange={(e) => setDetailAddress(e.target.value)} errorMessage="" /> */}
                                 <ModalButton onClick={() => setStateAddressSearchModal(false)}><Typography.Small spacing={-.43} color="#fff" weight={theme.fontWeight.SemiBold}>입력하기</Typography.Small></ModalButton>
                             </ContentFooter>
                         )
@@ -148,110 +131,64 @@ const Page = () => {
         )
     }
 
-    switch (nowFormStep) {
-        case 1:
-            return (
-                <>
-                    <LogoNavigation />
-                    <Wrapper>
-                        <Container>
-                            <ContentHeader>
-                                <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>개설할 센터의 정보를 입력해주세요</Typography.Title2>
-                            </ContentHeader>
-                            <ContentBody>
-                                <Input1 {...name.elements} onChange={(e) => name.setValue(e.target.value)} value={name.getValue()} />
-                                <Flex layout={theme.layout.r} justify={theme.justifyAlign.e} gap={15} style={{ marginTop: "30px" }}>
-                                    {/* { <StyleButton onClick={nextStep}
-                                        disabled={!name.inputElements.invalid || phoneNumber.inputElements.invalid || !address.getValue() ? true : false}>다음</StyleButton> } */}
-                                    <Button1 onClick={preStep} disabled={false} value="이전" />
-                                    <Button1 onClick={nextStep} disabled={false} value="다음" />
-                                </Flex>
-                            </ContentBody>
-                        </Container>
-                    </Wrapper>
-                </>
+    // const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, filler: <T>(value: T) => Error) => {
+    //     const { value } = e.target;
+    //     const { message, invalid } = filler<string>(value);
+    //     Name.setValue("ok");
+    //     Name.setError(message);
+    //     Name.invalid = invalid;
+    // }
+
+    const items = [
+        {
+            title: "개설할 센터의 정보를 입력해주세요",
+            body: <Input1 value={name} elements={CenterCreateInputElements.name} onChange={setName} />
+        },
+        {
+            title: "개설할 센터의 정보를 입력해주세요",
+            body: (
+                <Flex gap={10} layout={theme.layout.r} align="baseline" justify={theme.justifyAlign.c}>
+                    <Select style={{ width: '20%' }}  elements={CenterCreateInputElements.areaNumber} onChange={setAreaNumber} options={numberList} value={areaNumber}/>
+                    <Input1 style={{ width: '80%' }} value={phoneNumber} elements={CenterCreateInputElements.phoneNumber} onChange={setPhoneNumber} />
+                </Flex>
             )
-        case 2:
-            return (
-                <>
-                    <LogoNavigation />
-                    <Wrapper>
-                        <Container>
-                            <ContentHeader>
-                                <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>개설할 센터의 정보를 입력해주세요</Typography.Title2>
-                            </ContentHeader>
-                            <ContentBody>
-                                <Flex gap={10} layout={theme.layout.r} align="baseline" justify={theme.justifyAlign.c}>
-                                        <Select style={{ width: '20%' }}  {...areaNumber.elements} onChange={(e) => areaNumber.setValue(e.target.value)} options={numberList} />
-                                        <Input1 style={{ width: '80%' }}  {...phoneNumber.elements} value={phoneNumber.getValue()} onChange={(e) => phoneNumber.setValue(e.target.value)} />
-                                   
-                                </Flex>
-                                <Flex layout={theme.layout.r} justify={theme.justifyAlign.e} gap={15} style={{ marginTop: "30px" }}>
-                                    <Button1 onClick={preStep} disabled={false} value="이전" />
-                                    <Button1 onClick={nextStep} disabled={false} value="다음" />
-                                </Flex>
-                            </ContentBody>
-                        </Container>
-                    </Wrapper>
-                </>
+        },
+        {
+            title: "개설할 센터의 정보를 입력해주세요",
+            body: (
+                <Flex gap={30}>
+                    <Button
+                        value={address}
+                        onClick={() => setStateAddressSearchModal(true)}>동/리/도로명으로 검색해주세요.</Button>
+                        {address && <Input1 elements={CenterCreateInput.detailAddress} value={detailAddress} onChange={setDetailAddress}/>}
+                    {showModal()}
+                </Flex>
             )
-        case 3:
-            return (
-                <>
-                    <LogoNavigation />
-                    <Wrapper>
-                        <Container>
-                            <ContentHeader>
-                                <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>개설할 센터의 정보를 입력해주세요</Typography.Title2>
-                            </ContentHeader>
-                            <ContentBody>
-                                <Flex gap={30}>
-                                    <Button
-                                        value={address.getValue()}
-                                        onClick={() => setStateAddressSearchModal(true)}>동/리/도로명으로 검색해주세요.</Button>
-                                    {address.getValue() && <Input1 {...detailAddress.elements} value={detailAddress.getValue()} onChange={(e) => detailAddress.setValue(e.target.value)} />}
-                                    {showModal()}
-                                </Flex>
-                                {(latitude && longitude) && <NaverMapService lat={latitude} lng={longitude} CustomStyle={MapStyle} />}
-                                <Flex layout={theme.layout.r} justify={theme.justifyAlign.e} gap={15} style={{ marginTop: "30px" }}>
-                                    <Button1 onClick={preStep} disabled={false} value="이전" />
-                                    <Button1 onClick={nextStep} disabled={false} value="다음" />
-                                </Flex>
-                            </ContentBody>
-                        </Container>
-                    </Wrapper>
-                </>
+        },
+        {
+            title: "개설할 센터의 정보를 입력해주세요",
+            body: (
+                <Flex>
+                    <InputWrap>
+                        <Input1 elements={CenterCreateInput.busniessLicenseNumber} onChange={setBusniessLicenseNumber} value={busniessLicenseNumber}/>
+                        <FileUploadInput elements={CenterCreateInput.busniessLicenseFile} onChange={setBusniessLicenseFile} value={busniessLicenseFile} />
+                        <Typography.Micro align={theme.fontAlign.l}>
+                            • 주민등록번호 등 개인정보가 표시된 경우, 해당 서류는 접수 즉시 파기되며 서비스 이용이 지연될 수 있습니다.
+                        </Typography.Micro>
+                    </InputWrap>
+                </Flex>
             )
-        case 4:
-            return (
-                <>
-                    <LogoNavigation />
-                    <Wrapper>
-                        <Container>
-                            <ContentHeader>
-                                <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>개설할 센터의 정보를 입력해주세요</Typography.Title2>
-                            </ContentHeader>
-                            <ContentBody>
-                                <Flex>
-                                    <InputWrap>
-                                        <Input1 {...busniessLicenseNumber.elements} onChange={(e) => busniessLicenseNumber.setValue(Number(e.target.value))} value={busniessLicenseNumber.getValue()} />
-                                        <FileUploadInput {...busniessLicenseFile.elements} onChange={(file: File) => busniessLicenseFile.setValue(file)} value={busniessLicenseFile.getValue()} />
-                                        <Typography.Micro align={theme.fontAlign.l}>
-                                            • 주민등록번호 등 개인정보가 표시된 경우, 해당 서류는 접수 즉시 파기되며 서비스 이용이 지연될 수 있습니다.
-                                        </Typography.Micro>
-                                    </InputWrap>
-                                </Flex>
-                                <Flex layout={theme.layout.r} justify={theme.justifyAlign.e} gap={15} style={{ marginTop: "30px" }}>
-                                    <Button1 onClick={preStep} disabled={false} value="이전" />
-                                    <Button1 onClick={onSubmit} disabled={false} value="개설 완료" />
-                                </Flex>
-                            </ContentBody>
-                        </Container>
-                    </Wrapper>
-                </>
-            )
-        default: return (<>오케이</>);
-    }
+        }
+    ];
+
+    return (
+        <>
+            <LogoNavigation />
+            <Wrapper>
+                <StepForm items={items} onSubmit={onSubmit} />
+            </Wrapper>
+        </>
+    )
 }
 
 const InputWrap = styled.div`
@@ -261,27 +198,6 @@ const InputWrap = styled.div`
     }
 `
 
-const Container = styled.div`
-    max-width: 550px;
-    width: 100%;
-    margin: 0 auto;
-`
-
-const ContentBody = styled.div`
-    margin-top: 15px;
-`
-
-const ContentHeader = styled.div`
-    margin-top: 140px;
-`
-
-const CustomStyleButton = styled(StyleButton) <{ disabled: boolean }>`
-    margin: 0 auto;
-    margin-top: 70px;
-    width: 50%;
-    opacity: ${({ disabled }) => disabled ? 0.7 : 1};
-    cursor: ${({ disabled }) => disabled ? 'auto' : 'pointer'};
-`
 
 const ModalButton = styled.button`
     width: 100%;
@@ -353,26 +269,6 @@ const SelectListBox = styled.div`
         box-sizing: border-box;
         border-radius: 50%;
         border: 1px solid #e2e2e2;
-    }
-`
-const SubTitleWrap = styled.div`
-    position: relative;
-    margin-top: 7px;
-    padding-left: 34px;
-    line-height: 2.1rem;
-    color: #888;
-    p{
-        position: absolute;
-        top: 1px;
-        left: 0;
-        width: 30px;
-        margin-right: 8px;
-        border-radius: 4px;
-        border: 1px solid #888;
-        letter-spacing: -.31px;
-        color: #888;
-        text-align: center;
-        line-height: 1.8rem;
     }
 `
 

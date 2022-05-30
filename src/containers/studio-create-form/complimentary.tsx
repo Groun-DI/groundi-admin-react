@@ -33,7 +33,7 @@ const ComplimentaryForm: React.FC<Props> = ({stateValid}) => {
 
     useEffect(() => {
         SetFormValue('complimentaries', selectItems);
-        inputElements.complimentaries = { ...inputElements.complimentaries, ...ValidationUtils.isNumberOfDigits(selectItems.length, 1, 20) }
+        inputElements.complimentaries = { ...inputElements.complimentaries, ...ValidationUtils.isNumberOfDigits(selectItems.length) }
         stateValid(!(inputElements.complimentaries.invalid));
     }, [selectItems, SetFormValue, stateValid, inputElements]);
 

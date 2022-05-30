@@ -27,7 +27,9 @@ const theme: DefaultTheme = {
         light_gray: "#EEEEEE",
         dark_black: "#0E0E0E",
         dep_green: "#008B48",
-        light_green: "#0CFF8A"
+        light_green: "#0CFF8A",
+        input_invalid : "#BA2714",
+        input_valid : "#0CFF8A"
     },
     svgColor: {
         main: "invert(64%) sepia(57%) saturate(7142%) hue-rotate(337deg) brightness(96%) contrast(102%)"

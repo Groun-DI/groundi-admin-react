@@ -17,7 +17,7 @@ const NameForm: React.FC<Props> = ({ stateValid }) => {
 
     const handlerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        inputElements.studioName = { ...inputElements.studioName, ...ValidationUtils.isStringOfDigits(value, 31) };
+        inputElements.studioName = { ...inputElements.studioName, ...ValidationUtils.isStringOfDigits(value) };
         SetFormValue(name, value);
         stateValid(!inputElements.studioName.invalid);
     }

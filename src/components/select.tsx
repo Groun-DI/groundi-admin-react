@@ -1,23 +1,40 @@
 import styled from "styled-components";
 import { theme } from "styles/theme";
+import inputElementDTO from "dto/inputElement.dto";
+import { useState } from "react";
 
 type Props = {
     options: any[];
     style?: React.CSSProperties;
-    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    errorMessage: string,
-    value?: string | number | [],
+    value: any;
+    elements: inputElementDTO;
+    onChange: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Select: React.FC<Props> = ({ style, options, onChange, errorMessage, value, ...inputProps }) => {
+const Select: React.FC<Props> = ({ style, value, elements, options, onChange }) => {
+    const [error, setError] = useState<string>('');
+    const [invalid, setInvalid] = useState<Boolean>(true);
+
+    const hanlderOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { message, invalid } = elements.filter(e.target.value);
+        setInvalid(invalid);
+        setError(message);
+        onChange(e.target.value);
+    }
 
     return (
         <Wrapper style={style}>
-            <StyleSelect defaultValue={options[0]} onChange={onChange} value={value} {...inputProps}>
+            <StyleSelect
+                name={elements.name}
+                value={value}
+                defaultValue={options[0]}
+                required={elements.required}
+                onChange={hanlderOnChange}>
                 {
                     options.map((item, key) => (
                         <option key={key} value={item}>{item}</option>
-                    ))}
+                    ))
+                }
             </StyleSelect>
         </Wrapper>
     )

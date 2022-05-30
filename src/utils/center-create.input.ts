@@ -1,67 +1,60 @@
-import { InputElement } from "./inputs.utils";
+import ValidationUtils from "./validation.utils";
+import InputElementDTO from "../dto/inputElement.dto";
 
-export const name = new InputElement<string>({
-    name: "name",
-    type: "text",
-    placeholder: "운영중인 센터명을 입력해주세요",
-    label: "업체명을 입력해주세요.",
-    required: true,
-    errorMessage: "",
-    invalid: false
-});
-export const areaNumber = new InputElement<string>({
-    name: "areaNumber",
-    type: "string",
-    placeholder: "- 없이 입력",
-    label: "대표 전화번호를 입력해주세요",
-    required: true,
-    errorMessage: "",
-    invalid: false
-});
-export const phoneNumber = new InputElement<string>({
-    name: "phoneNumber",
-    type: "string",
-    placeholder: "- 없이 입력",
-    label: "",
-    required: true,
-    errorMessage: "",
-    invalid: false
-});
+const CenterCreateInputElements = {
+    name: {
+        name: "name",
+        type: "text",
+        label: "운영중인 센터명을 입력해주세요",
+        required: true,
+        filter: ValidationUtils.isRequired
+    } as InputElementDTO,
+    areaNumber: {
+        name: "areaNumber",
+        type: "string",
+        label: "대표 전화번호를 입력해주세요",
+        required: true,
+        filter: ValidationUtils.isRequired
+    } as InputElementDTO,
+    phoneNumber: {
+        name: "phoneNumber",
+        type: "string",
+        label: "- 없이 입력",
+        required: true,
+        filter: ValidationUtils.isRequired
+    } as InputElementDTO,
 
-export const address = new InputElement<string>({
-    name: "address",
-    type: "text",
-    placeholder: "주소를 입력해주세요",
-    label: "",
-    required: true,
-    errorMessage: "",
-    invalid: false
-});
+    address: {
+        name: "address",
+        type: "text",
+        label: "주소를 입력해주세요",
+        required: true,
+        filter: ValidationUtils.isRequired
+    } as InputElementDTO,
 
-export const detailAddress = new InputElement<string>({
-    name: "detailAddress",
-    type: "text",
-    placeholder: "건물명, 층, 호수 등 상세 주소를 입력해주세요.",
-    label: "",
-    required: true,
-    errorMessage: "",
-    invalid: true
-})
-export const busniessLicenseFile = new InputElement<File>({
-    name: "busniessLicenseFile",
-    type: "text",
-    placeholder: "등록된 서류",
-    label: "사업자 파일 업로드",
-    required: true,
-    errorMessage: "",
-    invalid: false
-});
-export const busniessLicenseNumber = new InputElement<number>({
-    name: "busniessLicenseNumber",
-    type: "number",
-    placeholder: "- 없이 입력",
-    label: "사업자 번호를 입력해주세요.",
-    required: true,
-    errorMessage: "",
-    invalid: false
-});
+    detailAddress: {
+        name: "detailAddress",
+        type: "text",
+        label: "건물명, 층, 호수 등 상세 주소를 입력해주세요.",
+        required: true,
+        filter: ValidationUtils.isRequired
+    } as InputElementDTO,
+
+    busniessLicenseFile: {
+        name: "busniessLicenseFile",
+        type: "text",
+        label: "사업자 파일 업로드",
+        required: true,
+        filter: ValidationUtils.isRequired
+    } as InputElementDTO,
+
+    busniessLicenseNumber: {
+        name: "busniessLicenseNumber",
+        type: "number",
+        label: "사업자 번호를 입력해주세요.",
+        required: true,
+        filter: ValidationUtils.isRequired
+    } as InputElementDTO
+}
+
+export default CenterCreateInputElements;

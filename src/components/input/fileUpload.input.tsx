@@ -3,48 +3,53 @@ import Typography from "components/style/Typography";
 import { useState } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
+import inputElementDTO from "dto/inputElement.dto";
 
 type Props = {
-    errorMessage: string,
-    onChange: (e: File) => void;
-    label: string;
-    value?: any
+  style?: React.CSSProperties;
+  value: any;
+  elements: inputElementDTO;
+  onChange: React.Dispatch<React.SetStateAction<File | null>>;
 };
 
-const FileUploadInput: React.FC<Props> = ({ value, label, errorMessage, onChange }) => {
-    const [myImage, setMyImage] = useState<string>('');
+const FileUploadInput: React.FC<Props> = ({ style, value, elements, onChange }) => {
+  const [myImage, setMyImage] = useState<string>('');
 
-    const addFile = (e: any) => {
-        const { value } = e.target;
-        const fileName = value.split("\\").pop();
-        setMyImage(fileName);
-        onChange(e.target.files[0])
-    };
+  const addFile = (e: any) => {
+    const { value } = e.target;
+    const fileName = value.split("\\").pop();
+    setMyImage(fileName);
+    if (e.target.files[0]) {
+      onChange(e.target.files[0]);
+    }
+  };
 
-    const removeFile = (e: any) => {
-        setMyImage('');
-    };
+  const removeFile = (e: any) => {
+    setMyImage('');
+    onChange(null);
+  };
 
-    return (
-        <>
-            {
-                myImage ?
-                    <Container>
-                            <Button onClick={removeFile}>
-                                <Typography.Small>{myImage}</Typography.Small>
-                            </Button>
-                    </Container> :
-                    <Container>
-                        <Label htmlFor="fileInput">
-                            <Typography.Small weight={theme.fontWeight.SemiBold}>{label}</Typography.Small>
-                        </Label>
-                        <Input id="fileInput" type="file" onChange={addFile} />
-                        <Image src="/icon/fileIcon.svg" alt="사업자 파일 업로드" />
-                    </Container>
-            }
-        </>
-    );
+  return (
+    <>
+      {
+        myImage ?
+          <Container>
+            <Button onClick={removeFile}>
+              <Typography.Small>{myImage}</Typography.Small>
+            </Button>
+          </Container> :
+          <Container>
+            <Label htmlFor="fileInput">
+              <Typography.Small weight={theme.fontWeight.SemiBold}>{elements.label}</Typography.Small>
+            </Label>
+            <Input id="fileInput" type="file" onChange={addFile} />
+            <Image src="/icon/fileIcon.svg" alt="사업자 파일 업로드" />
+          </Container>
+      }
+    </>
+  );
 };
+
 const Image = styled.img`
 
 `;

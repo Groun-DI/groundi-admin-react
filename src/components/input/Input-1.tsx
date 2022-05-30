@@ -1,42 +1,50 @@
 import Typography from "components/style/Typography"
-import { useState } from "react"
 import styled from "styled-components"
 import { theme } from "styles/theme"
+import { useState } from "react";
+import inputElementDTO from "dto/inputElement.dto";
 
-type Props = {
-    errorMessage: string,
-    style?: React.CSSProperties,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    label: string;
-    value?: any,
-    mark?: string,
-    invalid: boolean;
-    placeholder: string,
+interface Props {
+    style?: React.CSSProperties;
+    value: any;
+    elements: inputElementDTO;
+    onChange: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Input1: React.FC<Props> = ({ style, value, label, errorMessage, placeholder, mark, onChange, invalid, ...inputProps }) => {
-    const [isValue, setIsValue] = useState<boolean>(false);
+const Input1: React.FC<Props> = ({ style, value, elements, onChange }) => {
+    const [error, setError] = useState<string>('');
+    const [invalid, setInvalid] = useState<Boolean>(true);
 
-    const customOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value.length > 0) {
-            setIsValue(true);
-        } else {
-            setIsValue(false);
-        }
-
-        return onChange;
+    const hanlderOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { message, invalid } = elements.filter(e.target.value);
+        setInvalid(invalid);
+        setError(message);
+        onChange(e.target.value);
     }
+
     return (
         <Wrapper style={style}>
-            <Input {...inputProps} onChange={customOnChange} value={value} id=""  onFocus={() => true} />
-            <Placeholder hasValue={isValue}><Span>{placeholder}</Span></Placeholder>
+            <Container>
+                <Input
+                    name={elements.name}
+                    type={elements.type}
+                    value={value}
+                    required={elements.required}
+                    onChange={hanlderOnChange}
+                    onInvalid={() => invalid} />
+                <Placeholder hasValue={value}><Span>{elements.label}</Span></Placeholder>
+            </Container>
+            <Error><Typography.Micro color={theme.color.input_invalid} align={theme.fontAlign.l}>{error}</Typography.Micro></Error>
         </Wrapper>
     )
 }
 
 const Wrapper = styled.div`
-    position: relative;
     margin-bottom: 15px;
+`
+
+const Container = styled.div`
+    position: relative;
 `
 
 const Placeholder = styled.div<{ hasValue: boolean }>`
@@ -57,22 +65,35 @@ const Placeholder = styled.div<{ hasValue: boolean }>`
     -webkit-transform: ${({ hasValue }) => hasValue ? "scale(.75) translateY(-52px) translateX(-80px)" : "translate(0%, -50%)"};
 `
 
+const Error = styled.span`
+    padding: 8px;
+    display: none;
+`
+
 const Input = styled.input`
     border: 1px solid ${theme.color.light_gray};
-    padding: 15px;
+    padding: 20px 25px;
     border-radius: 4px;
     width: 100%;
-    line-height: 2.5;
-    :focus{
-        border:1px solid ${theme.color.dark_black};
-    }
-
+    font-size: 16px;
     :not([disabled]):focus~ {
         ${Placeholder}{
             color:${theme.color.dark_black};
             -webkit-transform: scale(.75) translateY(-52px) translateX(-80px);
             transform: scale(.75) translateY(-52px) translateX(-80px);
         }
+    }
+
+    :focus:valid{
+        border:1px solid ${theme.color.dark_black};
+    }
+
+    :focus:invalid {
+        border: 1px solid ${theme.color.input_invalid};
+    }
+
+    :focus:invalid ~ ${Error} {
+        display: block;
     }
 `
 

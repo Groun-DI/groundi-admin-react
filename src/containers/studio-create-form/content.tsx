@@ -16,7 +16,7 @@ const ContentForm: React.FC<Props> = ({ stateValid }) => {
     const { formValues, SetFormValue, inputElements } = useStudioCreateContext(Number(centerId));
     const handlerOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        inputElements.content = { ...inputElements.content, ...ValidationUtils.isStringOfDigits(value, 401) };
+        inputElements.content = { ...inputElements.content, ...ValidationUtils.isStringOfDigits(value) };
         SetFormValue(name, value);
     }
 

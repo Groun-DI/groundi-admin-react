@@ -17,13 +17,13 @@ const OccupancyForm: React.FC<Props> = ({ stateValid }) => {
     const { inputElements, formValues, SetFormValue } = useStudioCreateContext(Number(centerId));
 
     const basicOccupancyChange = useCallback((value: number) => {
-        inputElements.basicOccupancy = { ...inputElements.basicOccupancy, ...ValidationUtils.isNumberOfDigits(value, 1, 100) }
+        inputElements.basicOccupancy = { ...inputElements.basicOccupancy, ...ValidationUtils.isNumberOfDigits(value) }
         SetFormValue(inputElements.basicOccupancy.name, value.toString());
         stateValid(!(inputElements.basicOccupancy.invalid === true && inputElements.maximumOccupancy.invalid === true));
     }, [SetFormValue, inputElements, stateValid]);
 
     const maximumOccupancyChange = useCallback((value: number) => {
-        inputElements.maximumOccupancy = { ...inputElements.maximumOccupancy, ...ValidationUtils.isNumberOfDigits(value, 1, 100) }
+        inputElements.maximumOccupancy = { ...inputElements.maximumOccupancy, ...ValidationUtils.isNumberOfDigits(value) }
         SetFormValue(inputElements.maximumOccupancy.name, value.toString());
         stateValid(!(inputElements.basicOccupancy.invalid === true && inputElements.maximumOccupancy.invalid === true));
     }, [SetFormValue, inputElements, stateValid]);

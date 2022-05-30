@@ -1,0 +1,53 @@
+
+<div style="padding: 10px;border-top: 1px solid #eeeeee;border-bottom: 1px solid #eeeeee;" >
+    <div style="width: 20%;height: auto;float: left;">
+        <img src="https://2022.minjuplus.net/sites/default/files/2022-05/100149404.JPG" style="width:100%;height:100%;object-fit:cover;border:1px solid #eeeeee;">
+    </div>
+    <div>
+        <ul style="width:100%">
+            <li style="float: left;width: calc(100%/ 3);">
+                <p style="color: #eeeeee;font-size: 12px;">시•도명</p>
+                <p style="font-size: 13px;"></p>
+            </li>
+            <li style="float: left;width: calc(100%/ 3);">
+                <p>구•시•군</p>
+                <p style="font-size: 13px;"></p>
+            </li>
+            <li style="float: left;width: calc(100%/ 3);">
+                <p>선거구</p>
+                <p style="font-size: 13px;"></p>
+            </li>
+        </ul>
+        <ul>
+            <li style="float: left;width: calc(100%/ 3);">
+                <p style="color: #eeeeee;font-size: 12px;">성별</p>
+                <p style="font-size: 13px;"></p>
+            </li>
+            <li style="float: left;width: calc(100%/ 3);">
+                <p>생년월일 (연령)</p>
+                <p style="font-size: 13px;"></p>
+            </li>
+            <li style="float: left;width: calc(100%/ 3);">
+                <p>후보유형</p>
+                <div style="background-color: blueviolet;">
+                    <p style="color: white;">장애인</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="webform_person_list {{ field_css }}" style="padding: 5px;font-size:13px;text-align:center;padding-bottom:40px;">
+    <a class="webform_person_list_item" href="/person/{{nid}}" style="border-radius: 6px;display: block;position: relative;width: 100%;border: 1px solid #e8ebee;box-shadow: 0px 1px 3px rgb(0 0 0 / 6%);background: #fff;overflow: hidden;border-color: #ebebee !important;">
+        <div class="webform_default">
+            <div class="picture" style="width: 100%;display: block;height: 300px;position: relative;background-color: #fafafa;overflow: hidden;">
+                <img src="{{ field_face_image }}" style="width: 100%;display:block;height:100%;position:absolute;top:0;left: 0;right: 0;bottom: 0;margin: auto;border-radius: 0px;object-fit: cover;"/>
+                <span class="item_attr" style="background-color: rgba(0, 0, 0, 0.8);border-radius: 0 0 0 6px;color: #fff;font-size: 14px;font-weight: 600;position: absolute;top: 0;right: 0;padding: 4px 14px;">{{ field_election_division }}</span>
+            </div>
+            <div class="info" style="position: absolute;bottom: 0;left: 0;width: 100%;padding: 15px 10px;background: linear-gradient(90deg, rgba(0, 50, 139, .8), rgba(62,38,245,.8));">
+                <div class="seongeogu" style="padding: 0px;color: #ddd;margin-right: -5px;margin-left: -5px;">{{field_seongeogu}}</div>
+                <div class="name" style="font-weight: 900;color: #fff;font-size: 24px;width: 100%;overflow: hidden;line-height: 1.3;text-overflow: ellipsis;white-space: nowrap;">{{title}}</div>
+            </div>
+        </div>
+    </a>
+</div>

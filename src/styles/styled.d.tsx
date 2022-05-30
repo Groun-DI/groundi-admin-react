@@ -28,6 +28,8 @@ import "styled-components";
             dark_black: string;
             dep_green: string;
             light_green: string;
+            input_invalid : string;
+            input_valid:string;
         };
         svgColor: {
             main: string;

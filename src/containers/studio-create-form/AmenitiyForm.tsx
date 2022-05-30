@@ -26,7 +26,7 @@ const AmenitiyForm: React.FC<Props> = ({ stateValid }) => {
 
     useEffect(() => {
         SetFormValue('amenities', selectItems);
-        inputElements.amenities = { ...inputElements.amenities, ...ValidationUtils.isNumberOfDigits(selectItems.length, 1, 20) }
+        inputElements.amenities = { ...inputElements.amenities, ...ValidationUtils.isNumberOfDigits(selectItems.length) }
         stateValid(!(inputElements.amenities.invalid));
     }, [selectItems, SetFormValue, inputElements, stateValid]);
 

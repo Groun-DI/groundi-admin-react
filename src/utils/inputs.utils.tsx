@@ -1,15 +1,16 @@
+import ValidationUtils from "./validation.utils";
 
 class InputElementsUtils {
     static centerCreate = {
         centerName: {
+            label: "업체명 입력",
             name: "name",
-            value: '',
             type: "text",
-            placeholder: "운영중인 센터명을 입력해주세요",
-            label: "업체명을 입력해주세요.",
-            required: true,
+            value: '',
             errorMessage: "",
-            invalid: false
+            required: true,
+            invalid: false,
+            filter: ValidationUtils.isRequired
         },
         phoneNumber: {
             name: "phoneNumber",
@@ -412,29 +413,60 @@ class InputElementsUtils {
 
 export default InputElementsUtils;
 
+type Error = {
+    message: string;
+    invalid: boolean;
+}
+
 type InputElementDTO = {
+    label: string
     name: string
     type: string
-    placeholder: string
-    label: string
-    required: boolean
     errorMessage: string
     invalid: boolean
+    required: boolean
+    filter: <T>(value: T) => Error;
 }
 
 export class InputElement<T> {
+    label: string
+    name: string
+    type: string
+    invalid: boolean
+    required: boolean
+    filter: <T>(value: T) => Error;
     private value: T;
-    public elements: InputElementDTO;
+    private errorMessage: string;
 
     constructor(elements: InputElementDTO) {
-        this.elements = elements
+        this.label = elements.label
+        this.name = elements.name
+        this.type = elements.type
+        this.errorMessage = elements.errorMessage
+        this.invalid = elements.invalid
+        this.required = elements.required
+        this.filter = elements.filter
     }
 
-    setValue(value: T){
+    setValue(value: T) {
         this.value = value;
     }
 
-    getValue(){
+    getValue(): T {
+        console.log(this.value);
         return this.value;
+    }
+    isValue(): boolean {
+        if (this.value) return true;
+        return false;
+    }
+
+    setError(messgae: string) {
+        this.errorMessage = messgae
+    }
+
+    getError(): string {
+        console.log(this.errorMessage);
+        return this.errorMessage
     }
 }
