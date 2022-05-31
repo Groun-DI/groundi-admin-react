@@ -40,6 +40,7 @@ const Input1: React.FC<Props> = ({ style, value, elements, onChange }) => {
 }
 
 const Wrapper = styled.div`
+    width: 100%;
     margin-bottom: 15px;
 `
 
@@ -90,6 +91,9 @@ const Input = styled.input`
 
     :focus:invalid {
         border: 1px solid ${theme.color.input_invalid};
+        ${Error} {
+            display: block;
+        }
     }
 
     :focus:invalid ~ ${Error} {

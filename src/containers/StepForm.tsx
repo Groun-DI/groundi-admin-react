@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import Flex from "components/style/Flex";
 import Button1 from "components/Button1";
+import ProgressBar from "containers/ProgressBar";
 
 type Item = {
     title: string;
@@ -16,9 +17,10 @@ type Props = {
 }
 
 const StepForm: React.FC<Props> = ({ items, onSubmit }) => {
-    const startStep: number = 0;
-    const endStep: number = items.length - 1;
-    const [nowFormStep, setNowFormStep] = useState<number>(startStep);
+    const startItem: number = 0;
+    const endStep: number = items.length;
+    const endItem: number = items.length - 1;
+    const [nowFormStep, setNowFormStep] = useState<number>(startItem);
 
     const preStep = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -33,6 +35,7 @@ const StepForm: React.FC<Props> = ({ items, onSubmit }) => {
     return (
         <Container>
             <ContentHeader>
+                <ProgressBar shape="circle" endStep={endStep} nowStep={nowFormStep} />
                 <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>{items[nowFormStep].title}</Typography.Title2>
             </ContentHeader>
             <ContentBody>
@@ -41,19 +44,19 @@ const StepForm: React.FC<Props> = ({ items, onSubmit }) => {
             <ContentFooter>
                 <Flex layout={theme.layout.r} justify={theme.justifyAlign.e} gap={15} style={{ marginTop: "30px" }}>
                     {
-                        nowFormStep === startStep ? (
+                        nowFormStep === startItem ? (
                             <Button1 onClick={nextStep} disabled={false} value="다음" />
-                        ) : nowFormStep === endStep ? (
+                        ) : nowFormStep === endItem ? (
                             <>
                                 <Button1 onClick={preStep} disabled={false} value="이전" />
                                 <Button1 onClick={onSubmit} disabled={false} value="제출" />
                             </>
                         ) : (
-                            <>
-                                <Button1 onClick={preStep} disabled={false} value="이전" />
-                                <Button1 onClick={nextStep} disabled={false} value="다음" />
-                            </>
-                        )
+                                    <>
+                                        <Button1 onClick={preStep} disabled={false} value="이전" />
+                                        <Button1 onClick={nextStep} disabled={false} value="다음" />
+                                    </>
+                                )
                     }
                 </Flex>
             </ContentFooter>

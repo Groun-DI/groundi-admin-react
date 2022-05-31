@@ -50,7 +50,7 @@ const Modal: React.FC<Props> = ({ title, isOpen, isClose, children }) => {
                     <ContentHeader>
                         <Typography.Regular weight={theme.fontWeight.SemiBold}>{title}</Typography.Regular>
                         <CloseButton onClick={(e) => isClose(false)}>
-                            <img src="/icon/close.svg" alt="검색 버튼" />
+                            <img src="/icon/close.svg" alt="닫기 버튼" />
                         </CloseButton>
                     </ContentHeader>
                     {children}

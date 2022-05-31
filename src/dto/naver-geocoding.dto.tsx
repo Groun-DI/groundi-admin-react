@@ -1,9 +1,6 @@
 export type NgsResAddressBody = {
     roadAddr: string;
     jibunAddress: string;
-    englishAddress: string;
-    x: string;
-    y: string;
     distance: number;
     addressElements: Array<NgsAddressElement>;
 }

@@ -1,30 +1,50 @@
+import inputElementDTO from "dto/inputElement.dto";
 import styled from "styled-components"
 
-type Props = {
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+type Props<T, R> = {
+    elements: inputElementDTO;
     value: string;
+    setResult: React.Dispatch<React.SetStateAction<R[]>>;
+    onChange: React.Dispatch<React.SetStateAction<string>>;
+    post: <T, R>(address: T) => Promise<R[]>
 }
 
+const SearchInput = <T, R>({ value, setResult, onChange, post, elements }: Props<T, R>) => {
+    const handlerOnKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setResult(await post(value));
+        };
+    }
 
-const SearchInput: React.FC<Props> = ({ value, onChange, onKeyPress, onClick, ...inputProps }) => {
+    const handlerOnClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setResult(await post(value));
+    }
+
+    const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(e.target.value)
+    }
+
     return (
         <Wrapper>
             <Form>
                 <Input
-                    {...inputProps}
-                    onChange={onChange}
-                    onKeyPress={onKeyPress}
+                    name={elements.name}
+                    type={elements.type}
                     value={value}
+                    required={elements.required}
+                    onChange={handleChange}
+                    onKeyPress={handlerOnKeyPress}
                 />
-                <Button onClick={onClick}>
+                <Button onClick={handlerOnClick}>
                     <img src="/icon/search.svg" alt="검색 버튼" />
                 </Button>
             </Form>
         </Wrapper>
     )
 }
+
 const Wrapper = styled.div`
     width: 100%;
 `
