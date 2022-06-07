@@ -54,7 +54,7 @@ const Placeholder = styled.div<{ hasValue: boolean }>`
     top: 50%;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    color: #80868b;
+    color: ${theme.color.dep_gray};
     left: 8px;
     padding: 0 8px;
     -webkit-transition: transform 150ms cubic-bezier(0.4,0,0.2,1),opacity 150ms cubic-bezier(0.4,0,0.2,1);
@@ -102,7 +102,7 @@ const Input = styled.input`
 `
 
 const Span = styled.span`
-    background: #ffffff;
+    background: ${theme.color.white};
     padding: 0px 8px;
 `
 export default Input1;
