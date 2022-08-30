@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import Flex from "components/style/Flex";
 import Button1 from "components/Button1";
+import Button2 from "components/Button2";
 import ProgressBar from "containers/ProgressBar";
 
 type Item = {
@@ -36,7 +37,7 @@ const StepForm: React.FC<Props> = ({ items, onSubmit }) => {
         <Container>
             <ContentHeader>
                 <ProgressBar shape="circle" endStep={endStep} nowStep={nowFormStep} />
-                <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l}>{items[nowFormStep].title}</Typography.Title2>
+                <Typography.Title2 weight={theme.fontWeight.Bold} align={theme.fontAlign.l} style={{ marginTop: "10px" }}>{items[nowFormStep].title}</Typography.Title2>
             </ContentHeader>
             <ContentBody>
                 {items[nowFormStep].body}
@@ -45,16 +46,16 @@ const StepForm: React.FC<Props> = ({ items, onSubmit }) => {
                 <Flex layout={theme.layout.r} justify={theme.justifyAlign.e} gap={15} style={{ marginTop: "30px" }}>
                     {
                         nowFormStep === startItem ? (
-                            <Button1 onClick={nextStep} disabled={false} value="다음" />
+                            <Button2 onClick={nextStep} disabled={false} value="다음" />
                         ) : nowFormStep === endItem ? (
                             <>
                                 <Button1 onClick={preStep} disabled={false} value="이전" />
-                                <Button1 onClick={onSubmit} disabled={false} value="제출" />
+                                <Button2 onClick={onSubmit} disabled={false} value="제출" />
                             </>
                         ) : (
                                     <>
                                         <Button1 onClick={preStep} disabled={false} value="이전" />
-                                        <Button1 onClick={nextStep} disabled={false} value="다음" />
+                                        <Button2 onClick={nextStep} disabled={false} value="다음"/>
                                     </>
                                 )
                     }
@@ -73,7 +74,7 @@ const Container = styled.div`
 `
 
 const ContentBody = styled.div`
-    margin-top: 15px;
+    margin-top: 27px;
 `
 
 const ContentHeader = styled.div`

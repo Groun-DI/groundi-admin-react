@@ -1,53 +1,199 @@
+<!doctype html>
+<html lang="ko">
 
-<div style="padding: 10px;border-top: 1px solid #eeeeee;border-bottom: 1px solid #eeeeee;" >
-    <div style="width: 20%;height: auto;float: left;">
-        <img src="https://2022.minjuplus.net/sites/default/files/2022-05/100149404.JPG" style="width:100%;height:100%;object-fit:cover;border:1px solid #eeeeee;">
-    </div>
-    <div>
-        <ul style="width:100%">
-            <li style="float: left;width: calc(100%/ 3);">
-                <p style="color: #eeeeee;font-size: 12px;">시•도명</p>
-                <p style="font-size: 13px;"></p>
-            </li>
-            <li style="float: left;width: calc(100%/ 3);">
-                <p>구•시•군</p>
-                <p style="font-size: 13px;"></p>
-            </li>
-            <li style="float: left;width: calc(100%/ 3);">
-                <p>선거구</p>
-                <p style="font-size: 13px;"></p>
-            </li>
-        </ul>
-        <ul>
-            <li style="float: left;width: calc(100%/ 3);">
-                <p style="color: #eeeeee;font-size: 12px;">성별</p>
-                <p style="font-size: 13px;"></p>
-            </li>
-            <li style="float: left;width: calc(100%/ 3);">
-                <p>생년월일 (연령)</p>
-                <p style="font-size: 13px;"></p>
-            </li>
-            <li style="float: left;width: calc(100%/ 3);">
-                <p>후보유형</p>
-                <div style="background-color: blueviolet;">
-                    <p style="color: white;">장애인</p>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>
+<head>
+    <meta charset="utf-8">
+    <title>HTML</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
 
-<div class="webform_person_list {{ field_css }}" style="padding: 5px;font-size:13px;text-align:center;padding-bottom:40px;">
-    <a class="webform_person_list_item" href="/person/{{nid}}" style="border-radius: 6px;display: block;position: relative;width: 100%;border: 1px solid #e8ebee;box-shadow: 0px 1px 3px rgb(0 0 0 / 6%);background: #fff;overflow: hidden;border-color: #ebebee !important;">
-        <div class="webform_default">
-            <div class="picture" style="width: 100%;display: block;height: 300px;position: relative;background-color: #fafafa;overflow: hidden;">
-                <img src="{{ field_face_image }}" style="width: 100%;display:block;height:100%;position:absolute;top:0;left: 0;right: 0;bottom: 0;margin: auto;border-radius: 0px;object-fit: cover;"/>
-                <span class="item_attr" style="background-color: rgba(0, 0, 0, 0.8);border-radius: 0 0 0 6px;color: #fff;font-size: 14px;font-weight: 600;position: absolute;top: 0;right: 0;padding: 4px 14px;">{{ field_election_division }}</span>
-            </div>
-            <div class="info" style="position: absolute;bottom: 0;left: 0;width: 100%;padding: 15px 10px;background: linear-gradient(90deg, rgba(0, 50, 139, .8), rgba(62,38,245,.8));">
-                <div class="seongeogu" style="padding: 0px;color: #ddd;margin-right: -5px;margin-left: -5px;">{{field_seongeogu}}</div>
-                <div class="name" style="font-weight: 900;color: #fff;font-size: 24px;width: 100%;overflow: hidden;line-height: 1.3;text-overflow: ellipsis;white-space: nowrap;">{{title}}</div>
-            </div>
-        </div>
-    </a>
-</div>
+        }
+        th,
+        td {
+            border-left: 1px solid black;
+            border-top: 1px solid black;
+            padding: 0.3rem;
+
+        }
+
+        th:first-child {
+            border-left: 0px;
+
+        }
+
+        .no-line {
+            border: 0px;
+        }
+
+        .inline_table_container {
+            padding: 0;
+            border-left: 0px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .container {
+            border: 2px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <table class="line-table text-center">
+            <caption class="caption"><h2><strong>의약품 거래 내역서</strong></h2></caption>
+            <colgroup>
+                <col width="1%">
+                <col width="15%">
+                <col width="34.5%">
+                <col width="15%">
+                <col width="34.5%">
+            <tbody>
+                <tr>
+                    <th rowspan="2">공급자</th>
+                    <td><strong>거래처명</strong></td>
+                    <td class="field_provider_pharmacyName">동주약국</td>
+                    <td><strong>요양기관기호<br />(사업자번호)</strong></td>
+                    <td class="field_provider_YKIHO">123456789</td>
+                </tr>
+                <tr>
+                    <td class="field_provider_name"><strong>거래자명</strong></td>
+                    <td>유상준</td>
+                    <td class="field_provider_tel"><strong>연락처</strong></td>
+                    <td>010-1234-5678</td>
+                </tr>
+                <tr>
+                    <th rowspan="2">공급받는 자</th>
+                    <td class="field_accept_pharmacyName"><strong>약국명</strong></td>
+                    <td>길동약국</td>
+                    <td class="field_accept_YKIHO"><strong>요양기관기호</strong></td>
+                    <td>123456789</td>
+                </tr>
+                <tr>
+                    <td><strong>약사명</strong></td>
+                    <td class="field_accept_name">홍길동</td>
+                    <td><strong>연락처</strong></td>
+                    <td class="field_accept_tel">010-1234-5678</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="inline_table_container">
+                        <table>
+                            <caption class="caption"><h2><strong>거래 내역서</strong></h2></caption>
+                            <col width="2%">
+                            <col width="15%">
+                            <col width="15%">
+                            <col width="15%">
+                            <col width="15%">
+                            <col width="5%">
+                            <col width="5%">
+                            <col width="5%">
+                            <col width="*">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>거래 일자</th>
+                                    <th>약품 코드</th>
+                                    <th>약품명</th>
+                                    <th>제조사</th>
+                                    <th>규격</th>
+                                    <th>수량</th>
+                                    <th>단가</th>
+                                    <th>금액</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th class="field_number">1</th>
+                                    <td class="field_createAt">2022-07-12</td>
+                                    <td class="field_medicineCode">645702190</td>
+                                    <td class="field_medicineName">글리메론정</td>
+                                    <td class="field_manufacturer">삼아제약</td>
+                                    <td class="field_specification">1EA</td>
+                                    <td class="field_quantity">20</td>
+                                    <td class="field_unitPrice">229</td>
+                                    <td class="field_price text-right">4,580원</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="6"></th>
+                                    <td>합계</td>
+                                    <td colspan="2" class="text-right">4,580원</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="5" class="text-left"><br />위와 같은 사실을 확인합니다.</th>
+                </tr>
+                <tr>
+                    <table>
+                        <colgroup>
+                            <col width="*">
+                            <col width="5%">
+                            <col width="1%">
+                            <col width="5%">
+                            <col width="1%">
+                            <col width="5%">
+                            <col width="1%">
+                            <col width="*">
+                        </colgroup>
+                        <tbody class="text-center">
+                            <th class="no-line"></th>
+                            <td class="text-right no-line field_year">2022</td>
+                            <td class="text-left no-line">년</td>
+                            <td class="text-right no-line field_month">07</td>
+                            <td class="text-left no-line">월</td>
+                            <td class="text-right no-line field_day">12</td>
+                            <td class="text-left no-line">일</td>
+                            <td class="no-line"></td>
+                        </tbody>
+                    </table>
+                </tr>
+                <tr>
+                    <table class="text-center">
+                        <colgroup>
+                            <col width="*">
+                            <col width="15%">
+                            <col width="15%">
+                            <col width="10%">
+                            <col width="3%">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th class="no-line"></th>
+                                <td class="no-line text-right"><strong>공급자</strong></td>
+                                <td class="no-line field_provider_pharmacyName">동주약국</td>
+                                <td class="no-line field_provider_name">유상준</td>
+                                <td class="no-line field_provider_sign">(인)</td>
+                            </tr>
+                            <tr>
+                                <th class="no-line"></th>
+                                <td class="no-line text-right"><strong>공급받는 자</strong></td>
+                                <td class="no-line field_accept_pharmacyName">길동약국</td>
+                                <td class="no-line field_accept_name">홍길동</td>
+                                <td class="no-line field_accept_sign">(인)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</body>
+</html>

@@ -5,21 +5,21 @@ const CenterCreateInputElements = {
     name: {
         name: "name",
         type: "text",
-        label: "운영중인 센터명을 입력해주세요",
+        label: "센터명 입력",
         required: true,
         filter: ValidationUtils.isRequired
     } as InputElementDTO,
     areaNumber: {
         name: "areaNumber",
         type: "string",
-        label: "대표 전화번호를 입력해주세요",
+        label: "전화번호 - 없이 입력",
         required: true,
         filter: ValidationUtils.isRequired
     } as InputElementDTO,
     phoneNumber: {
         name: "phoneNumber",
         type: "string",
-        label: "- 없이 입력",
+        label: "전화번호 - 없이 입력",
         required: true,
         filter: ValidationUtils.isRequired
     } as InputElementDTO,
@@ -27,7 +27,7 @@ const CenterCreateInputElements = {
     address: {
         name: "address",
         type: "text",
-        label: "주소를 입력해주세요",
+        label: "센터주소 입력",
         required: true,
         filter: ValidationUtils.isRequired
     } as InputElementDTO,
@@ -35,7 +35,7 @@ const CenterCreateInputElements = {
     detailAddress: {
         name: "detailAddress",
         type: "text",
-        label: "건물명, 층, 호수 등 상세 주소를 입력해주세요.",
+        label: "건물명, 층, 호수 등 상세 주소 입력.",
         required: true,
         filter: ValidationUtils.isRequired
     } as InputElementDTO,
@@ -51,7 +51,7 @@ const CenterCreateInputElements = {
     busniessLicenseNumber: {
         name: "busniessLicenseNumber",
         type: "number",
-        label: "사업자 번호를 입력해주세요.",
+        label: "사업자 번호 - 없이 입력",
         required: true,
         filter: ValidationUtils.isRequired
     } as InputElementDTO
